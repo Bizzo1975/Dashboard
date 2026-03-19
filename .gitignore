@@ -16,10 +16,6 @@ docker/authelia/notifications.txt
 dashboard/node_modules/
 dashboard/.next/
 
-# ── External stacks (own repos / managed separately) ─────────────────────────
-mailcow/
-erpnext/frappe_docker/
-
 # ── Claude IDE local settings ────────────────────────────────────────────────
 .claude/
 
