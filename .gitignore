@@ -3,9 +3,11 @@ docker/.env
 erpnext/frappe_docker/.env
 tactical/.env
 mailcow/mailcow.conf
+mailcow/.env
 
 # ── Bind-mounted app data ────────────────────────────────────────────────────
 docker/data/
+mailcow/data/
 backups/
 
 # ── Authelia runtime data ────────────────────────────────────────────────────

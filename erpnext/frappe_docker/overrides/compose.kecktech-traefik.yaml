@@ -1,0 +1,20 @@
+# Kecktech Traefik integration override
+# Connects ERPNext frontend to our existing Traefik on kecktech_front network.
+# Use instead of compose.noproxy.yaml or compose.traefik.yaml.
+services:
+  frontend:
+    ports: !reset []
+    networks:
+      - default
+      - kecktech_front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=kecktech_front"
+      - "traefik.http.routers.erpnext.rule=Host(`ops.kecktech.net`)"
+      - "traefik.http.routers.erpnext.entrypoints=websecure"
+      - "traefik.http.routers.erpnext.tls=true"
+      - "traefik.http.services.erpnext.loadbalancer.server.port=8080"
+
+networks:
+  kecktech_front:
+    external: true

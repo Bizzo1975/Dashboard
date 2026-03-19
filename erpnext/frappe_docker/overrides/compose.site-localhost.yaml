@@ -1,0 +1,5 @@
+# Serve site "localhost" for any Host (so IP:8080 and localhost:8080 both work)
+services:
+  frontend:
+    environment:
+      FRAPPE_SITE_NAME_HEADER: localhost

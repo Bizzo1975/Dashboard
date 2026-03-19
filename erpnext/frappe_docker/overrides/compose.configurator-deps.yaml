@@ -1,0 +1,12 @@
+# Ensure configurator waits for both db and redis (mariadb + redis overrides
+# each set only part of depends_on; this sets the full list so configurator
+# runs after db is healthy and redis is up).
+services:
+  configurator:
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
