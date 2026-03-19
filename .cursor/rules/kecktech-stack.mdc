@@ -1,0 +1,55 @@
+---
+description: Kecktech senior IT support stack—focus, stack choices, and best practices
+alwaysApply: true
+---
+
+# Kecktech.net Project Rules
+
+## Project Purpose
+
+Senior citizen IT support business: remote support, bundled services, and HaaS (Hardware as a Service) with concierge-level support. All apps are self-hosted on this VM; all containers run here. Build and configure everything in the test environment first; do not configure Cloudflare until all applications are configured and ready to deploy (see Phase 8 in PROJECT_PLAN.md).
+
+## Stack (Do Not Substitute Without Explicit Approval)
+
+| Function | Tool | Notes |
+|----------|------|--------|
+| ERP/Admin | ERPNext | CRM, HaaS, accounting, HR, dispatch |
+| Help Desk | FreeScout | Email-based tickets; helpdesk.kecktech.net |
+| Billing/Invoicing | ERPNext | All invoicing, recurring billing, HaaS, client payments (no Invoice Ninja) |
+| Remote Access | RustDesk | Senior screen-sharing bridge |
+| Secrets/Client Profiles | Vaultwarden | WiFi passwords, printer models, access keys |
+| Workflow/SMS | n8n | Trigger SMS (e.g. Twilio) on high-priority tickets |
+| Public Website | WordPress | Marketing, "About the Founder," lead capture; Astra theme + Spectra/Gutenberg blocks (not Elementor) |
+| Knowledge Base | WikiJS | Senior-friendly how-tos; support video; high-contrast theme; help.kecktech.net |
+| SSO | Authelia + LLDAP | Single login for all internal apps (dashboard, ERPNext, FreeScout, n8n, Vaultwarden) |
+| RMM | Tactical RMM | Patching, alerts, remote shells |
+| Analytics | Umami | Privacy-first, no PII |
+| Payments | Stripe | Via ERPNext; ACH/CC |
+| Network access | Tailscale | VM joined to workspace; staff/admin access to internal apps; SSH locked to Tailscale interface |
+| Mail | Mailcow | Self-hosted; support@kecktech.net and admin@kecktech.net; own compose stack at Dashboard/mailcow/ |
+
+## Best Practices
+
+- **Containers**: All services run in Docker. Prefer one `docker-compose.yml` (or grouped compose files) for the stack; document any split.
+- **Test environment**: Use Traefik as the reverse proxy with the same hostnames as production. Point all subdomains to the VM's **Tailscale IP** via `/etc/hosts` on every test machine — this makes the stack reachable from anywhere on the Tailscale network without port forwarding.
+- **Production (when ready)**: Cloudflare Tunnel for **public-facing apps only** (`kecktech.net`, `help.kecktech.net`, `helpdesk.kecktech.net`). All internal/staff apps remain accessible only over Tailscale — never exposed publicly. Zero open inbound ports. Do not configure Cloudflare until the full stack is built and verified in test (Phase 8).
+- **App-to-app communication**: Prefer webhooks and REST APIs. Document every integration (e.g. FreeScout → n8n → Twilio, ERPNext ↔ Stripe, ticket creation from CRM). Use shared env vars or a small config service for URLs/secrets; never hardcode.
+- **Secrets**: Store in Vaultwarden or env files (not in repo). Reference in compose as env vars or Docker secrets.
+- **Backups**: Assume Proxmox snapshots + app-level backups (DB dumps, config exports) to NAS or S3. Document restore steps.
+- **Accessibility**: Knowledge base and client-facing content must support high-contrast (e.g. black/white/yellow) and consider text-to-speech for seniors.
+
+## Integration Points to Maintain
+
+1. **Lead → Ticket**: CRM/ERPNext or WordPress form creates or links to FreeScout ticket.
+2. **Ticket → Dispatch**: High-priority FreeScout ticket triggers n8n → SMS (Twilio) to Florida contact.
+3. **Billing**: All invoicing and HaaS in ERPNext; Stripe for collection.
+4. **RMM + Help Desk**: Tactical RMM alerts can create or link to FreeScout tickets where applicable.
+5. **Single dashboard**: Custom app (Next.js or static) at dashboard.kecktech.net with tiles and health checks; SSO (Authelia) for single login to all internal apps.
+
+## Conventions
+
+- **Config as code**: Compose files, Cloudflare config, and app configs (where possible) live in version control.
+- **Document in PROJECT_PLAN.md**: Any new phase or step gets a clear entry; update the plan when the stack or flow changes.
+- **No mock data** in production paths unless explicitly requested.
+- **Windows**: Development may be on Windows; production is Linux (Ubuntu VM). Use cross-platform commands or document OS-specific steps.
+- **Container locations**: All app stacks live under the project. Main stack: `Dashboard/docker/` (docker-compose.yml). ERPNext: `Dashboard/erpnext/frappe_docker/`. Run `./startup-all` from Dashboard to start the main stack.

@@ -1,0 +1,7 @@
+# TRMM routing is handled entirely via Docker labels on trmm-nginx.
+# The serversTransport is still needed here so trmm-nginx labels can reference it.
+
+http:
+  serversTransports:
+    trmm-transport:
+      insecureSkipVerify: true

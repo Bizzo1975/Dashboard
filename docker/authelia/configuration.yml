@@ -1,0 +1,53 @@
+###############################################################
+# Authelia configuration — Kecktech stack
+# Secrets injected via environment variables (see docker-compose.yml)
+###############################################################
+
+theme: light
+
+authentication_backend:
+  ldap:
+    address: ldap://lldap:3890
+    implementation: lldap
+    base_dn: dc=kecktech,dc=net
+    additional_users_dn: ou=people
+    users_filter: "(&({username_attribute}={input})(objectClass=person))"
+    additional_groups_dn: ou=groups
+    groups_filter: "(member={dn})"
+    user: uid=admin,ou=people,dc=kecktech,dc=net
+
+session:
+  name: authelia_session
+  cookies:
+    - domain: kecktech.net
+      authelia_url: https://auth.kecktech.net
+      expiration: 12h
+      inactivity: 1h
+
+storage:
+  local:
+    path: /config/db.sqlite3
+
+# Phase 2/3: all subdomains bypassed during setup.
+# Change to one_factor / two_factor enforcement in Phase 5.
+access_control:
+  default_policy: bypass
+  rules:
+    - domain: "kecktech.net"
+      policy: bypass
+    - domain: "*.kecktech.net"
+      policy: bypass
+
+notifier:
+  smtp:
+    address: smtp://mail.kecktech.net:587
+    username: admin@kecktech.net
+    password: ${AUTHELIA_NOTIFIER_SMTP_PASSWORD}
+    sender: "Kecktech Auth <admin@kecktech.net>"
+    subject: "[Kecktech] {title}"
+    tls:
+      skip_verify: true
+
+identity_validation:
+  reset_password:
+    jwt_secret: ${AUTHELIA_JWT_SECRET}

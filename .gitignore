@@ -1,0 +1,31 @@
+# ── Secrets (never commit) ────────────────────────────────────────────────────
+docker/.env
+erpnext/frappe_docker/.env
+tactical/.env
+mailcow/mailcow.conf
+
+# ── Bind-mounted app data ────────────────────────────────────────────────────
+docker/data/
+backups/
+
+# ── Authelia runtime data ────────────────────────────────────────────────────
+docker/authelia/db.sqlite3
+docker/authelia/notifications.txt
+
+# ── Node / Next.js ───────────────────────────────────────────────────────────
+dashboard/node_modules/
+dashboard/.next/
+
+# ── External stacks (own repos / managed separately) ─────────────────────────
+mailcow/
+erpnext/frappe_docker/
+
+# ── Claude IDE local settings ────────────────────────────────────────────────
+.claude/
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~

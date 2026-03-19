@@ -1,0 +1,269 @@
+version: "3.7"
+
+# Kecktech fork of TacticalRMM Docker compose.
+# Changes from upstream:
+#   - proxy network subnet changed to 172.25.0.0/24 (avoids collision with existing stacks)
+#   - tactical-nginx static IP updated to 172.25.0.20
+#   - tactical-nginx ports bound to 127.0.0.1 only (Traefik routes to these)
+#   - TRMM_HTTPS_PORT=8444, TRMM_HTTP_PORT=8180 set via .env
+
+networks:
+  proxy:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.0.0/24
+  api-db:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.1.0/24
+  redis:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.2.0/24
+  mesh-db:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.27.3.0/24
+  kecktech_front:
+    external: true
+
+volumes:
+  tactical_data: null
+  postgres_data: null
+  mongo_data: null
+  mesh_data: null
+  redis_data: null
+
+services:
+  tactical-postgres:
+    container_name: trmm-postgres
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: tacticalrmm
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - api-db
+
+  tactical-redis:
+    container_name: trmm-redis
+    image: redis:6.0-alpine
+    user: 1000:1000
+    command: redis-server
+    restart: always
+    volumes:
+      - redis_data:/data
+    networks:
+      - redis
+
+  tactical-init:
+    container_name: trmm-init
+    image: ${IMAGE_REPO}tactical:${VERSION}
+    restart: on-failure
+    command: ["tactical-init"]
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASS: ${POSTGRES_PASS}
+      APP_HOST: ${APP_HOST}
+      API_HOST: ${API_HOST}
+      CSRF_COOKIE_DOMAIN: ${CSRF_COOKIE_DOMAIN}
+      SESSION_COOKIE_DOMAIN: ${SESSION_COOKIE_DOMAIN}
+      MESH_USER: ${MESH_USER}
+      MESH_HOST: ${MESH_HOST}
+      TRMM_USER: ${TRMM_USER}
+      TRMM_PASS: ${TRMM_PASS}
+      TRMM_DISABLE_WEB_TERMINAL: ${TRMM_DISABLE_WEB_TERMINAL}
+      TRMM_DISABLE_SERVER_SCRIPTS: ${TRMM_DISABLE_SERVER_SCRIPTS}
+      TRMM_DISABLE_SSO: ${TRMM_DISABLE_SSO}
+    depends_on:
+      - tactical-postgres
+      - tactical-meshcentral
+      - tactical-redis
+    networks:
+      - api-db
+      - proxy
+      - redis
+    volumes:
+      - tactical_data:/opt/tactical
+      - mesh_data:/meshcentral-data
+      - mongo_data:/mongo/data/db
+      - redis_data:/redis/data
+
+  tactical-nats:
+    container_name: trmm-nats
+    image: ${IMAGE_REPO}tactical-nats:${VERSION}
+    user: 1000:1000
+    restart: always
+    environment:
+      API_HOST: ${API_HOST}
+    volumes:
+      - tactical_data:/opt/tactical
+    networks:
+      api-db: null
+      proxy:
+        aliases:
+          - ${API_HOST}
+
+  tactical-meshcentral:
+    container_name: trmm-meshcentral
+    image: ${IMAGE_REPO}tactical-meshcentral:${VERSION}
+    user: 1000:1000
+    restart: always
+    environment:
+      MESH_HOST: ${MESH_HOST}
+      MESH_USER: ${MESH_USER}
+      MESH_PASS: ${MESH_PASS}
+      MONGODB_USER: ${MONGODB_USER}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      MESH_PERSISTENT_CONFIG: ${MESH_PERSISTENT_CONFIG}
+      NGINX_HOST_IP: "172.27.0.20"
+      NGINX_HOST_PORT: "4443"
+    networks:
+      proxy:
+        aliases:
+          - ${MESH_HOST}
+      mesh-db: null
+    volumes:
+      - tactical_data:/opt/tactical
+      - mesh_data:/home/node/app/meshcentral-data
+    depends_on:
+      - tactical-mongodb
+
+  tactical-mongodb:
+    container_name: trmm-mongodb
+    image: mongo:4.4
+    user: 1000:1000
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: meshcentral
+    networks:
+      - mesh-db
+    volumes:
+      - mongo_data:/data/db
+
+  tactical-frontend:
+    container_name: trmm-frontend
+    image: ${IMAGE_REPO}tactical-frontend:${VERSION}
+    user: 1000:1000
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - tactical_data:/opt/tactical
+    environment:
+      API_HOST: ${API_HOST}
+
+  tactical-backend:
+    container_name: trmm-backend
+    image: ${IMAGE_REPO}tactical:${VERSION}
+    user: 1000:1000
+    command: ["tactical-backend"]
+    restart: always
+    networks:
+      - proxy
+      - api-db
+      - redis
+    volumes:
+      - tactical_data:/opt/tactical
+    depends_on:
+      - tactical-postgres
+
+  tactical-websockets:
+    container_name: trmm-websockets
+    image: ${IMAGE_REPO}tactical:${VERSION}
+    user: 1000:1000
+    command: ["tactical-websockets"]
+    restart: always
+    networks:
+      - proxy
+      - api-db
+      - redis
+    volumes:
+      - tactical_data:/opt/tactical
+    depends_on:
+      - tactical-postgres
+      - tactical-backend
+
+  tactical-nginx:
+    container_name: trmm-nginx
+    image: ${IMAGE_REPO}tactical-nginx:${VERSION}
+    user: 1000:1000
+    restart: always
+    environment:
+      APP_HOST: ${APP_HOST}
+      API_HOST: ${API_HOST}
+      MESH_HOST: ${MESH_HOST}
+      CERT_PUB_KEY: ${CERT_PUB_KEY}
+      CERT_PRIV_KEY: ${CERT_PRIV_KEY}
+    networks:
+      proxy:
+        ipv4_address: 172.27.0.20
+      kecktech_front: {}
+    ports:
+      - "127.0.0.1:${TRMM_HTTP_PORT:-8180}:8080"
+      - "127.0.0.1:${TRMM_HTTPS_PORT:-8444}:4443"
+    volumes:
+      - tactical_data:/opt/tactical
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=kecktech_front"
+      - "traefik.http.routers.trmm-rmm.rule=Host(`rmm.kecktech.net`)"
+      - "traefik.http.routers.trmm-rmm.entrypoints=websecure"
+      - "traefik.http.routers.trmm-rmm.tls=true"
+      - "traefik.http.routers.trmm-rmm.service=trmm-svc"
+      - "traefik.http.routers.trmm-api.rule=Host(`api.kecktech.net`)"
+      - "traefik.http.routers.trmm-api.entrypoints=websecure"
+      - "traefik.http.routers.trmm-api.tls=true"
+      - "traefik.http.routers.trmm-api.service=trmm-svc"
+      - "traefik.http.routers.trmm-mesh.rule=Host(`mesh.kecktech.net`)"
+      - "traefik.http.routers.trmm-mesh.entrypoints=websecure"
+      - "traefik.http.routers.trmm-mesh.tls=true"
+      - "traefik.http.routers.trmm-mesh.service=trmm-svc"
+      - "traefik.http.services.trmm-svc.loadbalancer.server.scheme=https"
+      - "traefik.http.services.trmm-svc.loadbalancer.server.port=4443"
+      - "traefik.http.services.trmm-svc.loadbalancer.serversTransport=trmm-transport@file"
+
+  tactical-celery:
+    container_name: trmm-celery
+    image: ${IMAGE_REPO}tactical:${VERSION}
+    user: 1000:1000
+    command: ["tactical-celery"]
+    restart: always
+    networks:
+      - redis
+      - proxy
+      - api-db
+    volumes:
+      - tactical_data:/opt/tactical
+    depends_on:
+      - tactical-postgres
+      - tactical-redis
+
+  tactical-celerybeat:
+    container_name: trmm-celerybeat
+    image: ${IMAGE_REPO}tactical:${VERSION}
+    user: 1000:1000
+    command: ["tactical-celerybeat"]
+    restart: always
+    networks:
+      - proxy
+      - redis
+      - api-db
+    volumes:
+      - tactical_data:/opt/tactical
+    depends_on:
+      - tactical-postgres
+      - tactical-redis
