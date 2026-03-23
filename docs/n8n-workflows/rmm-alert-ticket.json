@@ -1,5 +1,5 @@
 {
-  "name": "RMM Alert → FreeScout Ticket",
+  "name": "RMM Alert → Zammad Ticket",
   "nodes": [
     {
       "parameters": {
@@ -12,28 +12,34 @@
       "name": "RMM Alert Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [250, 300]
+      "position": [
+        250,
+        300
+      ]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://helpdesk.kecktech.net/api/conversations",
+        "url": "http://zammad-railsserver:3000/api/v1/tickets",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"type\": \"email\",\n  \"mailboxId\": 1,\n  \"subject\": \"RMM Alert: {{ $json.body.alert_severity || 'Warning' }} — {{ $json.body.hostname || $json.body.agent_id || 'Unknown Agent' }}\",\n  \"customer\": {\n    \"email\": \"admin@kecktech.net\"\n  },\n  \"threads\": [\n    {\n      \"type\": \"customer\",\n      \"body\": \"<p><strong>Tactical RMM Alert</strong></p><p><strong>Agent:</strong> {{ $json.body.hostname || $json.body.agent_id || 'N/A' }}</p><p><strong>Severity:</strong> {{ $json.body.alert_severity || 'N/A' }}</p><p><strong>Message:</strong> {{ $json.body.alert_message || $json.body.message || 'No details provided' }}</p><p><strong>Client:</strong> {{ $json.body.client || 'N/A' }}</p><p><strong>Site:</strong> {{ $json.body.site || 'N/A' }}</p><hr><p><em>Auto-created by n8n from Tactical RMM webhook.</em></p>\",\n      \"customer\": {\n        \"email\": \"admin@kecktech.net\"\n      }\n    }\n  ],\n  \"imported\": false,\n  \"assignTo\": 1,\n  \"status\": \"active\"\n}",
+        "jsonBody": "={\n  \"title\": \"RMM Alert: {{ $json.body.alert_severity || 'Warning' }} — {{ $json.body.hostname || $json.body.agent_id || 'Unknown Agent' }}\",\n  \"group\": \"MSP Support\",\n  \"customer\": \"admin@kecktech.net\",\n  \"article\": {\n    \"subject\": \"RMM Alert: {{ $json.body.alert_severity || 'Warning' }} — {{ $json.body.hostname || $json.body.agent_id || 'Unknown Agent' }}\",\n    \"body\": \"<p><strong>Tactical RMM Alert</strong></p><p><strong>Agent:</strong> {{ $json.body.hostname || $json.body.agent_id || 'N/A' }}</p><p><strong>Severity:</strong> {{ $json.body.alert_severity || 'N/A' }}</p><p><strong>Message:</strong> {{ $json.body.alert_message || $json.body.message || 'No details provided' }}</p><p><strong>Client:</strong> {{ $json.body.client || 'N/A' }}</p><p><strong>Site:</strong> {{ $json.body.site || 'N/A' }}</p><hr><p><em>Auto-created by n8n from Tactical RMM webhook.</em></p>\",\n    \"type\": \"note\",\n    \"internal\": false\n  }\n}",
         "options": {}
       },
       "id": "create-ticket",
-      "name": "Create FreeScout Ticket",
+      "name": "Create Zammad Ticket",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
-      "position": [500, 300],
+      "position": [
+        500,
+        300
+      ],
       "credentials": {
         "httpHeaderAuth": {
-          "id": "REPLACE_WITH_FREESCOUT_API_CREDENTIAL_ID",
-          "name": "FreeScout API"
+          "id": "REPLACE_WITH_ZAMMAD_API_CREDENTIAL_ID",
+          "name": "Zammad API"
         }
       }
     }
@@ -43,7 +49,7 @@
       "main": [
         [
           {
-            "node": "Create FreeScout Ticket",
+            "node": "Create Zammad Ticket",
             "type": "main",
             "index": 0
           }
@@ -61,6 +67,7 @@
     }
   ],
   "meta": {
-    "notes": "Import this workflow into n8n. Prerequisites: 1) Create an HTTP Header Auth credential in n8n: Header Name = 'X-FreeScout-API-Key', Header Value = your FreeScout API key (get from FreeScout → Manage → API Keys). 2) Verify mailboxId (default 1 = first mailbox). 3) Activate the workflow. 4) In Tactical RMM → Alerts → Alert Templates → set webhook URL to the n8n webhook URL shown after activation."
-  }
+    "notes": "Import this workflow into n8n. Prerequisites: 1) Create an HTTP Header Auth credential in n8n named 'Zammad API': Header Name = 'Authorization', Header Value = 'Token token=<your ZAMMAD_API_TOKEN from docker/.env>'. 2) Activate the workflow. 3) In Tactical RMM → Alerts → Alert Templates → set webhook URL to the n8n webhook URL shown after activation. Tickets are created in the 'MSP Support' group — ensure this group exists in Zammad (Admin → Groups)."
+  },
+  "id": "48a02f54-0247-4815-9d7f-6fb8ce374157"
 }

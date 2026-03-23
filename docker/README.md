@@ -4,7 +4,7 @@ All app containers for the Kecktech stack are defined here. Run from this direct
 
 ## "Permission denied" connecting to Docker
 
-If `./startup-all` or `docker compose` fails with:
+If `./startup-all`, `startup-all.bat`, or `docker compose` fails with:
 
 ```text
 permission denied while trying to connect to the Docker API at unix:///var/run/docker.sock
@@ -18,6 +18,14 @@ newgrp docker
 ```
 
 After `newgrp docker`, run `./startup-all` again in the same terminal. Or log out and log back in so the group applies in all terminals.
+
+On Windows 11 with Docker Desktop, open PowerShell in `Dashboard` and run:
+
+```powershell
+.\startup-all.bat
+```
+
+If Docker is installed but not ready, start Docker Desktop and wait for the engine to show as running.
 
 ## First-time migration (from home directory)
 
@@ -42,11 +50,18 @@ RustDesk runs with the rest of the stack as **rustdesk-relay** (hbbr) and **rust
 
 ## Running
 
-From the project root (Dashboard):
+From the project root (Dashboard) on Linux:
 
 ```bash
 cd /home/vboxuser/Dashboard
 ./startup-all
+```
+
+From the project root (Dashboard) on Windows:
+
+```powershell
+cd F:\Github\Dashboard
+.\startup-all.bat
 ```
 
 Or from this directory:
@@ -58,4 +73,12 @@ docker compose up -d
 
 ## ERPNext
 
-ERPNext has its own compose and lives under `Dashboard/erpnext/frappe_docker`. Start it from there when needed; see `../startup-all` to start both stacks.
+ERPNext has its own compose and lives under `Dashboard/erpnext/frappe_docker`. Start it from there when needed; see `../startup-all` (Linux) or `..\startup-all.bat` (Windows) to start both stacks.
+
+## WordPress branding
+
+Bundled logo and a must-use plugin are under **`wordpress/`** (see **`wordpress/README.md`**). The `wordpress` service mounts them into the container; restart WordPress after updating `wordpress/branding/transparent-logo.png`.
+
+## HTTPS / browser certificate warnings
+
+Traefik uses TLS but no public CA certs are committed, so browsers show warnings until you add trusted certs (e.g. **mkcert**). See **`../docs/HTTPS-TEST-ENV.md`**.

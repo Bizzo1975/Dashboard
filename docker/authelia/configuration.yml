@@ -28,17 +28,41 @@ storage:
   local:
     path: /config/db.sqlite3
 
-# Phase 2/3: all subdomains bypassed during setup.
-# Change to one_factor / two_factor enforcement in Phase 5.
+# Phase 5: SSO enforcement active.
+# Public sites bypass auth; admins require two_factor (TOTP); staff require one_factor.
+# keckadmin must enroll TOTP on first protected-subdomain visit.
 access_control:
-  default_policy: bypass
+  default_policy: deny
   rules:
-    - domain: "kecktech.net"
+    # Public-facing sites — no auth required
+    - domain:
+        - "kecktech.net"
+        - "www.kecktech.net"
+        - "help.kecktech.net"
       policy: bypass
+    # Admin group — requires TOTP (two-factor)
     - domain: "*.kecktech.net"
-      policy: bypass
+      subject: "group:kecktech_admins"
+      policy: two_factor
+    # Staff group — requires password only (one-factor)
+    - domain: "*.kecktech.net"
+      subject: "group:kecktech_staff"
+      policy: one_factor
+    # Billing role — access to internal tools (one-factor)
+    - domain: "*.kecktech.net"
+      subject: "group:kecktech_billing"
+      policy: one_factor
+    # Support role — access to internal tools (one-factor)
+    - domain: "*.kecktech.net"
+      subject: "group:kecktech_support"
+      policy: one_factor
+    # Sales role — access to internal tools (one-factor)
+    - domain: "*.kecktech.net"
+      subject: "group:kecktech_sales"
+      policy: one_factor
 
 notifier:
+  disable_startup_check: false
   smtp:
     address: smtp://mail.kecktech.net:587
     username: admin@kecktech.net
@@ -50,4 +74,5 @@ notifier:
 
 identity_validation:
   reset_password:
-    jwt_secret: ${AUTHELIA_JWT_SECRET}
+    # Use dedicated env name so Authelia does not also map AUTHELIA_JWT_SECRET to deprecated jwt_secret.
+    jwt_secret: ${AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET}

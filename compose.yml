@@ -1,0 +1,8 @@
+# Run Docker Compose from the repo root for the main stack (Traefik, Authelia, WordPress, etc.).
+# Example: docker compose logs authelia
+# Stack file lives in docker/; paths inside that file (build contexts, volumes) stay relative to docker/.
+# Project name must match docker/docker-compose.yml so fixed container_name values (wp-db, wordpress) do not conflict.
+name: vboxuser
+
+include:
+  - path: docker/docker-compose.yml

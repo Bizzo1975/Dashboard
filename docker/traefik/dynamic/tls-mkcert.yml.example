@@ -1,0 +1,7 @@
+# Optional: remove ".example" after running scripts/setup-mkcert-traefik.ps1 (or place matching PEMs in certs-local/).
+# Traefik loads this folder automatically — do NOT enable until kecktech.pem + kecktech-key.pem exist or Traefik may fail to start.
+
+tls:
+  certificates:
+    - certFile: /certs-local/kecktech.pem
+      keyFile: /certs-local/kecktech-key.pem

@@ -1,0 +1,30 @@
+Date: 2026-03-22 01:37:13.105132529 +0000 UTC m=+288.427002023
+Recipient: {Kecktech Admin admin@kecktech.net}
+Subject: Second Factor Method Added
+Second Factor Method Added
+
+Hi Kecktech Admin,
+
+This notification has been sent to you in order to notify you that a Second Factor Method was added to your account.
+
+--------------------------------------------------------------------------------
+
+Event Details:
+
+Action: Second Factor Method Added
+
+
+
+Category: One-Time Password
+
+
+
+--------------------------------------------------------------------------------
+
+This notification was intended for Kecktech Admin. This event notification
+was generated due to an action from 172.20.0.1. If you do not believe that
+your actions could have triggered this event or if you are concerned about your
+account's safety, please change your password and reach out to an administrator.
+
+Powered by Authelia https://www.authelia.com
+

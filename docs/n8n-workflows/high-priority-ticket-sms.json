@@ -4,15 +4,18 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "freescout-ticket",
+        "path": "zammad-ticket",
         "responseMode": "onReceived",
         "responseData": "allEntries"
       },
       "id": "webhook-trigger",
-      "name": "FreeScout Webhook",
+      "name": "Zammad Ticket Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
-      "position": [250, 300]
+      "position": [
+        250,
+        300
+      ]
     },
     {
       "parameters": {
@@ -25,31 +28,25 @@
           "conditions": [
             {
               "id": "priority-high",
-              "leftValue": "={{ $json.body.ticket.priority }}",
-              "rightValue": "high",
+              "leftValue": "={{ $json.body.ticket.priority_id }}",
+              "rightValue": 3,
               "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            },
-            {
-              "id": "priority-urgent",
-              "leftValue": "={{ $json.body.ticket.priority }}",
-              "rightValue": "urgent",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
+                "type": "number",
+                "operation": "gte"
               }
             }
           ],
-          "combinator": "or"
+          "combinator": "and"
         }
       },
       "id": "if-priority",
-      "name": "Is High/Urgent?",
+      "name": "Is High Priority?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
-      "position": [500, 300]
+      "position": [
+        500,
+        300
+      ]
     },
     {
       "parameters": {
@@ -57,13 +54,16 @@
         "operation": "send",
         "from": "={{ $env.TWILIO_FROM_NUMBER }}",
         "to": "={{ $env.TWILIO_ALERT_NUMBER }}",
-        "body": "=Kecktech Alert: High-priority ticket #{{ $json.body.ticket.id }} — {{ $json.body.ticket.subject }}\n\nCustomer: {{ $json.body.ticket.customer.email }}\nMailbox: {{ $json.body.ticket.mailbox }}\n\nView: https://helpdesk.kecktech.net/conversation/{{ $json.body.ticket.id }}"
+        "body": "=Kecktech Alert: High-priority ticket #{{ $json.body.ticket.number }} — {{ $json.body.ticket.title }}\n\nCustomer: {{ $json.body.ticket.customer }}\nGroup: {{ $json.body.ticket.group }}\n\nView: https://tickets.kecktech.net/#ticket/zoom/{{ $json.body.ticket.id }}"
       },
       "id": "twilio-sms",
       "name": "Send SMS Alert",
       "type": "n8n-nodes-base.twilio",
       "typeVersion": 1,
-      "position": [750, 200],
+      "position": [
+        750,
+        200
+      ],
       "credentials": {
         "twilioApi": {
           "id": "REPLACE_WITH_TWILIO_CREDENTIAL_ID",
@@ -77,22 +77,25 @@
       "name": "Not High Priority",
       "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
-      "position": [750, 400]
+      "position": [
+        750,
+        400
+      ]
     }
   ],
   "connections": {
-    "FreeScout Webhook": {
+    "Zammad Ticket Webhook": {
       "main": [
         [
           {
-            "node": "Is High/Urgent?",
+            "node": "Is High Priority?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Is High/Urgent?": {
+    "Is High Priority?": {
       "main": [
         [
           {
@@ -121,6 +124,7 @@
     }
   ],
   "meta": {
-    "notes": "Import this workflow into n8n. Prerequisites: 1) Create Twilio credentials in n8n Settings → Credentials. 2) Set environment variables TWILIO_FROM_NUMBER and TWILIO_ALERT_NUMBER (Florida contact) in n8n Settings → Variables, OR replace the expressions in the Twilio node with literal values. 3) Activate the workflow. 4) Copy the webhook URL and paste into FreeScout → Manage → Mailboxes → Support → Webhooks."
-  }
+    "notes": "Import this workflow into n8n. Prerequisites: 1) Create Twilio credentials in n8n Settings → Credentials (Account SID + Auth Token). 2) Set n8n Variables: TWILIO_FROM_NUMBER (your Twilio number) and TWILIO_ALERT_NUMBER (Florida contact's number) via Settings → Variables. 3) Activate the workflow — copy the webhook URL shown after activation. 4) In Zammad: Admin → Triggers → New Trigger. Name: 'High Priority SMS Alert'. Conditions: Ticket Priority is high. Actions: HTTP Request POST to the n8n webhook URL (copied above). Body: JSON with ticket object including id, number, title, customer, group, priority_id. 5) Zammad sends priority_id as integer: 1=low, 2=normal, 3=high — this workflow fires for priority_id >= 3."
+  },
+  "id": "0406376d-80a5-4814-89b5-3f44f878df04"
 }

@@ -62,10 +62,10 @@ set -a; source "${MAIN_COMPOSE}/.env"; set +a
 
 echo ""
 echo "--- Main stack DBs ---"
-dump_mariadb "freescout-db"  "freescout" "${FREESCOUT_DB_PASS}"  "freescout"  "freescout-db.sql.gz"
 dump_mariadb "wp-db"         "wpuser"    "${WP_DB_PASS}"         "wpdb"       "wordpress-db.sql.gz"
 dump_postgres "wikijs-db"    "wikijs"    "wikijs"                             "wikijs-db.sql.gz"
 dump_postgres "umami-db"     "umami"     "umami"                              "umami-db.sql.gz"
+dump_postgres "zammad-db"    "zammad"    "zammad"                             "zammad-db.sql.gz"
 
 # ── ERPNEXT DATABASE ──────────────────────────────────────────────────────────
 echo ""
@@ -91,7 +91,7 @@ echo "--- Named volumes ---"
 backup_volume "vboxuser_vaultwarden_data"  "vaultwarden-data.tar.gz"
 backup_volume "vboxuser_n8n_data"          "n8n-data.tar.gz"
 backup_volume "vboxuser_lldap_data"        "lldap-data.tar.gz"
-backup_volume "vboxuser_freescout_data"    "freescout-data.tar.gz"
+backup_volume "vboxuser_zammad_storage"    "zammad-storage.tar.gz"
 
 # ── AUTHELIA CONFIG ───────────────────────────────────────────────────────────
 echo ""

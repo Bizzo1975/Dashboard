@@ -1,12 +1,19 @@
 # Kecktech Traefik integration override
 # Connects ERPNext frontend to our existing Traefik on kecktech_front network.
 # Use instead of compose.noproxy.yaml or compose.traefik.yaml.
+#
+# compose.site-localhost.yaml (loaded earlier in the compose chain) sets
+# FRAPPE_SITE_NAME_HEADER=localhost, which requires a site literally named
+# "localhost". Override here so nginx + X-Frappe-Site-Name match Traefik Host.
+# Set FRAPPE_SITE_NAME_HEADER in erpnext/frappe_docker/.env if your site name differs.
 services:
   frontend:
     ports: !reset []
     networks:
       - default
       - kecktech_front
+    environment:
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-ops.kecktech.net}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=kecktech_front"

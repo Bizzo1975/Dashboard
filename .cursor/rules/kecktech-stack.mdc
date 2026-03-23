@@ -1,5 +1,5 @@
 ---
-description: Kecktech senior IT support stack—focus, stack choices, and best practices
+description: Kecktech IT Solutions LLC — 5-service commercial IT stack rules, stack choices, and best practices
 alwaysApply: true
 ---
 
@@ -7,49 +7,98 @@ alwaysApply: true
 
 ## Project Purpose
 
-Senior citizen IT support business: remote support, bundled services, and HaaS (Hardware as a Service) with concierge-level support. All apps are self-hosted on this VM; all containers run here. Build and configure everything in the test environment first; do not configure Cloudflare until all applications are configured and ready to deploy (see Phase 8 in PROJECT_PLAN.md).
+**Kecktech IT Solutions LLC** — Park City, Kansas. Disability-led family IT business (husband + wife + lifelong friend, 30+ combined years enterprise IT). Five commercial service lines served by this self-hosted stack:
+
+| # | Service | Price | Target |
+|---|---------|-------|--------|
+| 1 | White Glove Managed IT (MSP) | $199/mo/client | SMBs |
+| 2 | Hardware-as-a-Service (HaaS) | $149/mo/device | SMBs + Seniors |
+| 3 | AI Custom App Development | $3K–$8K/build | SMBs |
+| 4 | Senior Technology Concierge | $79/mo/client | Senior citizens |
+| 5 | Sovereign Private Hosting | $49/mo/client | Privacy-conscious SMBs |
+
+Tagline: *Solar-Powered. Sovereign Data. AI-Built Apps. Human-Centered.*
+
+All apps are self-hosted on this stack. Build and configure everything in the test environment first; do not configure Cloudflare until all applications are configured and ready to deploy (see Phase 8).
+
+## Three Client Personas
+
+| Persona | Tech Level | Key UI Rule |
+|---------|-----------|-------------|
+| **SMB Owner** | Moderate | Professional, mobile-friendly, clear status summaries |
+| **Senior Client** | Low | 18px+ font, WCAG AAA contrast, max 3 actions/screen, no jargon |
+| **Kecktech Operator** | Expert | Dense info OK, dark mode preferred, full visibility across all 5 services |
+
+⚠️ Accessibility rules (18px font, high contrast) apply **only** to senior-facing interfaces: WikiJS (`help.kecktech.net`), WordPress public pages. Internal/operator tools are not affected.
 
 ## Stack (Do Not Substitute Without Explicit Approval)
 
 | Function | Tool | Notes |
 |----------|------|--------|
-| ERP/Admin | ERPNext | CRM, HaaS, accounting, HR, dispatch |
-| Help Desk | FreeScout | Email-based tickets; helpdesk.kecktech.net |
-| Billing/Invoicing | ERPNext | All invoicing, recurring billing, HaaS, client payments (no Invoice Ninja) |
-| Remote Access | RustDesk | Senior screen-sharing bridge |
-| Secrets/Client Profiles | Vaultwarden | WiFi passwords, printer models, access keys |
-| Workflow/SMS | n8n | Trigger SMS (e.g. Twilio) on high-priority tickets |
-| Public Website | WordPress | Marketing, "About the Founder," lead capture; Astra theme + Spectra/Gutenberg blocks (not Elementor) |
-| Knowledge Base | WikiJS | Senior-friendly how-tos; support video; high-contrast theme; help.kecktech.net |
-| SSO | Authelia + LLDAP | Single login for all internal apps (dashboard, ERPNext, FreeScout, n8n, Vaultwarden) |
-| RMM | Tactical RMM | Patching, alerts, remote shells |
-| Analytics | Umami | Privacy-first, no PII |
-| Payments | Stripe | Via ERPNext; ACH/CC |
-| Network access | Tailscale | VM joined to workspace; staff/admin access to internal apps; SSH locked to Tailscale interface |
+| ERP/Admin | ERPNext | CRM, HaaS inventory, accounting, project billing, client records |
+| Help Desk / ITSM | Zammad | Full service desk: SLA, time tracking, client portal, REST API; tickets.kecktech.net |
+| Billing/Invoicing | ERPNext | All invoicing, recurring billing, HaaS device subscriptions, Stripe integration |
+| Remote Access | RustDesk | Senior screen-sharing + MSP remote access bridge |
+| Secrets/Client Profiles | Vaultwarden | WiFi passwords, device creds, RustDesk IDs, client profiles |
+| Workflow/SMS | n8n | High-priority ticket → SMS (Twilio); RMM alert → ticket pipeline |
+| Public Website | WordPress | Marketing all 5 services; lead capture; Astra theme + Spectra/Gutenberg (not Elementor) |
+| Knowledge Base | WikiJS | Senior-friendly how-tos + SMB explainers; high-contrast; help.kecktech.net |
+| SSO | Authelia + LLDAP | Single login for all internal apps; keckadmin / Kecktech2026 (no !) — LLDAP OPAQUE bug |
+| RMM | Tactical RMM | MSP device monitoring, patching, alerts, remote shells |
+| Analytics | Umami | Privacy-first, no PII; tracks WordPress + WikiJS |
+| Payments | Stripe | Via ERPNext; ACH/CC for subscriptions and project billing |
+| Network access | Tailscale | Staff/admin access to internal apps; SSH locked to Tailscale interface |
 | Mail | Mailcow | Self-hosted; support@kecktech.net and admin@kecktech.net; own compose stack at Dashboard/mailcow/ |
+
+## ERPNext Service Items
+
+| Item Name | Code | Type | Rate |
+|-----------|------|------|------|
+| White Glove Managed IT | SVC-MSP | Service | $199/mo |
+| HaaS Device Subscription | SVC-HAAS | Service | $149/mo/device |
+| AI Custom App Build | SVC-AIAPP | Service | $3,000–$8,000 |
+| Senior Technology Concierge | SVC-SENIOR | Service | $79/mo |
+| Sovereign Private Hosting | SVC-HOSTING | Service | $49/mo |
+| Remote Support (hourly) | SVC-REMOTE | Service | $45/hr |
+| In-Home Support (hourly) | SVC-HOME | Service | $85/hr |
+
+HaaS item templates: HAAS-L1, HAAS-L2, HAAS-L3 (attributes: RAM, Storage; Asset Category: Leased Hardware).
+
+## Zammad Groups
+
+`MSP Support`, `HaaS`, `Senior Care`, `Internal`
+
+## Revenue Priority (drives feature decisions)
+
+1. MSP — $477,600/yr → Zammad, TRMM, ERPNext (highest priority)
+2. HaaS — $268,200/yr → ERPNext Assets, TRMM, Vaultwarden
+3. AI App Dev — $240,000/yr → ERPNext project billing, Zammad
+4. Senior — $94,800/yr → WikiJS, WordPress, RustDesk
+5. Hosting — $17,640/yr → Portainer, Traefik (Phase 8+)
 
 ## Best Practices
 
-- **Containers**: All services run in Docker. Prefer one `docker-compose.yml` (or grouped compose files) for the stack; document any split.
-- **Test environment**: Use Traefik as the reverse proxy with the same hostnames as production. Point all subdomains to the VM's **Tailscale IP** via `/etc/hosts` on every test machine — this makes the stack reachable from anywhere on the Tailscale network without port forwarding.
-- **Production (when ready)**: Cloudflare Tunnel for **public-facing apps only** (`kecktech.net`, `help.kecktech.net`, `helpdesk.kecktech.net`). All internal/staff apps remain accessible only over Tailscale — never exposed publicly. Zero open inbound ports. Do not configure Cloudflare until the full stack is built and verified in test (Phase 8).
-- **App-to-app communication**: Prefer webhooks and REST APIs. Document every integration (e.g. FreeScout → n8n → Twilio, ERPNext ↔ Stripe, ticket creation from CRM). Use shared env vars or a small config service for URLs/secrets; never hardcode.
-- **Secrets**: Store in Vaultwarden or env files (not in repo). Reference in compose as env vars or Docker secrets.
-- **Backups**: Assume Proxmox snapshots + app-level backups (DB dumps, config exports) to NAS or S3. Document restore steps.
-- **Accessibility**: Knowledge base and client-facing content must support high-contrast (e.g. black/white/yellow) and consider text-to-speech for seniors.
+- **Containers**: All services run in Docker. Main stack: `docker/docker-compose.yml`. ERPNext: `erpnext/frappe_docker/`. Mailcow: `mailcow/`. Tactical RMM: `tactical/`. Run `startup-all.bat` from Dashboard root.
+- **Domain**: Stack runs on `kecktech.net` throughout all configs. Do NOT migrate to `kecktech.io` without explicit confirmation — every service config would need updating.
+- **Test environment**: Traefik with same hostnames as production. Add `127.0.0.1` entries in `hosts` for all `*.kecktech.net` names. Do not configure Cloudflare until Phase 8.
+- **Production (when ready)**: Cloudflare Tunnel for **public-facing apps only** (`kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net`). All internal/staff apps remain Tailscale-only. Zero open inbound ports.
+- **App-to-app communication**: Prefer webhooks and REST APIs. Document every integration in INTEGRATIONS.md.
+- **Secrets**: Store in `docker/.env` (gitignored). Reference in compose as env vars.
+- **SSO exception**: LLDAP 0.6.x OPAQUE bug — `!` in passwords fails LDAP bind. SSO credential is `keckadmin` / `Kecktech2026` (no `!`). All other app logins use `Kecktech2026!`. Do not change until upstream fixes the bug.
+- **Accessibility**: WikiJS and WordPress public pages must support high-contrast (WCAG AAA) and 18px+ font for senior visitors. Internal operator tools are exempt.
 
-## Integration Points to Maintain
+## Integration Points
 
-1. **Lead → Ticket**: CRM/ERPNext or WordPress form creates or links to FreeScout ticket.
-2. **Ticket → Dispatch**: High-priority FreeScout ticket triggers n8n → SMS (Twilio) to Florida contact.
-3. **Billing**: All invoicing and HaaS in ERPNext; Stripe for collection.
-4. **RMM + Help Desk**: Tactical RMM alerts can create or link to FreeScout tickets where applicable.
-5. **Single dashboard**: Custom app (Next.js or static) at dashboard.kecktech.net with tiles and health checks; SSO (Authelia) for single login to all internal apps.
+1. **Lead → Ticket**: WordPress contact form → Zammad ticket (email to tickets@kecktech.net)
+2. **Ticket → Dispatch**: High-priority Zammad ticket → n8n → Twilio SMS to on-call tech
+3. **RMM → Ticket**: Tactical RMM critical alert → n8n → Zammad API `POST /api/v1/tickets`
+4. **Billing**: All invoicing in ERPNext; Stripe for collection (ACH/CC)
+5. **Analytics**: Umami tracking on WordPress + WikiJS
+6. **Single dashboard**: Next.js at dashboard.kecktech.net — health tiles for all 12 services
 
 ## Conventions
 
-- **Config as code**: Compose files, Cloudflare config, and app configs (where possible) live in version control.
-- **Document in PROJECT_PLAN.md**: Any new phase or step gets a clear entry; update the plan when the stack or flow changes.
+- **Config as code**: Compose files and app configs live in version control.
+- **Document in PROJECT_PLAN.md + REMAINING-TASKS.md**: Any new phase or step gets a clear entry.
 - **No mock data** in production paths unless explicitly requested.
-- **Windows**: Development may be on Windows; production is Linux (Ubuntu VM). Use cross-platform commands or document OS-specific steps.
-- **Container locations**: All app stacks live under the project. Main stack: `Dashboard/docker/` (docker-compose.yml). ERPNext: `Dashboard/erpnext/frappe_docker/`. Run `./startup-all` from Dashboard to start the main stack.
+- **Windows dev**: Development on Windows 11; target production is Linux VM. Use cross-platform commands or document OS-specific steps.

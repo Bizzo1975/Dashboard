@@ -172,6 +172,8 @@ services:
     user: 1000:1000
     command: ["tactical-backend"]
     restart: always
+    extra_hosts:
+      - "n8n.kecktech.net:host-gateway"
     networks:
       - proxy
       - api-db

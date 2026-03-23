@@ -23,6 +23,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./traefik/dynamic:/etc/traefik/dynamic:ro
+      # mkcert / manual PEMs — see docs/HTTPS-TEST-ENV.md and scripts/setup-mkcert-traefik.ps1
+      - ./traefik/certs-local:/certs-local:ro
       - traefik_certs:/certs
     networks:
       - kecktech_front
@@ -32,6 +34,7 @@ services:
       - "traefik.http.routers.traefik-dashboard.entrypoints=websecure"
       - "traefik.http.routers.traefik-dashboard.tls=true"
       - "traefik.http.routers.traefik-dashboard.service=api@internal"
+      - "traefik.http.routers.traefik-dashboard.middlewares=authelia@docker"
 
   # ── SSO — LLDAP (lightweight LDAP user directory) ────────────────────────────
   lldap:
@@ -56,23 +59,30 @@ services:
       - "traefik.http.routers.lldap.entrypoints=websecure"
       - "traefik.http.routers.lldap.tls=true"
       - "traefik.http.services.lldap.loadbalancer.server.port=17170"
+      - "traefik.http.routers.lldap.middlewares=authelia@docker"
 
   # ── SSO — AUTHELIA (forward-auth gateway) ────────────────────────────────────
-  # Phase 2: access_control is set to bypass in configuration.yml.
-  # Enable enforcement in Phase 5 after all apps are confirmed working.
+  # Phase 5: SSO enforcement active. Middleware applied to: dashboard, lldap, traefik, umami.
+  # freescout/n8n/vaultwarden excluded intentionally (own auth / webhooks would break).
   authelia:
     image: authelia/authelia:4.39.15
     container_name: authelia
     restart: always
     mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:9091/api/health >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
     volumes:
       - ./authelia:/config
     environment:
-      - AUTHELIA_JWT_SECRET=${AUTHELIA_JWT_SECRET}
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET=${AUTHELIA_JWT_SECRET}
       - AUTHELIA_SESSION_SECRET=${AUTHELIA_SESSION_SECRET}
       - AUTHELIA_STORAGE_ENCRYPTION_KEY=${AUTHELIA_STORAGE_KEY}
       - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD=${LLDAP_ADMIN_PASS}
-      - AUTHELIA_NOTIFIER_SMTP_PASSWORD=${MAILCOW_ADMIN_PASS}
+      - AUTHELIA_NOTIFIER_SMTP_PASSWORD=${AUTHELIA_NOTIFIER_SMTP_PASSWORD}
     extra_hosts:
       - "mail.kecktech.net:host-gateway"
     depends_on:
@@ -92,63 +102,172 @@ services:
       - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
       - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
 
-  # ── HELP DESK ─────────────────────────────────────────────────────────────────
-  freescout:
-    image: tiredofit/freescout:latest  # no versioned tags available
-    container_name: freescout
-    mem_limit: 512m
+  # ── SERVICE DESK — ZAMMAD ─────────────────────────────────────────────────────
+  # Replaces FreeScout. Full ITSM: SLA, time tracking, email channels, REST API.
+  # First boot runs DB migrations automatically via zammad-init (exits after setup).
+  # Manual setup required after first start: browse to tickets.kecktech.net to create
+  # admin account, configure email channel, groups, and SLA policies.
+  # Generate ZAMMAD_SECRET_KEY with: openssl rand -hex 64
+  zammad-db:
+    image: postgres:15-alpine
+    container_name: zammad-db
+    mem_limit: 256m
+    restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      test: ["CMD-SHELL", "pg_isready -U zammad"]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
-      start_period: 60s
-    volumes:
-      - freescout_data:/data
-      - freescout_logs:/www/logs
     environment:
-      - CONTAINER_PORT=80
-      - ADMIN_EMAIL=admin@kecktech.net
-      - ADMIN_PASS=${FREESCOUT_ADMIN_PASS}
-      - SITE_URL=https://helpdesk.kecktech.net
-      - DB_TYPE=mysql
-      - DB_HOST=freescout-db
-      - DB_NAME=freescout
-      - DB_USER=freescout
-      - DB_PASS=${FREESCOUT_DB_PASS}
+      - POSTGRES_DB=zammad
+      - POSTGRES_USER=zammad
+      - POSTGRES_PASSWORD=${ZAMMAD_DB_PASS}
+    volumes:
+      - zammad_db_data:/var/lib/postgresql/data
+    networks:
+      - kecktech_internal
+
+  zammad-redis:
+    image: redis:7-alpine
+    container_name: zammad-redis
+    mem_limit: 128m
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - kecktech_internal
+
+  zammad-init:
+    image: ghcr.io/zammad/zammad:latest
+    container_name: zammad-init
+    command: ["zammad-init"]
+    restart: on-failure
+    environment:
+      - POSTGRESQL_HOST=zammad-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USER=zammad
+      - POSTGRESQL_PASS=${ZAMMAD_DB_PASS}
+      - POSTGRESQL_DB=zammad
+      - REDIS_URL=redis://zammad-redis:6379
+      - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
+      - FQDN=tickets.kecktech.net
+      - ELASTICSEARCH_ENABLED=false
+    volumes:
+      - zammad_storage:/opt/zammad/storage
+    depends_on:
+      zammad-db:
+        condition: service_healthy
+      zammad-redis:
+        condition: service_healthy
+    networks:
+      - kecktech_internal
+
+  zammad-railsserver:
+    image: ghcr.io/zammad/zammad:latest
+    container_name: zammad-railsserver
+    mem_limit: 512m
+    command: ["zammad-railsserver"]
+    restart: always
+    environment:
+      - POSTGRESQL_HOST=zammad-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USER=zammad
+      - POSTGRESQL_PASS=${ZAMMAD_DB_PASS}
+      - POSTGRESQL_DB=zammad
+      - REDIS_URL=redis://zammad-redis:6379
+      - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
+      - FQDN=tickets.kecktech.net
+      - ELASTICSEARCH_ENABLED=false
     extra_hosts:
       - "mail.kecktech.net:host-gateway"
-    restart: always
+    volumes:
+      - zammad_storage:/opt/zammad/storage
     depends_on:
-      - freescout-db
+      - zammad-init
+      - zammad-db
+      - zammad-redis
+    networks:
+      - kecktech_internal
+
+  zammad-nginx:
+    image: ghcr.io/zammad/zammad:latest
+    container_name: zammad-nginx
+    mem_limit: 512m    # startup readiness check loads full Rails (~400MB); drops to ~10MB after
+    command: ["zammad-nginx"]
+    restart: always
+    environment:
+      - POSTGRESQL_HOST=zammad-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USER=zammad
+      - POSTGRESQL_PASS=${ZAMMAD_DB_PASS}
+      - POSTGRESQL_DB=zammad
+      - REDIS_URL=redis://zammad-redis:6379
+      - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
+      - NGINX_PORT=8080
+      - ZAMMAD_RAILSSERVER_HOST=zammad-railsserver
+      - ZAMMAD_RAILSSERVER_PORT=3000
+      - ZAMMAD_WEBSOCKET_HOST=zammad-websocket
+      - ZAMMAD_WEBSOCKET_PORT=6042
+      - ELASTICSEARCH_ENABLED=false
+    depends_on:
+      - zammad-railsserver
     networks:
       - kecktech_front
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.freescout.rule=Host(`helpdesk.kecktech.net`)"
-      - "traefik.http.routers.freescout.entrypoints=websecure"
-      - "traefik.http.routers.freescout.tls=true"
-      - "traefik.http.services.freescout.loadbalancer.server.port=80"
+      - "traefik.http.routers.zammad.rule=Host(`tickets.kecktech.net`)"
+      - "traefik.http.routers.zammad.entrypoints=websecure"
+      - "traefik.http.routers.zammad.tls=true"
+      - "traefik.http.services.zammad.loadbalancer.server.port=8080"
+      # No Authelia — clients need unauthenticated access to the ticket portal
 
-  freescout-db:
-    image: mariadb:10.6
-    container_name: freescout-db
+  zammad-scheduler:
+    image: ghcr.io/zammad/zammad:latest
+    container_name: zammad-scheduler
     mem_limit: 256m
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    volumes:
-      - freescout_db_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${FREESCOUT_DB_ROOT_PASS}
-      - MYSQL_DATABASE=freescout
-      - MYSQL_USER=freescout
-      - MYSQL_PASSWORD=${FREESCOUT_DB_PASS}
+    command: ["zammad-scheduler"]
     restart: always
+    environment:
+      - POSTGRESQL_HOST=zammad-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USER=zammad
+      - POSTGRESQL_PASS=${ZAMMAD_DB_PASS}
+      - POSTGRESQL_DB=zammad
+      - REDIS_URL=redis://zammad-redis:6379
+      - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
+      - FQDN=tickets.kecktech.net
+      - ELASTICSEARCH_ENABLED=false
+    extra_hosts:
+      - "mail.kecktech.net:host-gateway"
+    volumes:
+      - zammad_storage:/opt/zammad/storage
+    depends_on:
+      - zammad-railsserver
+    networks:
+      - kecktech_internal
+
+  zammad-websocket:
+    image: ghcr.io/zammad/zammad:latest
+    container_name: zammad-websocket
+    mem_limit: 128m
+    command: ["zammad-websocket"]
+    restart: always
+    environment:
+      - POSTGRESQL_HOST=zammad-db
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USER=zammad
+      - POSTGRESQL_PASS=${ZAMMAD_DB_PASS}
+      - POSTGRESQL_DB=zammad
+      - REDIS_URL=redis://zammad-redis:6379
+      - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
+      - FQDN=tickets.kecktech.net
+      - ELASTICSEARCH_ENABLED=false
+    depends_on:
+      - zammad-railsserver
     networks:
       - kecktech_internal
 
@@ -158,6 +277,12 @@ services:
     container_name: vaultwarden
     restart: always
     mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/alive"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
     volumes:
       - vaultwarden_data:/data
     environment:
@@ -204,6 +329,9 @@ services:
       - GENERIC_TIMEZONE=America/Chicago
       - N8N_BASIC_AUTH_ACTIVE=false
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
+      - N8N_DEFAULT_USER_EMAIL=admin@kecktech.net
+      - N8N_DEFAULT_USER_PASSWORD=${N8N_DEFAULT_PASS}
+      # NODE_TLS_REJECT_UNAUTHORIZED: REMOVE in production; use per-credential "Ignore SSL Issues" instead
     extra_hosts:
       - "mail.kecktech.net:host-gateway"
     volumes:
@@ -223,8 +351,10 @@ services:
     image: wordpress:6.9.1
     container_name: wordpress
     mem_limit: 512m
+    # Static asset: a request to / can hang (bootstrap/redirect) and leave the container
+    # "unhealthy"; Traefik then omits the router → 404 for kecktech.net (see Traefik Docker provider).
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/"]
+      test: ["CMD", "curl", "-f", "http://localhost/wp-includes/images/w-logo-blue.png"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -234,11 +364,16 @@ services:
       - WORDPRESS_DB_USER=wpuser
       - WORDPRESS_DB_PASSWORD=${WP_DB_PASS}
       - WORDPRESS_DB_NAME=wpdb
+      # Public URL for permalinks and media src (DB siteurl/home often wrong in Docker; breaks logo <img> behind Traefik).
+      - WORDPRESS_CONFIG_EXTRA=if(!defined('WP_HOME')){define('WP_HOME','https://www.kecktech.net');}if(!defined('WP_SITEURL')){define('WP_SITEURL','https://www.kecktech.net');}
     extra_hosts:
       - "mail.kecktech.net:host-gateway"
     restart: always
     volumes:
       - ./data/wp_data:/var/www/html
+      # Bundled logo + MU plugin (see docker/wordpress/README.md)
+      - ./wordpress/branding:/var/www/html/wp-content/uploads/kecktech-branding:ro
+      - ./wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
     depends_on:
       - wp-db
     networks:
@@ -246,9 +381,19 @@ services:
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=Host(`kecktech.net`)"
-      - "traefik.http.routers.wordpress.entrypoints=websecure"
-      - "traefik.http.routers.wordpress.tls=true"
+      # www → WordPress; apex → 301 to www (middleware via Docker provider — see Traefik redirectRegex label escaping)
+      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.regex=^https://kecktech\\.net/(.*)"
+      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.replacement=https://www.kecktech.net/$${1}"
+      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.permanent=true"
+      - "traefik.http.routers.wordpress-www.rule=Host(`www.kecktech.net`)"
+      - "traefik.http.routers.wordpress-www.service=wordpress"
+      - "traefik.http.routers.wordpress-www.entrypoints=websecure"
+      - "traefik.http.routers.wordpress-www.tls=true"
+      - "traefik.http.routers.wordpress-apex.rule=Host(`kecktech.net`)"
+      - "traefik.http.routers.wordpress-apex.entrypoints=websecure"
+      - "traefik.http.routers.wordpress-apex.tls=true"
+      - "traefik.http.routers.wordpress-apex.middlewares=kecktech-apex-to-www@docker"
+      - "traefik.http.routers.wordpress-apex.service=noop@internal"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
 
   wp-db:
@@ -352,6 +497,7 @@ services:
       - "traefik.http.routers.umami.entrypoints=websecure"
       - "traefik.http.routers.umami.tls=true"
       - "traefik.http.services.umami.loadbalancer.server.port=3000"
+      - "traefik.http.routers.umami.middlewares=authelia@docker"
 
   umami-db:
     image: postgres:15-alpine
@@ -413,6 +559,22 @@ services:
     container_name: dashboard
     restart: always
     mem_limit: 256m
+    environment:
+      # Zammad — REST API (replaces FreeScout)
+      - ZAMMAD_URL=http://zammad-railsserver:3000
+      - ZAMMAD_API_TOKEN=${ZAMMAD_API_TOKEN}
+      # TRMM — REST API key
+      - TRMM_URL=https://trmm-nginx:4443
+      - TRMM_API_KEY=${TRMM_API_KEY}
+      # ERPNext — API token (key:secret)
+      - ERPNEXT_URL=http://frappe_docker-frontend-1:8080
+      - ERPNEXT_API_KEY=${ERPNEXT_API_KEY}
+      - ERPNEXT_API_SECRET=${ERPNEXT_API_SECRET}
+      # Umami — credentials for internal token auth
+      - UMAMI_URL=http://umami:3000
+      - UMAMI_USER=admin
+      - UMAMI_PASS=${UMAMI_PASS}
+      - UMAMI_SITE_ID=d2427fe3-ce4b-4b9a-8e41-a8a3e9f2cd6d
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://0.0.0.0:3000/ || exit 1"]
       interval: 30s
@@ -421,12 +583,14 @@ services:
       start_period: 30s
     networks:
       - kecktech_front
+      - kecktech_internal
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`dashboard.kecktech.net`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.services.dashboard.loadbalancer.server.port=3000"
+      - "traefik.http.routers.dashboard.middlewares=authelia@docker"
 
   # ── CONTAINER MANAGEMENT ──────────────────────────────────────────────────────
   # Portainer accessed directly via Tailscale IP:9443 — not behind Traefik
@@ -453,9 +617,8 @@ networks:
     external: true
 
 volumes:
-  freescout_data:
-  freescout_logs:
-  freescout_db_data:
+  zammad_db_data:
+  zammad_storage:
   wikijs_data:
   wikijs_db_data:
   vaultwarden_data:

@@ -3,7 +3,7 @@
 Single linear plan to build and operate the senior citizen IT support stack: website, knowledge base (with video), backend ERP, help desk, billing, HaaS, remote access, and integrated operations.
 
 **Environment:**
-- **All containers run on this VM and are managed from the project folder.** Main stack: `Dashboard/docker/` (docker-compose.yml). ERPNext: `Dashboard/erpnext/frappe_docker/`. Start everything from Dashboard with `./startup-all`.
+- **All containers run on this VM and are managed from the project folder.** Main stack: `Dashboard/docker/` (docker-compose.yml). ERPNext: `Dashboard/erpnext/frappe_docker/`. Start everything from Dashboard with `./startup-all` (Linux) or `startup-all.bat` (Windows). Shut down the full dev stack on Windows with `shutdown-all.bat` (reverse order: ERPNext → Tactical → Mailcow → main `docker/` stack).
 - **Build in test first.** All application deployment, configuration, integrations, dashboard, and SSO are done in the test environment on this VM.
 - **Do not configure Cloudflare until all applications are configured and ready to deploy.** Cloudflare Tunnel and public DNS are set up in a final "Production deploy" phase, after the full stack is working in test.
 
@@ -26,7 +26,7 @@ Single linear plan to build and operate the senior citizen IT support stack: web
 
 | Deliverable | Description |
 |-------------|-------------|
-| **Backend** | ERPNext (CRM, HaaS, accounting, HR, billing), FreeScout (tickets), Tactical RMM |
+| **Backend** | ERPNext (CRM, HaaS, accounting, HR, billing), Zammad (ITSM tickets), Tactical RMM |
 | **Website** | WordPress: services, pricing, "About the Founder," lead capture |
 | **Knowledge base** | WikiJS: senior-friendly articles, video support, high-contrast theme |
 | **Integrations** | n8n (SMS dispatch), Stripe via ERPNext (payments), Vaultwarden (client secrets), Umami (analytics) |
@@ -477,7 +477,7 @@ In the Tailscale ACL, add `"ssh"` rules to specify who can SSH to the VM. See [t
 |------|---------|---------|--------|
 | ~~2.1~~ ✅ | MariaDB/PostgreSQL | Per-app DBs | Each app has its own DB container |
 | ~~2.2~~ ✅ | ERPNext | CRM, HaaS, accounting, HR, billing | Running via `frappe_docker`; accessible at `ops.kecktech.net` |
-| ~~2.3~~ ✅ | FreeScout | Help desk / tickets | Running → `helpdesk.kecktech.net` |
+| ~~2.3~~ ✅ | Zammad | ITSM help desk / tickets (replaced FreeScout) | Running → `tickets.kecktech.net` |
 | ~~2.4~~ ✅ | Vaultwarden | Encrypted client profiles | Running (healthy) → `vault.kecktech.net` |
 | ~~2.5~~ ✅ | n8n | Workflow automation | Added and running → `n8n.kecktech.net` |
 | ~~2.6~~ ✅ | WordPress | Main marketing site | Running → `kecktech.net` (5-min install still needed — Phase 3) |
@@ -827,40 +827,26 @@ CRM → Campaign → Add: `Website`, `Word of Mouth`.
 
 ---
 
-### 3.2 — FreeScout
+### 3.2 — Zammad *(replaced FreeScout)*
 
-FreeScout runs at `https://helpdesk.kecktech.net`.
-Default admin: `admin@kecktech.net` / `admin123` — **change immediately**.
+Zammad runs at `https://tickets.kecktech.net`. Admin: `admin@kecktech.net` / `Kecktech2026!`. API token for dashboard integration stored in `docker/.env` as `ZAMMAD_API_TOKEN`. ✅ Deployed.
 
-**Step 1 — Change admin password:**
-Manage → Users → Edit admin → Change Password.
+**Step 1 — Create `tickets@kecktech.net` mailbox in Mailcow:**
+Mailcow Admin → Email → Mailboxes → Add: `tickets@kecktech.net`.
 
-**Step 2 — Create mailbox (Mailcow IMAP/SMTP):**
-Manage → Mailboxes → New Mailbox:
-- Name: `Kecktech Support`
-- Email: `support@kecktech.net`
-- IMAP Host: `mail.kecktech.net` Port: `993` SSL: yes
-- Username: `support@kecktech.net` Password: `[mailbox password from Mailcow]`
-- SMTP Host: `mail.kecktech.net` Port: `587` STARTTLS: yes
-- Test connection → Save.
+**Step 2 — Configure email channel in Zammad:**
+Admin → Channels → Email → Add Account:
+- Inbound: IMAP, `mail.kecktech.net`, port 993, SSL/TLS, verify SSL **off**, user `tickets@kecktech.net`
+- Outbound: SMTP, `mail.kecktech.net`, port 465, SSL/TLS, verify SSL **off**, user `tickets@kecktech.net`
 
-**Step 3 — Enable email fetching (IMAP fetch):**
-Manage → Mailboxes → Support → Fetching → Enable auto-fetch every 5 minutes.
+**Step 3 — Create groups:**
+Admin → Groups → New: `MSP Support`, `HaaS`, `Senior Care`, `Internal`.
 
-**Step 4 — Set ticket priorities:**
-Manage → Tags → Add: `urgent`, `senior`, `haas`, `billing`.
-Manage → Auto Reply → Enable for the Support mailbox.
+**Step 4 — Create SLA policies:**
+Admin → SLAs → New SLA: MSP Support = 1hr first response / 4hr resolution.
 
-**Step 5 — Assignment rules:**
-Manage → Workflows → New Workflow:
-- Trigger: Ticket Created → Condition: Subject contains "urgent" OR "URGENT" → Action: Set Priority High + Assign to Admin.
-
-**Step 6 — Enable Webhooks module:**
-Manage → Modules → Webhooks → Install → Enable.
-Manage → Mailboxes → Support → Webhooks → Add webhook URL (n8n webhook URL from Phase 4).
-
-**Step 7 — Update SITE_URL in docker-compose.yml:** ✅
-~~Change `SITE_URL=http://100.73.237.44:8091` to `SITE_URL=https://helpdesk.kecktech.net` and restart the container.~~ Done — already set in docker-compose.yml.
+**Step 5 — Create tech agent accounts:**
+Admin → Users → New: invite staff with same emails as LLDAP users.
 
 ---
 
@@ -917,22 +903,22 @@ Settings → Credentials → New Credential → Twilio:
 - Auth Token: `[fill when ready]`
 - Name: `Kecktech Twilio`
 
-**Step 3 — Add FreeScout API credentials (if API key method):**
+**Step 3 — Add Zammad API credentials:**
 Settings → Credentials → New Credential → HTTP Header Auth:
-- Name: `FreeScout API`
-- Header Name: `X-FreeScout-API-Key`
-- Header Value: `[FreeScout API key from Manage → API Keys]`
+- Name: `Zammad API`
+- Header Name: `Authorization`
+- Header Value: `Token token=${ZAMMAD_API_TOKEN}`
 
 **Step 4 — Create "High-Priority Ticket → SMS" workflow:**
 
-1. Trigger: **Webhook** node → HTTP Method: POST → Path: `freescout-ticket` → note the webhook URL.
-2. IF node → Condition: `{{ $json.body.ticket.priority }}` equals `high` OR `urgent`.
-3. Twilio node → Operation: `Send SMS` → From: `[Twilio phone number]` → To: `[Florida contact number]` → Message: `Kecktech Alert: High-priority ticket #{{ $json.body.ticket.id }} - {{ $json.body.ticket.subject }}`.
-4. Activate workflow → copy webhook URL into FreeScout mailbox webhook (Step 3.2, Step 6).
+1. Trigger: **Webhook** node → HTTP Method: POST → Path: `zammad-ticket` → note the webhook URL.
+2. IF node → Condition: `{{ $json.body.ticket.priority }}` equals `high`.
+3. Twilio node → Operation: `Send SMS` → From: `[Twilio phone number]` → To: `[Florida contact number]` → Message: `Kecktech Alert: High-priority ticket #{{ $json.body.ticket.number }} - {{ $json.body.ticket.title }}`.
+4. Activate workflow → configure Zammad trigger webhook in Admin → Triggers.
 
-**Step 5 — Create "RMM Alert → Ticket" workflow (optional):**
+**Step 5 — Create "RMM Alert → Ticket" workflow:**
 1. Trigger: Webhook → Path: `rmm-alert`.
-2. HTTP Request node → POST to FreeScout API → create ticket in `support@kecktech.net` mailbox.
+2. HTTP Request node → POST to `http://zammad-railsserver:3000/api/v1/tickets` → create ticket in group `MSP Support`.
 
 **Step 6 — Backup workflows:**
 Settings → Workflows → Export all → save to `Dashboard/docs/n8n-workflows/`.
@@ -1111,32 +1097,32 @@ For each senior client, record their RustDesk ID in Vaultwarden under the `Clien
 
 | Integration | From | To | Method | Purpose |
 |-------------|------|----|--------|---------|
-| Lead / ticket creation | WordPress form | FreeScout | Webhook or email (auto-converted by Mailcow → FreeScout IMAP) | New contact form → ticket |
-| High-priority ticket → SMS | FreeScout | n8n → Twilio | FreeScout Webhooks module → n8n webhook | Notify Florida contact |
+| Lead / ticket creation | WordPress form | Zammad | Email to `tickets@kecktech.net` (Mailcow → Zammad IMAP) | New contact form → ticket |
+| High-priority ticket → SMS | Zammad | n8n → Twilio | Zammad trigger webhook → n8n webhook | Notify Florida contact |
 | Payments | Client | Stripe | ERPNext Stripe integration | ACH/CC for invoices |
-| RMM alerts → tickets | Tactical RMM | n8n → FreeScout API | Tactical RMM webhook → n8n → FreeScout | Auto-create ticket on critical alert |
+| RMM alerts → tickets | Tactical RMM | n8n → Zammad API | Tactical RMM webhook → n8n → `POST /api/v1/tickets` | Auto-create ticket on critical alert |
 | Client context | Vaultwarden | Staff | Human process (browser) | Techs open vault for client secrets |
 | Analytics | WordPress, WikiJS | Umami | Embed script | Traffic, no PII |
 
 **Implementation steps:**
 
-1. **WordPress → FreeScout (email-based):**  
-   WPForms notification email sends to `support@kecktech.net` (Mailcow) → FreeScout IMAP auto-creates ticket. No webhook needed; test by submitting the contact form and verifying a ticket appears in FreeScout.
+1. **WordPress → Zammad (email-based):**
+   WPForms notification email sends to `tickets@kecktech.net` (Mailcow) → Zammad IMAP auto-creates ticket. Test by submitting the contact form and verifying a ticket appears in Zammad.
 
-2. **FreeScout → n8n → Twilio (webhook):**  
-   - In n8n: activate the "High-Priority Ticket → SMS" workflow; note webhook URL (`https://n8n.kecktech.net/webhook/freescout-ticket`).
-   - In FreeScout: Manage → Mailboxes → Support → Webhooks → Add URL → enter n8n webhook URL → Events: `conversation.created`, `conversation.updated`.
-   - Test by creating a ticket with subject "URGENT: Test" and verifying SMS is received.
+2. **Zammad → n8n → Twilio (trigger webhook):**
+   - In Zammad: Admin → Triggers → New → on ticket create, priority=high → HTTP POST to n8n webhook URL.
+   - In n8n: activate the "High-Priority Ticket → SMS" workflow; note webhook URL (`https://n8n.kecktech.net/webhook/zammad-ticket`).
+   - Test by creating a high-priority ticket and verifying SMS is received.
 
-3. **ERPNext ↔ Stripe:**  
+3. **ERPNext ↔ Stripe:**
    - In ERPNext: Accounts → Payment Gateway Account → Stripe → live keys.
    - Create a test invoice → Send → customer uses payment link → verify charge in Stripe dashboard.
    - Enable ACH: in Stripe dashboard, enable ACH Debit for the account.
 
-4. **Tactical RMM → n8n → FreeScout:**  
+4. **Tactical RMM → n8n → Zammad:**
    - In Tactical RMM: Alerts → Alert Templates → Webhook URL: `https://n8n.kecktech.net/webhook/rmm-alert`.
-   - In n8n: activate the "RMM Alert → Ticket" workflow.
-   - Test: trigger a test alert in Tactical RMM; verify ticket created in FreeScout.
+   - In n8n: activate the "RMM Alert → Ticket" workflow (POSTs to Zammad API `POST /api/v1/tickets`).
+   - Test: trigger a test alert in Tactical RMM; verify ticket created in Zammad.
 
 5. **Update INTEGRATIONS.md** with all webhook URLs, API endpoints, and env var names once working.
 
@@ -1164,7 +1150,7 @@ For each senior client, record their RustDesk ID in Vaultwarden under the `Clien
 | Tile | URL | Health endpoint |
 |------|-----|-----------------|
 | ERPNext | ops.kecktech.net | `/api/method/ping` |
-| FreeScout | helpdesk.kecktech.net | `/` (200 = up) |
+| Zammad | tickets.kecktech.net | `/` (200 = up) |
 | Vaultwarden | vault.kecktech.net | `/alive` |
 | n8n | n8n.kecktech.net | `/healthz` |
 | WordPress | kecktech.net | `/` (200 = up) |
@@ -1226,8 +1212,8 @@ For each senior client, record their RustDesk ID in Vaultwarden under the `Clien
 | Audience | Apps | Access path |
 |----------|------|-------------|
 | **Public** (clients, leads) | kecktech.net, help.kecktech.net | Cloudflare Tunnel → Traefik |
-| **Staff / admin** (you, Florida contact) | All internal apps (dashboard, ERPNext, FreeScout, n8n, Vaultwarden, Umami, Tactical RMM, Portainer) | Tailscale → Traefik (no Cloudflare needed for these) |
-| **Clients submitting tickets** | helpdesk.kecktech.net (FreeScout) | Cloudflare Tunnel → Traefik |
+| **Staff / admin** (you, Florida contact) | All internal apps (dashboard, ERPNext, Zammad, n8n, Vaultwarden, Umami, Tactical RMM, Portainer) | Tailscale → Traefik (no Cloudflare needed for these) |
+| **Clients submitting tickets** | tickets.kecktech.net (Zammad) | Cloudflare Tunnel → Traefik |
 
 This hybrid approach means internal admin tools **never need to be exposed to the public internet** — they stay Tailscale-only, which is a stronger security posture than Cloudflare Tunnel alone.
 
@@ -1238,9 +1224,9 @@ This hybrid approach means internal admin tools **never need to be exposed to th
 | 8.3 | Authenticate and create tunnel | `cloudflared tunnel login` → `cloudflared tunnel create kecktech-tunnel` → note tunnel ID. |
 | 8.4 | Configure tunnel ingress (public apps only) | Create `~/.cloudflared/config.yml` mapping only public subdomains to Traefik. Internal apps (ops, vault, n8n, stats, dashboard, rmm, traefik, auth) are **not** added to Cloudflare — they remain Tailscale-only. |
 | 8.5 | Install as system service | `sudo cloudflared service install` → `sudo systemctl start cloudflared`. |
-| 8.6 | Map subdomains in Cloudflare (public only) | DNS → Add CNAME for `kecktech.net`, `help.kecktech.net`, `helpdesk.kecktech.net` → `<tunnel-id>.cfargotunnel.com`. Internal subdomains: leave as `/etc/hosts` on Tailscale devices. |
+| 8.6 | Map subdomains in Cloudflare (public only) | DNS → Add CNAME for `kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net` → `<tunnel-id>.cfargotunnel.com`. Internal subdomains: leave as `/etc/hosts` on Tailscale devices. |
 | 8.7 | Firewall lockdown | `sudo ufw delete allow 80/tcp` and `sudo ufw delete allow 443/tcp` — inbound web traffic flows only through Cloudflare Tunnel (public) or Tailscale (internal); zero open inbound ports. Keep RustDesk ports (21115–21119) and Tailscale (via kernel WireGuard, no extra port). |
-| 8.8 | Update SITE_URL env vars | Update Mailcow, ERPNext, FreeScout `SITE_URL` from `http://IP:port` to `https://subdomain.kecktech.net`. |
+| 8.8 | Update SITE_URL env vars | Update Mailcow, ERPNext, Zammad `SITE_URL` from `http://IP:port` to `https://subdomain.kecktech.net`. |
 | 8.9 | Update Florida contact Tailscale | Ensure Florida contact's device is joined to the workspace; update their `/etc/hosts` with the VM Tailscale IP for all internal subdomains. |
 | 8.10 | Verify and go-live | Confirm public subdomains resolve via Cloudflare; confirm internal subdomains reachable over Tailscale; test all integrations; monitor Umami and tickets. |
 | 8.11 | Mailcow DNS (production) | Add SPF, DKIM, DMARC, and MX records in Cloudflare DNS for `kecktech.net` pointing to `mail.kecktech.net`. Enable port 25 if not blocked, or configure SMTP relay for outbound. |
@@ -1260,7 +1246,7 @@ ingress:
     service: https://localhost:443
     originRequest:
       noTLSVerify: true
-  - hostname: helpdesk.kecktech.net
+  - hostname: tickets.kecktech.net
     service: https://localhost:443
     originRequest:
       noTLSVerify: true
@@ -1275,11 +1261,11 @@ ingress:
 
 | Source | Target | Data / Trigger | Implementation |
 |--------|--------|----------------|-----------------|
-| WordPress contact form | FreeScout | Lead / contact email | Email → Mailcow → FreeScout IMAP |
-| FreeScout | n8n | New / high-priority ticket | FreeScout Webhooks module → n8n webhook |
+| WordPress contact form | Zammad | Lead / contact email | Email → Mailcow → Zammad IMAP (tickets@kecktech.net) |
+| Zammad | n8n | New / high-priority ticket | Zammad trigger webhook → n8n |
 | n8n | Twilio | SMS body + Florida number | n8n Twilio node |
 | ERPNext | Stripe | Invoice payment | ERPNext Payment Gateway |
-| Tactical RMM | n8n → FreeScout | Critical alert | Tactical RMM webhook → n8n |
+| Tactical RMM | n8n → Zammad | Critical alert | Tactical RMM webhook → n8n → Zammad API |
 | Umami | — | Page views (no PII) | Embed on WordPress + WikiJS |
 | Authelia | LLDAP | User auth queries | LDAP bind |
 | Traefik | Authelia | Forward-auth middleware | ForwardAuth |
@@ -1288,7 +1274,7 @@ ingress:
 
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
-| **Public ingress** | Cloudflare Tunnel | `kecktech.net`, `help.kecktech.net`, `helpdesk.kecktech.net` only |
+| **Public ingress** | Cloudflare Tunnel | `kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net` only |
 | **Staff / admin access** | Tailscale mesh | All internal apps; Florida contact; no open inbound ports required |
 | **Container routing** | Traefik (Docker) | Routes all hostnames to correct containers; same config for test and production |
 | **SSH / remote shell** | Tailscale SSH | Key-free SSH to VM from any enrolled device; locked to Tailscale interface |
@@ -1299,14 +1285,16 @@ ingress:
 ## File & Repo Structure
 
 ```
-Dashboard/   (project root; run ./startup-all from here)
+Dashboard/   (project root; run ./startup-all on Linux or startup-all.bat on Windows)
 ├── .cursor/
 │   └── rules/
 │       └── kecktech-stack.mdc
 ├── PROJECT_PLAN.md          (this file)
 ├── business_launch.md       (5-step launch + Kecktech Implementation summary)
 ├── INTEGRATIONS.md          (API endpoints, webhooks, env vars)
-├── startup-all              (start main stack + ERPNext)
+├── startup-all              (Linux: start main stack + Mailcow + Tactical + ERPNext)
+├── startup-all.bat          (Windows: same as startup-all)
+├── shutdown-all.bat         (Windows: stop all stacks in reverse order; volumes/data preserved)
 ├── startup-erpnext.sh       (ERPNext-specific startup)
 │
 ├── docker/                  (main app stack)
@@ -1362,7 +1350,7 @@ Dashboard/   (project root; run ./startup-all from here)
 
 - [ ] All applications run in Docker on this VM and are reachable via Traefik (test hostnames via /etc/hosts). **Cloudflare not required.**
 - [ ] ERPNext: CRM, HaaS templates, Stripe, Kansas/Florida and 1099 configured.
-- [ ] FreeScout: Mailcow IMAP intake; ticket flow; high-priority tickets trigger SMS via n8n.
+- [ ] Zammad: `tickets@kecktech.net` email channel configured; ticket flow; high-priority tickets trigger SMS via n8n.
 - [ ] WordPress: Services, About, lead capture form; Umami tracking embedded.
 - [ ] Knowledge base (WikiJS): Senior-friendly, high-contrast, video-capable; public read.
 - [ ] SSO: Single login (Authelia + LLDAP) for all internal apps; TOTP enrolled.
@@ -1377,7 +1365,7 @@ Dashboard/   (project root; run ./startup-all from here)
 
 **Production (Phase 8 — only after test is complete):**
 
-- [ ] Cloudflare Tunnel configured for public apps (`kecktech.net`, `help.kecktech.net`, `helpdesk.kecktech.net`); zero open inbound web ports.
+- [ ] Cloudflare Tunnel configured for public apps (`kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net`); zero open inbound web ports.
 - [ ] Internal apps (dashboard, ERPNext, n8n, Vaultwarden, Umami, Tactical RMM) accessible only over Tailscale — confirmed not reachable without Tailscale.
 - [ ] Florida contact's device enrolled in Tailscale workspace; access to staff apps verified.
 - [ ] Mailcow MX/SPF/DKIM/DMARC DNS records live; email deliverability tested.

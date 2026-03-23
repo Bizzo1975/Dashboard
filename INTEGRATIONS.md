@@ -1,28 +1,28 @@
 # Kecktech.net — App-to-App Integrations
 
-Document here: API base URLs, webhook URLs, and env vars used for integration. **Do not put secrets in this file**—use placeholders and reference `.env` or Vaultwarden.
+Document here: API base URLs, webhook URLs, and env vars used for integration. **Do not put secrets in this file** — use placeholders and reference `.env` or Vaultwarden.
 
 ## Endpoints & Roles
 
 | App | Subdomain / URL | Internal Port | Purpose |
-|-----|------------------|---------------|--------|
+|-----|------------------|---------------|---------|
 | Traefik | traefik.kecktech.net | 80/443 | Reverse proxy, TLS termination |
 | ERPNext | ops.kecktech.net | 8080 | CRM, HaaS, billing, Stripe |
-| FreeScout | helpdesk.kecktech.net | 80 (container) | Tickets; webhook source for n8n |
-| n8n | n8n.kecktech.net | 5678 | Workflows: ticket → SMS |
-| WordPress | kecktech.net | 80 (container) | Public website, lead capture |
-| WikiJS | help.kecktech.net | 3000 | Knowledge base |
+| Zammad | tickets.kecktech.net | 8080 (nginx) / 3000 (rails) | ITSM tickets; REST API source for n8n |
+| n8n | n8n.kecktech.net | 5678 | Workflows: ticket → SMS, RMM → ticket |
+| WordPress | kecktech.net / www.kecktech.net | 80 | Public website, lead capture |
+| WikiJS | help.kecktech.net | 3000 | Knowledge base (senior + SMB) |
 | Umami | stats.kecktech.net | 3000 | Privacy-first analytics |
-| Vaultwarden | vault.kecktech.net | 80 (container) | Secrets, client profiles |
-| Authelia | auth.kecktech.net | 9091 | SSO gateway (Phase 5 enforcement) |
+| Vaultwarden | vault.kecktech.net | 80 | Secrets, client profiles |
+| Authelia | auth.kecktech.net | 9091 | SSO gateway (forward-auth) |
 | LLDAP | lldap.kecktech.net | 17170 (web), 3890 (LDAP) | SSO user directory |
 | Tactical RMM | rmm.kecktech.net | 8444 (nginx) | RMM, patching, alerts |
 | Mailcow | mail.kecktech.net | 25/587/993/443 | Self-hosted email |
-| RustDesk | (direct IP) | 21115-21119 | Remote support |
-| Heimdall | dashboard.kecktech.net | 80 (container) | Legacy dashboard (retiring Phase 5) |
+| RustDesk | (direct IP) | 21115–21119 | Remote support (senior + MSP) |
+| Dashboard | dashboard.kecktech.net | 3000 | Ops dashboard (Next.js, Tailscale-only) |
 | Portainer | 127.0.0.1:9443 | 9443 | Container management (localhost only) |
-| Stripe | — | — | Payments (via ERPNext) |
-| Twilio | — | — | SMS (via n8n) |
+| Stripe | — | — | Payments (via ERPNext payment gateway) |
+| Twilio | — | — | SMS alerts (via n8n) |
 
 ## Mail Configuration
 
@@ -33,55 +33,74 @@ All mail-sending containers route through Mailcow via `extra_hosts: mail.kecktec
 | Authelia | mail.kecktech.net | 587 (STARTTLS) | admin@kecktech.net | Password reset, 2FA notifications |
 | Vaultwarden | mail.kecktech.net | 587 (STARTTLS) | admin@kecktech.net | Invite emails, vault notifications |
 | WordPress | mail.kecktech.net | 587 (TLS) | admin@kecktech.net | WPForms contact form notifications |
-| FreeScout | mail.kecktech.net | 993 (IMAP) / 587 (SMTP) | support@kecktech.net | Ticket email fetch + replies |
+| Zammad | mail.kecktech.net | 587 (STARTTLS) | tickets@kecktech.net | Outbound ticket replies |
+| Zammad IMAP | mail.kecktech.net | 993 (SSL) | tickets@kecktech.net | Inbound ticket creation from email |
+
+## Internal API Credentials
+
+| Service | Env Var | Notes |
+|---------|---------|-------|
+| ERPNext | `ERPNEXT_API_KEY`, `ERPNEXT_API_SECRET` | Token-based auth; generate in ERPNext → Settings → API Keys |
+| Zammad | `ZAMMAD_API_TOKEN` | Token Access → Admin → API; create persistent token with `ticket.agent` + `admin` permissions |
+| Umami | `UMAMI_PASS` | Umami admin password; dashboard uses `admin` username |
+| Tactical RMM | `TRMM_API_KEY` | Generated in TRMM → Settings → API Keys |
 
 ## Integrations Status
 
-### 1. FreeScout → n8n → Twilio (Phase 4)
-- **Status:** Not yet wired
-- **Trigger:** New or high-priority ticket webhook from FreeScout
-- **n8n webhook URL:** `https://n8n.kecktech.net/webhook/freescout-ticket` (create in Phase 4)
-- **Flow:** FreeScout webhook → n8n parses priority → if high/urgent → Twilio SMS to Florida contact
-- **Prerequisites:** n8n owner account (browser), Twilio account + credentials, FreeScout webhook module
+### 1. Zammad → n8n → Twilio (High-Priority Ticket SMS)
 
-### 2. ERPNext ↔ Stripe (Phase 4)
+- **Status:** Workflow updated for Zammad; Twilio account pending
+- **Trigger:** Zammad Trigger (Admin → Triggers) fires on high-priority ticket creation
+- **n8n webhook URL:** `https://n8n.kecktech.net/webhook/zammad-ticket` (copy from n8n after activation)
+- **Flow:** Zammad Trigger → HTTP POST to n8n → priority_id check → if >= 3 → Twilio SMS to `$TWILIO_ALERT_NUMBER`
+- **Zammad priority IDs:** 1=low, 2=normal, 3=high
+- **Workflow file:** `docs/n8n-workflows/high-priority-ticket-sms.json`
+- **Prerequisites:** Twilio account + API credentials in n8n; set `TWILIO_FROM_NUMBER` and `TWILIO_ALERT_NUMBER` as n8n Variables
+
+### 2. ERPNext ↔ Stripe (Payments)
+
 - **Status:** Not yet configured
-- **Flow:** ERPNext Payment Gateway → Stripe API (ACH + card)
-- **Prerequisites:** Stripe account, ERPNext setup wizard completed
+- **Flow:** ERPNext Payment Gateway Account → Stripe API → ACH/CC charge
+- **Prerequisites:** Stripe account; `STRIPE_API_KEY` in `.env`; configure in ERPNext → Accounting → Payment Gateway
 
-### 3. WordPress → FreeScout (Contact Form → Ticket)
-- **Status:** Partially configured
-- **WPForms** contact form created (ID: 3750) → notifications to `support@kecktech.net`
-- **Flow:** Visitor submits form → WPForms emails support@kecktech.net → Mailcow → FreeScout IMAP fetch
-- **Prerequisites:** FreeScout mailbox configured for `support@kecktech.net` IMAP (Phase 3 browser task)
+### 3. WordPress → Zammad (Lead/Support Tickets via Email)
 
-### 4. Tactical RMM → FreeScout / n8n (Phase 4, optional)
-- **Status:** Not yet wired
-- **Method:** Webhook from TRMM alert template → n8n → FreeScout API ticket creation
-- **Prerequisites:** TRMM alert template configured, n8n webhook endpoint created
+- **Status:** Configured; end-to-end test pending
+- **Flow:** WPForms (contact form ID 3750) → email to `tickets@kecktech.net` → Mailcow IMAP → Zammad auto-creates ticket
+- **Verify:** Submit `kecktech.net/contact/` → check `tickets@kecktech.net` in Mailcow → check Zammad for new ticket
 
-### 5. Umami Analytics (Phase 3)
-- **Status:** Sites need to be created in Umami UI (default password already changed)
-- **Sites to create:** `kecktech.net` (WordPress), `help.kecktech.net` (WikiJS)
-- **Embed:** Add tracking script to WordPress (via Insert Headers plugin or WP-CLI) and WikiJS (Administration → Analytics)
+### 4. Tactical RMM → n8n → Zammad (RMM Alert Tickets)
 
-## Environment Variables (Integration-Related)
+- **Status:** Workflow active in n8n; Zammad API token configured; group permissions assigned
+- **Trigger:** TRMM Alert Template `Critical Alerts` → webhook POST to `https://n8n.kecktech.net/webhook/rmm-alert`
+- **Flow:** TRMM webhook → n8n → `POST /api/v1/tickets` on zammad-railsserver → ticket in MSP Support group
+- **Workflow file:** `docs/n8n-workflows/rmm-alert-ticket.json`
+- **Credential:** n8n HTTP Header Auth credential `Zammad API` (`Authorization: Token token=<ZAMMAD_API_TOKEN>`)
 
-| Variable | Location | Used By |
-|----------|----------|---------|
-| `MAILCOW_ADMIN_PASS` | `docker/.env` | Authelia, Vaultwarden, WordPress SMTP |
-| `N8N_ENCRYPTION_KEY` | `docker/.env` | n8n credential encryption |
-| `VAULTWARDEN_ADMIN_TOKEN` | `docker/.env` | Vaultwarden admin panel |
-| `FREESCOUT_DB_PASS` | `docker/.env` | FreeScout ↔ MariaDB |
-| `UMAMI_APP_SECRET` | `docker/.env` | Umami session signing |
-| `TWILIO_*` | n8n credentials (browser) | n8n → Twilio SMS |
-| `STRIPE_*` | ERPNext (browser) | ERPNext → Stripe payments |
+### 5. Umami Analytics (WordPress + WikiJS)
 
-## Docker Networks
+- **Status:** Active
+- **WordPress:** MU-plugin `kecktech-umami.php` injects tracking script on all pages — Site ID: `d2427fe3-ce4b-4b9a-8e41-a8a3e9f2cd6d`
+- **WikiJS:** Tracking script in admin panel — Site ID: `23abf02f-dbf6-4586-aa05-475ff23ae539`
+- **Embed script:** `<script defer src="https://stats.kecktech.net/script.js" data-website-id="SITE_ID"></script>`
 
-| Network | Purpose | Connected Services |
-|---------|---------|-------------------|
-| `kecktech_front` | Traefik-routable services | All web-facing containers |
-| `kecktech_internal` | Backend-only communication | Databases, app ↔ DB connections |
+## n8n Webhook URLs
 
-Update this file as you add or change integrations.
+| Webhook | Path | Workflow |
+|---------|------|----------|
+| TRMM Alert → Zammad Ticket | `/webhook/rmm-alert` | rmm-alert-ticket.json |
+| Zammad High-Priority → SMS | `/webhook/zammad-ticket` | high-priority-ticket-sms.json |
+
+## SSO Protected Routes (Authelia Forward-Auth)
+
+| Route | Policy | Group Required |
+|-------|--------|----------------|
+| `kecktech.net`, `www.kecktech.net`, `help.kecktech.net` | bypass (public) | — |
+| `tickets.kecktech.net` | bypass (Zammad own auth + public portal) | — |
+| `vault.kecktech.net` | bypass (Vaultwarden own auth) | — |
+| `n8n.kecktech.net` | bypass (n8n own auth; webhooks must be reachable) | — |
+| `dashboard.kecktech.net` | one_factor / two_factor | kecktech_admins (2FA), kecktech_staff (1FA) |
+| `stats.kecktech.net` | one_factor | kecktech_admins, kecktech_staff |
+| `lldap.kecktech.net` | two_factor | kecktech_admins |
+| `traefik.kecktech.net` | two_factor | kecktech_admins |
+| All other `*.kecktech.net` | deny | — |

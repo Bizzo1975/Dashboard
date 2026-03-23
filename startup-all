@@ -7,14 +7,14 @@
 set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== [1/4] Main stack (Traefik, Authelia, LLDAP, FreeScout, Vaultwarden,"
-echo "         n8n, WordPress, WikiJS, Umami, RustDesk, Heimdall, Portainer) ==="
-cd "$ROOT/docker"
+echo "=== [1/4] Mailcow (before main stack — Authelia needs SMTP on mail.kecktech.net:587) ==="
+cd "$ROOT/mailcow"
 docker compose up -d
 
 echo ""
-echo "=== [2/4] Mailcow (self-hosted mail) ==="
-cd "$ROOT/mailcow"
+echo "=== [2/4] Main stack (Traefik, Authelia, LLDAP, FreeScout, Vaultwarden,"
+echo "         n8n, WordPress, WikiJS, Umami, RustDesk, Heimdall, Portainer) ==="
+cd "$ROOT/docker"
 docker compose up -d
 
 echo ""
