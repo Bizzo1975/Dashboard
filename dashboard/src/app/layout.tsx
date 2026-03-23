@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Kecktech Dashboard",
   description: "Kecktech internal service dashboard",
+  icons: {
+    icon: "/brand/colored-logo.png",
+    apple: "/brand/colored-logo.png",
+  },
 };
 
 export default function RootLayout({

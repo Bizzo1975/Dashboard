@@ -155,13 +155,44 @@ export default async function Dashboard() {
           gap: "12px",
         }}
       >
-        <div>
-          <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 700, color: "#f1f5f9" }}>
-            Kecktech Dashboard
-          </h1>
-          <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#94a3b8" }}>
-            Internal Service Overview
-          </p>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            flexWrap: "wrap",
+          }}
+        >
+          <a
+            href="/"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              textDecoration: "none",
+              background: "#fefdfd",
+              borderRadius: "8px",
+              padding: "6px 10px",
+              lineHeight: 0,
+            }}
+            aria-label="Kecktech home"
+          >
+            {/* Logo asset: dashboard/public/brand/colored-logo.png (also at repo img/colored-logo.png) */}
+            <img
+              src="/brand/colored-logo.png"
+              alt="Kecktech"
+              width={200}
+              height={56}
+              style={{ height: 44, width: "auto", maxWidth: 220, display: "block" }}
+            />
+          </a>
+          <div>
+            <h1 style={{ margin: 0, fontSize: "22px", fontWeight: 700, color: "#f1f5f9" }}>
+              Dashboard
+            </h1>
+            <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#94a3b8" }}>
+              Internal service overview
+            </p>
+          </div>
         </div>
         <div style={{ textAlign: "right" }}>
           <div
