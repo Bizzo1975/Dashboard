@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* ── Brand Tokens ───────────────────────────────────────────────────────── */
+:root {
+  --navy:      #1E3A5F;
+  --navy-dark: #152c47;
+  --charcoal:  #4A4A4A;
+  --gold:      #C07810;
+  --gold-dark: #a06510;
+  --teal:      #0D6E6E;
+  --off-white: #F4F7FB;
+  --white:     #FFFFFF;
+  --muted:     #64748b;
+  --border:    #e2e8f0;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body:    'Open Sans', sans-serif;
+}
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+img { display: block; max-width: 100%; }
+
+/* ── Base — 18px min, 1.8 line-height (WCAG AAA) ───────────────────────── */
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--charcoal);
+  background: var(--off-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--navy); line-height: 1.2; }
+h1 { font-size: clamp(26px, 3vw, 36px); font-weight: 700; }
+h2 { font-size: clamp(22px, 2.5vw, 28px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+
+p { margin-bottom: 1em; }
+p:last-child { margin-bottom: 0; }
+
+/* Underline all links (WCAG AAA — not color alone) */
+a { color: var(--gold); text-decoration: underline; }
+a:hover { color: var(--gold-dark); }
+
+/* Focus ring — visible gold outline on all interactive elements */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* ── Skip Link ──────────────────────────────────────────────────────────── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--gold);
+  color: var(--white);
+  padding: 10px 16px;
+  border-radius: 0 0 6px 6px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  z-index: 9999;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus { top: 0; }
+
+/* ── Layout ─────────────────────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+main { flex: 1; }
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.portal-header {
+  background: var(--navy);
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.portal-header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.portal-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.portal-logo-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.portal-logo-sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.6);
+  display: block;
+}
+
+.portal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s;
+  min-height: 40px;
+}
+.btn-signout:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.5);
+  color: var(--white);
+}
+
+/* ── Welcome Banner ─────────────────────────────────────────────────────── */
+.welcome-banner {
+  background: linear-gradient(135deg, var(--navy) 0%, #2a5298 100%);
+  color: var(--white);
+  padding: 48px 24px;
+}
+
+.welcome-banner h1 { color: var(--white); }
+
+.welcome-banner p {
+  color: rgba(255,255,255,0.85);
+  font-size: 18px;
+  margin-top: 8px;
+}
+
+/* ── Quick Actions ──────────────────────────────────────────────────────── */
+.quick-actions {
+  padding: 40px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+}
+
+.quick-actions h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.action-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 24px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--white);
+  text-decoration: none;
+  color: var(--charcoal);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  min-height: 120px;
+}
+
+.action-card:hover {
+  border-color: var(--navy);
+  box-shadow: 0 4px 16px rgba(30,58,95,0.12);
+  transform: translateY(-2px);
+  color: var(--charcoal);
+}
+
+.action-card-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.action-card-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--navy);
+}
+
+.action-card-desc {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Sections ───────────────────────────────────────────────────────────── */
+.portal-section {
+  padding: 48px 24px;
+}
+
+.portal-section:nth-child(even) {
+  background: var(--off-white);
+}
+
+.portal-section:nth-child(odd) {
+  background: var(--white);
+}
+
+.portal-section h2 {
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid var(--gold);
+  display: inline-block;
+}
+
+.section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 8px;
+}
+
+/* ── Cards ──────────────────────────────────────────────────────────────── */
+.portal-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.portal-card h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.portal-card p {
+  color: var(--charcoal);
+  font-size: 17px;
+}
+
+/* ── Buttons ────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 48px;
+  transition: background 0.2s, transform 0.15s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+  margin-top: 16px;
+}
+
+.btn-primary:hover {
+  background: var(--navy-dark);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--navy);
+  border: 2px solid var(--navy);
+  margin-top: 16px;
+}
+
+.btn-secondary:hover {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* ── Billing Coming Soon ─────────────────────────────────────────────────── */
+.billing-placeholder {
+  background: var(--white);
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 48px 28px;
+  text-align: center;
+}
+
+.billing-placeholder .coming-soon-badge {
+  display: inline-block;
+  background: rgba(192,120,16,0.12);
+  color: var(--gold-dark);
+  border: 1px solid rgba(192,120,16,0.3);
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 14px;
+  margin-bottom: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.billing-placeholder .lock-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+  color: var(--muted);
+}
+
+.billing-placeholder h3 {
+  color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.billing-placeholder p {
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.billing-placeholder a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+/* ── Live Chat Section ──────────────────────────────────────────────────── */
+.chat-section {
+  padding: 48px 24px;
+  background: var(--white);
+}
+
+.chat-intro {
+  max-width: 680px;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+.portal-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.7);
+  padding: 24px;
+  font-size: 15px;
+}
+
+.portal-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal-footer a {
+  color: rgba(255,255,255,0.85);
+  text-decoration: underline;
+}
+
+.portal-footer a:hover {
+  color: var(--white);
+}
+
+/* ── Zammad Chat — force visible when loaded ────────────────────────────── */
+.zammad-chat.zammad-chat-is-loaded {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .portal-header-inner { height: 56px; }
+  .welcome-banner { padding: 32px 16px; }
+  .quick-actions,
+  .portal-section,
+  .chat-section { padding: 32px 16px; }
+  .portal-footer-inner { flex-direction: column; text-align: center; }
+}

@@ -39,7 +39,20 @@ access_control:
         - "kecktech.net"
         - "www.kecktech.net"
         - "help.kecktech.net"
+        - "wiki.kecktech.net"
       policy: bypass
+    # admin.kecktech.net — admins only (2FA); everyone else explicitly denied
+    - domain: "admin.kecktech.net"
+      subject: "group:kecktech_admins"
+      policy: two_factor
+    - domain: "admin.kecktech.net"
+      policy: deny
+    # portal.kecktech.net — customers only (1FA); everyone else explicitly denied
+    - domain: "portal.kecktech.net"
+      subject: "group:kecktech_customers"
+      policy: one_factor
+    - domain: "portal.kecktech.net"
+      policy: deny
     # Admin group — requires TOTP (two-factor)
     - domain: "*.kecktech.net"
       subject: "group:kecktech_admins"

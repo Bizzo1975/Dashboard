@@ -1,0 +1,92 @@
+{
+  "name": "Contact Form → Zammad Ticket",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "contact-form",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Contact Form Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "contact-form"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Map request_type to Zammad group\nconst groupMap = {\n  'new-service':      'Sales',\n  'sales':            'Sales',\n  'tech-support':     'MSP Support',\n  'customer-support': 'Customer Support',\n  'general':          'General',\n};\n\nconst body = $input.item.json.body || $input.item.json;\nconst requestType = body.request_type || 'general';\nconst group = groupMap[requestType] || 'General';\n\nconst typeLabels = {\n  'new-service':      'New Service',\n  'sales':            'Sales Inquiry',\n  'tech-support':     'Tech Support',\n  'customer-support': 'Customer Support',\n  'general':          'General Question',\n};\nconst typeLabel = typeLabels[requestType] || requestType;\n\nconst title = `[${typeLabel}] ${body.name || 'Unknown'}${\n  body.business ? ` (${body.business})` : ''\n}`;\n\nconst articleBody = [\n  `**Request Type:** ${typeLabel}`,\n  `**Name:** ${body.name || ''}`,\n  body.business ? `**Business:** ${body.business}` : '',\n  `**Email:** ${body.email || ''}`,\n  body.phone ? `**Phone:** ${body.phone}` : '',\n  body.service ? `**Service:** ${body.service}` : '',\n  '',\n  '**Message:**',\n  body.message || '',\n  '',\n  '---',\n  '*Submitted via kecktech.net contact form*',\n].filter(l => l !== undefined && !(l === '' && false)).join('\\n');\n\nreturn [{\n  json: {\n    title,\n    group,\n    requestType,\n    article: articleBody,\n    customerEmail: body.email || '',\n    customerName: body.name || '',\n  }\n}];"
+      },
+      "id": "map-fields",
+      "name": "Map Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://zammad-railsserver:3000/api/v1/tickets",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyContentType": "json",
+        "jsonBody": "={\n  \"title\": \"{{ $json.title }}\",\n  \"group\": \"{{ $json.group }}\",\n  \"customer\": \"{{ $json.customerEmail }}\",\n  \"article\": {\n    \"subject\": \"{{ $json.title }}\",\n    \"body\": \"{{ $json.article }}\",\n    \"type\": \"note\",\n    \"internal\": false\n  },\n  \"tags\": \"web-inquiry,{{ $json.requestType }}\"\n}",
+        "options": {}
+      },
+      "id": "create-zammad-ticket",
+      "name": "Create Zammad Ticket",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [680, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "zammad-api-token",
+          "name": "Zammad API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"ok\": true, \"ticketId\": {{ $json.id }} }"
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Contact Form Webhook": {
+      "main": [[{ "node": "Map Fields", "type": "main", "index": 0 }]]
+    },
+    "Map Fields": {
+      "main": [[{ "node": "Create Zammad Ticket", "type": "main", "index": 0 }]]
+    },
+    "Create Zammad Ticket": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "meta": {
+    "instanceId": "kecktech-n8n"
+  },
+  "_comment": "Import this workflow into n8n. Before activating: set up HTTP Header Auth credential named 'Zammad API Token' with header 'Authorization' and value 'Token <your_token>'. Ensure the following Zammad groups exist: Sales, MSP Support, Customer Support, General."
+}

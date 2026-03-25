@@ -1,0 +1,77 @@
+{
+  "hero": {
+    "h1": "Solar-Powered IT That Actually Cares",
+    "subtitle": "We replace expensive, fragmented tech stacks with AI-built custom apps, White Glove IT support, and Kansas-based sovereign hosting — 100% solar-powered, disability-led, and built around real humans.",
+    "cta": "Chat with Us →",
+    "ctaSecondary": "See Our Services ↓"
+  },
+  "services": {
+    "label": "Five Ways We Serve You",
+    "heading": "Every Service Built Around a Real Problem",
+    "intro": "No bundled packages. No unnecessary upsells. Five focused service lines — each one built around a real problem we saw going unsolved.",
+    "cards": [
+      {
+        "icon": "💻",
+        "heading": "White Glove Managed IT",
+        "description": "Real humans. SLA-backed. No offshore call centers. We know your setup before you call — and we're there when it matters.",
+        "price": "$199/mo"
+      },
+      {
+        "icon": "🖥️",
+        "heading": "Hardware-as-a-Service (HaaS)",
+        "description": "Refurbished enterprise hardware on subscription. Zero e-waste. We deploy, manage, and refresh every device on schedule.",
+        "price": "$149/mo per device"
+      },
+      {
+        "icon": "🤖",
+        "heading": "AI Custom App Development",
+        "description": "Replace your $800+/mo SaaS stack with a custom app you own outright — built on AI, hosted on solar, no license fees ever.",
+        "price": "From $3,000"
+      },
+      {
+        "icon": "🤝",
+        "heading": "Senior Technology Concierge",
+        "description": "Scam-proof security setup, plain-English support, monthly check-ins. Designed for dignity — not afterthought tech support.",
+        "price": "$79/mo"
+      },
+      {
+        "icon": "🌐",
+        "heading": "Sovereign Private Hosting",
+        "description": "Your data lives in Park City, Kansas — in our building, on our servers. HIPAA-ready. Solar-powered. No Big Tech. No exceptions.",
+        "price": "$49/mo"
+      }
+    ]
+  },
+  "values": {
+    "label": "Why Clients Choose Us",
+    "heading": "What Makes Kecktech Different",
+    "intro": "There are a lot of IT companies. Here's what makes us different — and why it matters.",
+    "cards": [
+      {
+        "icon": "☀️",
+        "heading": "100% Solar-Powered",
+        "body": "Our 25kW rooftop array and 100kWh battery bank mean your data runs on sunshine. Lower carbon footprint than any hyperscale cloud — and savings go back into lower prices for you."
+      },
+      {
+        "icon": "♿",
+        "heading": "Disability-Led & ADA-First",
+        "body": "Both founders live with physical disabilities. Accessibility isn't a checkbox at Kecktech — it's in the building, the software, the support process, and every client interaction."
+      },
+      {
+        "icon": "🔒",
+        "heading": "Your Data Stays in Kansas",
+        "body": "We own the servers. We don't scan, sell, or monetize your data. Sovereign hosting means your information lives under your terms — not Amazon's, not Google's."
+      },
+      {
+        "icon": "🧑",
+        "heading": "Real Humans. Real Accountability.",
+        "body": "No ticket queues. No offshore call centers. No automated runaround. When you need us, a real person picks up — the same people, every time."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Ready for IT That Actually Works for You?",
+    "body": "No long-term contracts. Transparent pricing. A team that treats every client like a neighbor.",
+    "button": "Get a Free Assessment →"
+  }
+}

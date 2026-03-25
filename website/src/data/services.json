@@ -1,0 +1,88 @@
+{
+  "hero": {
+    "h1": "Five Service Lines. One Company That Cares.",
+    "subtitle": "Every service we offer exists because we saw a real problem going unsolved. No bundles, no upsells, no surprises."
+  },
+  "cta": {
+    "heading": "Not Sure Which Service Fits?",
+    "body": "Tell us about your situation — we'll recommend the right fit with no pressure.",
+    "button": "Talk to a Human →"
+  },
+  "services": [
+    {
+      "id": "white-glove",
+      "name": "White Glove Managed IT",
+      "price": "$199/mo",
+      "body": "Dedicated remote IT support, SLA-backed response, and real humans who know your systems before you call. One flat fee covers unlimited support, proactive monitoring, and security patching. No offshore call centers. No automated runaround. No surprise invoices.",
+      "features": [
+        "Remote monitoring 24/7",
+        "SLA-backed response times",
+        "Dedicated technician — same person every time",
+        "Proactive security patching",
+        "Security baseline hardening",
+        "No per-ticket fees — ever"
+      ],
+      "cta": "Get Started"
+    },
+    {
+      "id": "haas",
+      "name": "Hardware-as-a-Service (HaaS)",
+      "price": "$149/mo per device",
+      "body": "Enterprise-grade refurbished hardware on a flat monthly subscription. We source, configure, deploy, and manage every device. When hardware ages out, we refresh it — and the old equipment is responsibly recycled, not landfilled. Zero e-waste from our clients, ever.",
+      "features": [
+        "Refurbished enterprise-grade hardware",
+        "Kecktech-branded device tags",
+        "Remote management included",
+        "Hardware refresh cycle included",
+        "Responsible recycling of aged-out devices",
+        "No upfront hardware purchase required"
+      ],
+      "cta": "Get Started"
+    },
+    {
+      "id": "ai-apps",
+      "name": "AI Custom App Development",
+      "price": "From $3,000",
+      "body": "Stop paying $800/mo for a stack of SaaS tools that don't talk to each other. We build a custom AI-powered application that replaces your subscriptions — and you own the code outright. No recurring license fees. Hosted on our solar-powered Kansas servers. Most clients see ROI payback in under 18 months.",
+      "features": [
+        "Custom-built to your exact workflow",
+        "You own 100% of the code — forever",
+        "AI-powered automation built in",
+        "Hosted on Kecktech solar servers",
+        "No recurring SaaS license fees",
+        "Built in weeks, not months"
+      ],
+      "cta": "Start Your Project"
+    },
+    {
+      "id": "senior-tech",
+      "name": "Senior Technology Concierge",
+      "price": "$79/mo",
+      "body": "Technology shouldn't be stressful. Our Senior Technology Concierge delivers scam-proof security, device setup, and monthly check-ins — in plain English, at your pace, with real dignity. We built this because Big Tech left seniors behind. We didn't.",
+      "features": [
+        "Scam & fraud protection setup",
+        "Device setup & optimization",
+        "Monthly wellness check-in calls",
+        "Plain-English support — no jargon, no rush",
+        "Remote access for quick fixes",
+        "Emergency tech card provided at onboarding"
+      ],
+      "cta": "Get Started"
+    },
+    {
+      "id": "hosting",
+      "name": "Sovereign Private Hosting",
+      "price": "$49/mo",
+      "body": "Your data lives in Park City, Kansas — in our facility, on our servers, under your terms. Solar-powered. HIPAA-ready. No Big Tech surveillance. No third-party scanning. No data monetization. Just fast, private, sovereign hosting for your websites, apps, and data.",
+      "features": [
+        "Kansas-based servers — we own them",
+        "100% solar-powered facility",
+        "HIPAA-ready configuration available",
+        "Daily backups + uptime monitoring",
+        "No Big Tech infrastructure involved",
+        "Static IP available on request"
+      ],
+      "cta": "Get Started"
+    }
+  ]
+}

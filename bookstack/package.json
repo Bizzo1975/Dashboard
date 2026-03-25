@@ -1,0 +1,17 @@
+{
+  "name": "kecktech-bookstack-tools",
+  "version": "1.0.0",
+  "description": "WikiJS migration and article pipeline scripts for BookStack",
+  "type": "commonjs",
+  "scripts": {
+    "migrate": "node migrate-wikijs.js",
+    "hierarchy": "node create-hierarchy.js",
+    "upload": "node upload-articles.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "node-fetch": "^2.7.0",
+    "pg": "^8.11.5",
+    "xlsx": "^0.18.5"
+  }
+}

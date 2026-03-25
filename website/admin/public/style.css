@@ -1,0 +1,224 @@
+/* Kecktech Admin Dashboard */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1E3A5F;
+  --gold: #C07810;
+  --steel: #4A6887;
+  --off-white: #F4F7FB;
+  --white: #fff;
+  --charcoal: #4A4A4A;
+  --muted: #94A3B8;
+  --border: #e2e8f0;
+  --font: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 15px;
+  color: var(--charcoal);
+  background: var(--off-white);
+  min-height: 100vh;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.admin-header {
+  background: var(--navy);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.admin-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.admin-logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.admin-nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-link:hover { color: #fff; background: rgba(255,255,255,0.08); }
+.nav-link.active { color: var(--gold); background: rgba(192,120,16,0.12); }
+
+/* ── Main ────────────────────────────────────────────────────────────────── */
+.admin-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* ── Page header ─────────────────────────────────────────────────────────── */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.page-header h1 {
+  font-size: 22px;
+  color: var(--navy);
+}
+.page-actions { display: flex; gap: 12px; }
+
+/* ── Alerts ──────────────────────────────────────────────────────────────── */
+.alert {
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+.alert-success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 9px 18px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, opacity 0.2s;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-save { background: var(--navy); color: #fff; }
+.btn-save:hover { background: #162d4a; }
+.btn-build { background: var(--gold); color: #fff; }
+.btn-build:hover { background: #a06510; }
+
+/* ── Form ────────────────────────────────────────────────────────────────── */
+.edit-form {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: 0 2px 12px rgba(30,58,95,0.07);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.field input[type="text"],
+.field textarea {
+  font-family: var(--font);
+  font-size: 14px;
+  color: var(--charcoal);
+  background: var(--off-white);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input[type="text"]:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
+}
+.field textarea { resize: vertical; min-height: 80px; }
+
+/* ── Sections ────────────────────────────────────────────────────────────── */
+.obj-section { margin-bottom: 8px; }
+.obj-heading, .array-heading {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--steel);
+  margin: 24px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+h4.obj-heading, h4.array-heading { font-size: 13px; color: var(--muted); border-bottom: 1px solid var(--border); }
+
+.array-section { margin-bottom: 16px; }
+.array-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 12px;
+  background: var(--off-white);
+}
+.array-item legend {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--steel);
+  text-transform: uppercase;
+  padding: 0 8px;
+}
+
+/* ── Form footer ─────────────────────────────────────────────────────────── */
+.form-footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.save-note { font-size: 13px; color: var(--muted); }
+
+/* ── Build log ───────────────────────────────────────────────────────────── */
+.build-log {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 2px 12px rgba(30,58,95,0.07);
+}
+.build-log h3 { font-size: 15px; color: var(--navy); margin-bottom: 12px; }
+.build-log pre {
+  background: #0f172a;
+  color: #94a3b8;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  max-height: 400px;
+  overflow-y: auto;
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Portal | Kecktech IT Solutions</title>
+  <meta name="description" content="Kecktech client portal — manage support, access your knowledge base, and chat with our team." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="https://www.kecktech.net/brand/transparent-logo.png" />
+  <link rel="stylesheet" href="/portal.css" />
+</head>
+<body>
+
+  <!-- Skip to content (WCAG) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="portal-header" role="banner">
+    <div class="portal-header-inner">
+      <a href="/" class="portal-logo" aria-label="Kecktech Customer Portal home">
+        <div class="portal-logo-text">
+          Kecktech IT Solutions
+          <span class="portal-logo-sub">Client Portal</span>
+        </div>
+      </a>
+      <div class="portal-header-actions">
+        <a
+          href="https://auth.kecktech.net/logout"
+          class="btn-signout"
+          aria-label="Sign out of customer portal"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main Content ────────────────────────────────────────────────────── -->
+  <main id="main-content">
+
+    <!-- Welcome Banner -->
+    <section class="welcome-banner" aria-label="Welcome">
+      <div class="container">
+        <h1>Welcome to Your Client Portal</h1>
+        <p>Get support, browse the knowledge base, and chat with our team — all in one place.</p>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="quick-actions" aria-label="Quick actions">
+      <div class="container">
+        <h2>What do you need today?</h2>
+        <div class="action-cards">
+          <a href="https://tickets.kecktech.net" target="_blank" rel="noopener noreferrer" class="action-card" aria-label="Open a support ticket in Zammad">
+            <span class="action-card-icon" aria-hidden="true">🎧</span>
+            <span class="action-card-title">Open a Ticket</span>
+            <p class="action-card-desc">Submit a new support request or check on an existing one.</p>
+          </a>
+          <a href="https://help.kecktech.net" target="_blank" rel="noopener noreferrer" class="action-card" aria-label="Browse the Kecktech knowledge base">
+            <span class="action-card-icon" aria-hidden="true">📖</span>
+            <span class="action-card-title">Knowledge Base</span>
+            <p class="action-card-desc">Step-by-step guides and how-to articles for common tasks.</p>
+          </a>
+          <a href="#chat-section" class="action-card" aria-label="Scroll to live chat section">
+            <span class="action-card-icon" aria-hidden="true">💬</span>
+            <span class="action-card-title">Live Chat</span>
+            <p class="action-card-desc">Chat with our team right now — use the chat bubble in the corner.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="portal-section" aria-labelledby="support-heading">
+      <div class="container">
+        <h2 id="support-heading">Support</h2>
+        <div class="section-grid">
+          <div class="portal-card">
+            <h3>Submit a Support Ticket</h3>
+            <p>
+              Use our ticketing system to report an issue, request a service, or ask a technical question.
+              All tickets are tracked with priority and SLA guarantees.
+            </p>
+            <a href="https://tickets.kecktech.net" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Go to Tickets ↗
+            </a>
+          </div>
+          <div class="portal-card">
+            <h3>Knowledge Base &amp; Guides</h3>
+            <p>
+              Browse our library of step-by-step guides, FAQs, and how-to articles — written in plain language
+              for users of all experience levels.
+            </p>
+            <a href="https://help.kecktech.net" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+              Browse Articles ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Billing Section (Coming Soon) -->
+    <section class="portal-section" aria-labelledby="billing-heading">
+      <div class="container">
+        <h2 id="billing-heading">Billing &amp; Invoices</h2>
+        <div class="billing-placeholder">
+          <span class="lock-icon" aria-hidden="true">🔒</span>
+          <span class="coming-soon-badge">Coming Soon</span>
+          <h3>Online Billing Coming Soon</h3>
+          <p>
+            Online invoice management and payment will be available here shortly.
+            For billing questions in the meantime, please contact us directly:
+            <br />
+            <a href="mailto:support@kecktech.net">support@kecktech.net</a> &nbsp;|&nbsp;
+            <a href="tel:+13167680034">(316) 768-0034</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Chat Section -->
+    <section id="chat-section" class="chat-section portal-section" aria-labelledby="chat-heading">
+      <div class="container">
+        <h2 id="chat-heading">Live Chat with Support</h2>
+        <div class="chat-intro">
+          <p>
+            Our team is available via live chat during business hours.
+            Click the chat bubble in the bottom-right corner to start a conversation.
+            If no agents are available, your message will create a support ticket automatically.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="portal-footer" role="contentinfo">
+    <div class="portal-footer-inner">
+      <span>&copy; 2025 Kecktech IT Solutions &mdash; All rights reserved.</span>
+      <span>
+        <a href="https://www.kecktech.net">kecktech.net</a>
+        &nbsp;&middot;&nbsp;
+        <a href="mailto:support@kecktech.net">support@kecktech.net</a>
+        &nbsp;&middot;&nbsp;
+        <a href="tel:+13167680034">(316) 768-0034</a>
+      </span>
+    </div>
+  </footer>
+
+  <!-- ── Zammad Live Chat ──────────────────────────────────────────────────
+    Script src must be from tickets.kecktech.net so the widget auto-detects
+    the correct WebSocket host (wss://tickets.kecktech.net/ws).
+    When no agents are online Zammad removes the widget from the DOM entirely,
+    so we show a static fallback button via the onError callback.
+  ──────────────────────────────────────────────────────────────────────── -->
+  <!-- Fallback chat button — shown by onError when no agents are online -->
+  <a
+    id="chat-offline-btn"
+    href="https://tickets.kecktech.net"
+    target="_blank"
+    rel="noopener noreferrer"
+    title="No agents online — open a support ticket"
+    style="display:none; position:fixed; bottom:30px; right:30px; z-index:9999;
+           width:56px; height:56px; border-radius:50%; background:#1E3A5F;
+           color:#fff; align-items:center; justify-content:center;
+           text-decoration:none; box-shadow:0 3px 10px rgba(0,0,0,0.3);
+           font-size:24px; cursor:pointer;"
+    aria-label="Support — no agents online, click to open a ticket"
+  >💬</a>
+
+  <link rel="stylesheet" href="https://tickets.kecktech.net/assets/chat/chat.css" />
+  <script src="https://tickets.kecktech.net/assets/chat/chat-no-jquery.min.js"></script>
+  <script>
+    (function() {
+      new ZammadChat({
+        chatId: 1,
+        fontSize: '18px',
+        show: true,
+        onError: function() {
+          document.getElementById('chat-offline-btn').style.display = 'flex';
+        },
+        onConnectionEstablished: function() {
+          document.getElementById('chat-offline-btn').style.display = 'none';
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

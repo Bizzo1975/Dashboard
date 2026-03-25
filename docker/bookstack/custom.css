@@ -1,0 +1,108 @@
+/* ── Kecktech Brand Theme for BookStack ─────────────────────────────────────
+   Bind-mounted into container at: /config/www/themes/kecktech/custom.css
+   Brand tokens match website/src/styles/global.css
+   After first boot: BookStack Admin → Settings → Customization → Custom CSS
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+/* ── CSS variable overrides (BookStack uses --color-primary etc.) ──────────── */
+:root {
+  --color-primary: #1E3A5F;
+  --color-primary-dark: #152c47;
+  --color-link: #C07810;
+  --color-link-hover: #a06510;
+  --color-success: #0D6E6E;
+}
+
+/* ── Typography ────────────────────────────────────────────────────────────── */
+body, p, li, td { font-family: 'Open Sans', sans-serif; }
+h1, h2, h3, h4, h5, h6,
+.book-title, .shelf-title,
+.page-title { font-family: 'Poppins', sans-serif; }
+
+/* ── Header: navy background matching Kecktech site header ─────────────────── */
+.header-links,
+#header,
+header.navbar { background-color: #1E3A5F !important; }
+
+.header-links .links a,
+#header .text-primary-dark,
+header.navbar .nav-item a,
+.header-links a { color: #fff !important; }
+
+.header-links a:hover,
+header.navbar .nav-item a:hover { color: #C07810 !important; }
+
+/* ── Logo area ─────────────────────────────────────────────────────────────── */
+.logo-text { color: #fff !important; font-family: 'Poppins', sans-serif; font-weight: 700; }
+
+/* ── Sidebar navigation accent ─────────────────────────────────────────────── */
+.sidebar-page-nav a.active,
+.tri-layout-left .sidebar-page-nav a.active {
+  border-left: 3px solid #C07810;
+  color: #C07810 !important;
+}
+
+.sidebar-page-nav a:hover { color: #C07810 !important; }
+
+/* ── Buttons ────────────────────────────────────────────────────────────────── */
+.button,
+a.button,
+button.button { background-color: #1E3A5F !important; color: #fff !important; }
+
+.button:hover,
+a.button:hover,
+button.button:hover { background-color: #152c47 !important; }
+
+.button.outline,
+a.button.outline { background-color: transparent !important; border-color: #1E3A5F !important; color: #1E3A5F !important; }
+
+/* ── Links ──────────────────────────────────────────────────────────────────── */
+a { color: #C07810; }
+a:hover { color: #a06510; }
+
+/* ── Entity list icons (books, shelves, chapters) ───────────────────────────── */
+.entity-list-item .icon,
+.entity-item-snippet .entity-icon { color: #C07810 !important; }
+
+/* ── Book/shelf cover color accent ─────────────────────────────────────────── */
+.book-header .bg-book-color,
+.shelf-header .bg-shelf-color { background-color: #1E3A5F !important; }
+
+/* ── Search highlight ───────────────────────────────────────────────────────── */
+mark, .search-highlight { background-color: rgba(192, 120, 16, 0.2); color: inherit; }
+
+/* ── Active/selected breadcrumb ─────────────────────────────────────────────── */
+.breadcrumb-item.active { color: #C07810; }
+
+/* ── Tag accent ─────────────────────────────────────────────────────────────── */
+.tag-item { background-color: rgba(30, 58, 95, 0.1); color: #1E3A5F; }
+
+/* ── Senior Accessibility — Brand Guide Section 04 ──────────────────────────
+   help.kecktech.net is a senior-facing interface.
+   Requirements: 18px min body, 1.8 line-height, underlined links,
+   WCAG AAA contrast (7:1), no italics in body, 48px button touch targets.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Body text: 18px minimum, 1.8 line-height, Charcoal #4A4A4A (9.7:1 on white) */
+body, p, li, td, .page-content, .page-content p, .page-content li {
+  font-size: 18px !important;
+  line-height: 1.8 !important;
+  color: #4A4A4A !important;
+}
+
+/* All links must be underlined (not color alone) */
+.page-content a, .content-wrap a { text-decoration: underline !important; }
+
+/* No italics in body text */
+.page-content em, .page-content i,
+p em, li em { font-style: normal !important; }
+
+/* Button touch targets: 48px minimum */
+.button, a.button, button.button, input[type="submit"] {
+  min-height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}

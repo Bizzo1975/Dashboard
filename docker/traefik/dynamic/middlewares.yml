@@ -1,0 +1,12 @@
+# Kecktech Traefik Middleware Definitions
+# Rate limiting and other shared middlewares
+# Applied via container labels: middlewares=authelia@docker,admin-ratelimit@file
+
+http:
+  middlewares:
+    # Rate limit admin.kecktech.net — 50 req/min per IP, burst of 20
+    admin-ratelimit:
+      rateLimit:
+        average: 50
+        period: 1m
+        burst: 20

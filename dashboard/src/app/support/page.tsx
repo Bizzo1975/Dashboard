@@ -1,5 +1,5 @@
 import { getUser } from "@/lib/auth";
-import { getOpenTickets } from "@/lib/zammad";
+import { getOpenTickets, getActiveChats } from "@/lib/zammad";
 import { getActiveAlerts } from "@/lib/trmm";
 import { getCustomers } from "@/lib/erpnext";
 import { TimeEntryForm } from "@/components/support/TimeEntryForm";
@@ -95,10 +95,11 @@ export default async function SupportPage() {
   const user = await getUser();
   if (!user.canSupport) redirect("/");
 
-  const [{ tickets, error: tErr }, { alerts, error: aErr }, { customers }] = await Promise.all([
+  const [{ tickets, error: tErr }, { alerts, error: aErr }, { customers }, { chats, error: chatErr }] = await Promise.all([
     getOpenTickets(),
     getActiveAlerts(),
     getCustomers(),
+    getActiveChats(),
   ]);
 
   // Severity counts for alert header
@@ -231,6 +232,74 @@ export default async function SupportPage() {
 
         {/* ── Column 3: Quick Actions ────────────────────────────────────── */}
         <section>
+          {/* Live Chat Queue */}
+          <div
+            style={{
+              background: "#1e293b",
+              border: "1px solid #334155",
+              borderRadius: "10px",
+              padding: "16px",
+              marginBottom: "16px",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+              <h2 style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#e2e8f0" }}>
+                💬 Live Chat
+                {chats.length > 0 && (
+                  <span
+                    style={{
+                      marginLeft: "8px",
+                      background: "#f87171",
+                      color: "#fff",
+                      borderRadius: "999px",
+                      fontSize: "11px",
+                      fontWeight: 700,
+                      padding: "1px 7px",
+                    }}
+                  >
+                    {chats.length}
+                  </span>
+                )}
+              </h2>
+              <a
+                href="https://tickets.kecktech.net/#chat"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ fontSize: "12px", color: "#3b82f6" }}
+              >
+                Open ↗
+              </a>
+            </div>
+            {chatErr ? (
+              <div style={{ fontSize: "12px", color: "#94a3b8" }}>Chat not enabled</div>
+            ) : chats.length === 0 ? (
+              <div style={{ fontSize: "12px", color: "#475569" }}>No active sessions</div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {chats.map((c) => (
+                  <a
+                    key={c.id}
+                    href="https://tickets.kecktech.net/#chat"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "block",
+                      padding: "8px 10px",
+                      borderRadius: "6px",
+                      fontSize: "12px",
+                      color: "#cbd5e1",
+                      textDecoration: "none",
+                      background: "#0f172a",
+                      border: "1px solid #1e293b",
+                    }}
+                  >
+                    {c.name || `Chat #${c.id}`}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Time Entry */}
           <div
             style={{

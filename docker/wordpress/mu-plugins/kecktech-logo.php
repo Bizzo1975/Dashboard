@@ -389,8 +389,9 @@ function kecktech_logo_header_styles(): void
         . '.ast-primary-header .custom-logo,.ast-header-custom-item img.custom-logo,'
         . '.custom-logo-link img.custom-logo,.wp-block-site-logo img,.wp-block-site-logo a img,'
         . 'header .site-logo img{'
-        . 'max-height:72px!important;width:auto!important;height:auto!important;'
+        . 'max-height:120px!important;width:auto!important;height:auto!important;'
         . 'object-fit:contain;background:transparent!important;'
+        . 'filter:brightness(0) invert(1)!important;'
         . '}'
         . '.custom-logo-link,.wp-block-site-logo a{display:inline-flex!important;align-items:center;line-height:0;}'
         . '.site-logo-img,.site-logo-img a,.ast-site-identity .site-logo-img{'
@@ -407,7 +408,7 @@ function kecktech_logo_fallback_background_css(): void
     if (is_admin()) {
         return;
     }
-    $url = kecktech_branding_file_url();
+    $url = kecktech_footer_logo_url();
     if ($url === '') {
         return;
     }
@@ -684,6 +685,55 @@ function kecktech_replace_header_quote_cta(string $content, array $block): strin
 
 add_filter('render_block', 'kecktech_replace_header_quote_cta', 25, 2);
 
+// ── Astra Header Builder button: REQUEST QUOTE → Customer Login ───────────────────────────────
+// Astra builder buttons are rendered via astra_get_option, NOT as Gutenberg blocks.
+
+/**
+ * Override Astra header builder button text/URL when it contains quote-related text.
+ *
+ * @param mixed  $value
+ * @param string $option
+ * @return mixed
+ */
+function kecktech_astra_header_button_override($value, string $option = '')
+{
+    if (is_string($value)) {
+        $quote_needles = array('REQUEST QUOTE', 'Request Quote', 'Request a quote', 'REQUEST A QUOTE', 'Request A Quote');
+        foreach ($quote_needles as $needle) {
+            if (stripos($value, $needle) !== false) {
+                return str_ireplace($needle, 'Customer Login', $value);
+            }
+        }
+    }
+    return $value;
+}
+
+add_filter('astra_get_option', 'kecktech_astra_header_button_override', 20, 2);
+
+/**
+ * Output buffer approach: catch any remaining "Request a Quote" / "REQUEST QUOTE" text
+ * in the full header HTML and replace with "Customer Login".
+ */
+function kecktech_header_ob_start(): void
+{
+    ob_start();
+}
+
+function kecktech_header_ob_end_flush(): void
+{
+    $out = ob_get_clean();
+    if (is_string($out) && $out !== '') {
+        $needles = array('REQUEST QUOTE', 'Request Quote', 'Request a quote', 'REQUEST A QUOTE', 'Request A Quote');
+        foreach ($needles as $n) {
+            $out = str_ireplace($n, 'Customer Login', $out);
+        }
+        echo $out;
+    }
+}
+
+add_action('astra_header', 'kecktech_header_ob_start', 1);
+add_action('astra_header', 'kecktech_header_ob_end_flush', 9999);
+
 // ── Extra selectors (Astra header builder / Spectra) ─────────────────────────────────────────
 
 /**
@@ -695,7 +745,7 @@ function kecktech_logo_header_styles_v2(): void
         . '.ast-site-identity-img,.site-header .site-branding img,.ast-header-break-point .site-branding img,'
         . '.ast-builder-layout-element img.custom-logo,.ast-builder-layout-element .site-logo-img img,'
         . 'header img.custom-logo,header .wp-block-site-logo img{'
-        . 'max-height:72px!important;width:auto!important;height:auto!important;object-fit:contain;'
+        . 'max-height:120px!important;width:auto!important;height:auto!important;object-fit:contain;'
         . 'background:transparent!important;'
         . '}'
         . '.ast-builder-layout-element .site-logo-img a,.ast-site-identity .site-logo-img{line-height:0;display:inline-flex;}'
@@ -712,9 +762,34 @@ function kecktech_logo_footer_script(): void
     if (is_admin() || kecktech_branding_display_path() === null) {
         return;
     }
-    $u   = wp_json_encode(kecktech_branding_file_url());
-    $alt = wp_json_encode(get_bloginfo('name', 'display'));
-    echo '<script id="kecktech-logo-fallback">(function(){var u=' . $u . ',alt=' . $alt . ';function fixImg(img){if(!img||img.tagName!=="IMG"||!u)return;if(img.naturalWidth>8)return;img.removeAttribute("srcset");img.removeAttribute("sizes");img.src=u;img.alt=alt;}function patch(){var sels=["header img.custom-logo",".ast-primary-header img.custom-logo",".ast-builder-layout-element .site-logo-img img",".wp-block-site-logo img",".site-header img.custom-logo","#masthead img.custom-logo","#masthead .site-logo-img img","#masthead .custom-logo-link img","#masthead .site-branding img",".ast-primary-header .site-logo-img img",".ast-primary-header .custom-logo-link img"];sels.forEach(function(sel){try{document.querySelectorAll(sel).forEach(fixImg);}catch(e){}});document.querySelectorAll(".ast-site-identity .site-logo-img a,.ast-builder-layout-element .site-logo-img a,header .site-branding .custom-logo-link").forEach(function(a){if(a.querySelector("img"))return;var i=document.createElement("img");i.src=u;i.className="custom-logo";i.alt=alt;i.style.maxHeight="72px";i.style.width="auto";a.appendChild(i);});}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",patch);else patch();window.addEventListener("load",patch);})();</script>' . "\n";
+    $u_regular = wp_json_encode(kecktech_branding_file_url());
+    $u_white   = wp_json_encode(kecktech_footer_logo_url());
+    $alt       = wp_json_encode(get_bloginfo('name', 'display'));
+    // Selectors for header logo images (all Astra builder variants)
+    $header_sels = '["header img.custom-logo",".ast-primary-header img.custom-logo",".ast-builder-layout-element .site-logo-img img",".wp-block-site-logo img",".site-header img.custom-logo","#masthead img.custom-logo","#masthead .site-logo-img img","#masthead .custom-logo-link img","#masthead .site-branding img",".ast-primary-header .site-logo-img img",".ast-primary-header .custom-logo-link img"]';
+    echo '<script id="kecktech-logo-fallback">(function(){'
+        . 'var uRegular=' . $u_regular . ',uWhite=' . $u_white . ',alt=' . $alt . ';'
+        // Use white logo in header if available, otherwise fall back to regular
+        . 'var uHeader=uWhite||uRegular;'
+        . 'function fixHeaderImg(img){'
+        .   'if(!img||img.tagName!=="IMG"||!uHeader)return;'
+        .   'img.removeAttribute("srcset");img.removeAttribute("sizes");'
+        .   'img.src=uHeader;img.alt=alt;'
+        .   'img.style.maxHeight="120px";img.style.width="auto";img.style.height="auto";'
+        . '}'
+        . 'function patchHeader(){'
+        .   'var sels=' . $header_sels . ';'
+        .   'sels.forEach(function(sel){try{document.querySelectorAll(sel).forEach(fixHeaderImg);}catch(e){}});'
+        // Add img if anchor is empty
+        .   'document.querySelectorAll(".ast-site-identity .site-logo-img a,.ast-builder-layout-element .site-logo-img a,header .site-branding .custom-logo-link").forEach(function(a){'
+        .     'if(a.querySelector("img")){fixHeaderImg(a.querySelector("img"));return;}'
+        .     'var i=document.createElement("img");i.src=uHeader;i.className="custom-logo";i.alt=alt;'
+        .     'i.style.maxHeight="120px";i.style.width="auto";a.appendChild(i);'
+        .   '});'
+        . '}'
+        . 'if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",patchHeader);else patchHeader();'
+        . 'window.addEventListener("load",patchHeader);'
+        . '})();</script>' . "\n";
 }
 
 add_action('wp_footer', 'kecktech_logo_footer_script', 5);

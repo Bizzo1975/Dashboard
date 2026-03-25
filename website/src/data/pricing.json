@@ -1,0 +1,105 @@
+{
+  "hero": {
+    "h1": "Simple, Transparent Pricing",
+    "subtitle": "No long-term contracts. No surprise invoices. No hidden fees. Pay for what you need — stop when you don't."
+  },
+  "cards": [
+    {
+      "service": "White Glove Managed IT",
+      "price": "$199/mo",
+      "tagline": "Unlimited support. Real humans. SLA-backed.",
+      "features": [
+        "Remote monitoring 24/7",
+        "SLA-backed response times",
+        "Dedicated technician",
+        "Proactive security patching",
+        "Security baseline hardening",
+        "No per-ticket fees"
+      ]
+    },
+    {
+      "service": "Hardware-as-a-Service (HaaS)",
+      "price": "$149/mo",
+      "tagline": "Per device — enterprise hardware. Zero upfront. Zero e-waste.",
+      "features": [
+        "Refurbished enterprise hardware",
+        "Kecktech-branded device tags",
+        "Remote management",
+        "Hardware refresh cycle included",
+        "Responsible device recycling",
+        "No upfront cost"
+      ]
+    },
+    {
+      "service": "AI Custom App Development",
+      "price": "$3K–$8K",
+      "tagline": "You own the code. Forever. No license fees.",
+      "featured": true,
+      "features": [
+        "Custom-built to your workflow",
+        "You own 100% of the code",
+        "AI-powered automation",
+        "Hosted on Kecktech solar servers",
+        "No recurring license fees",
+        "ROI payback < 18 months"
+      ]
+    },
+    {
+      "service": "Senior Technology Concierge",
+      "price": "$79/mo",
+      "tagline": "Dignity-first tech support. Plain English always.",
+      "features": [
+        "Scam & fraud protection",
+        "Device setup & optimization",
+        "Monthly check-in calls",
+        "Plain-English support",
+        "Remote access for quick fixes",
+        "Emergency tech card"
+      ]
+    },
+    {
+      "service": "Sovereign Private Hosting",
+      "price": "$49/mo",
+      "tagline": "Kansas-based. Solar-powered. Your data, your terms.",
+      "features": [
+        "Kansas-based servers (we own them)",
+        "100% solar-powered",
+        "HIPAA-ready configuration",
+        "Daily backups + uptime monitoring",
+        "No Big Tech involvement",
+        "Static IP available"
+      ]
+    }
+  ],
+  "faq": {
+    "label": "Common Questions",
+    "heading": "FAQ",
+    "items": [
+      {
+        "q": "Are there long-term contracts?",
+        "a": "No. All monthly services are month-to-month — cancel any time with 30 days notice. App development projects have a one-time project agreement with no ongoing obligation."
+      },
+      {
+        "q": "What payment methods do you accept?",
+        "a": "ACH bank transfer, check, and all major credit cards. Monthly service invoices are sent by email on the 1st of each month."
+      },
+      {
+        "q": "Do you serve clients outside Kansas?",
+        "a": "Yes — all remote services (White Glove IT, AI App Development, Senior Technology Concierge, and Sovereign Hosting) are available nationwide. HaaS hardware deployment is currently Kansas and surrounding region."
+      },
+      {
+        "q": "Is the hosting really HIPAA-ready?",
+        "a": "Our infrastructure is configured for HIPAA compliance. A Business Associate Agreement (BAA) is available on request for healthcare clients at no additional cost."
+      },
+      {
+        "q": "Can I bundle services?",
+        "a": "Yes — and we offer discounts for clients on two or more services. Contact us to discuss a custom package for your situation."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Not Sure Which Service Fits?",
+    "body": "Tell us about your situation — we'll recommend the right fit with no pressure and no sales pitch.",
+    "button": "Let's Talk →"
+  }
+}

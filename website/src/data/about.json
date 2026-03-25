@@ -1,0 +1,89 @@
+{
+  "hero": {
+    "h1": "Family-Owned. Disability-Led. Solar-Powered.",
+    "subtitle": "We're two people in Park City, Kansas building the IT company we wish had existed — for the businesses Big Tech overlooks and the seniors technology left behind."
+  },
+  "mission": {
+    "label": "Our Mission",
+    "heading": "Why We Exist",
+    "body": "To replace expensive, fragmented SaaS stacks with AI-built custom apps, deliver White Glove IT care to the clients Big Tech ignores, and run it all from a 100% solar-powered, ADA-accessible, family-owned facility in Park City, Kansas.",
+    "quote": "Local, sovereign, sustainable technology is not just possible — it's better.",
+    "body2": "Kecktech is the IT partner that treats every client like a neighbor — whether that's an overwhelmed small business owner, a senior trying to stay safe online, or a company tired of paying $1,200 a month for tools they barely use."
+  },
+  "values": {
+    "label": "What We Stand For",
+    "heading": "Our Core Values",
+    "cards": [
+      {
+        "icon": "🧑‍💼",
+        "title": "Human-First",
+        "desc": "Technology serves people — not the other way around. Every decision we make starts with the human on the other end, especially the ones Big Tech has historically left behind."
+      },
+      {
+        "icon": "🛡️",
+        "title": "Sovereign & Private",
+        "desc": "Your data stays in Kansas, on our servers, under your terms. We don't sell it, scan it, or profit from it — privacy is a feature, not an upsell."
+      },
+      {
+        "icon": "☀️",
+        "title": "Solar & Circular",
+        "desc": "100% solar-powered. Zero e-waste from our clients. Every watt from our 25kW rooftop array; every device in our HaaS fleet responsibly refurbished."
+      },
+      {
+        "icon": "♿",
+        "title": "Radically Accessible",
+        "desc": "ADA-first in everything: our building, our software, our process, and our team. Accessibility is in the blueprint — not bolted on after the fact."
+      },
+      {
+        "icon": "🤝",
+        "title": "White Glove",
+        "desc": "Real humans, real accountability, real care. No offshore call centers, no ticket queues — the same people answer every time, with patience and dignity."
+      }
+    ]
+  },
+  "team": {
+    "label": "Meet the Team",
+    "heading": "The Founders",
+    "members": [
+      {
+        "name": "Jon Keck",
+        "title": "Co-Founder & Lead Engineer",
+        "bio": "30+ years of enterprise IT experience. Jon built the infrastructure that powers Kecktech — from the solar array on the roof to the AI pipelines in the code. He believes the best IT support is the kind you barely notice.",
+        "photo": "/images/headshot.png",
+        "photoAlt": "Jon Keck, Co-Founder"
+      },
+      {
+        "name": "Co-Founder",
+        "title": "Co-Founder & Client Relations",
+        "bio": "Coming soon — bio to be added by Jon.",
+        "photo": "/images/team-2.jpg",
+        "photoAlt": "Co-Founder"
+      }
+    ]
+  },
+  "facility": {
+    "label": "Our Facility",
+    "heading": "Built From the Ground Up",
+    "body": "Our 1,500 sq ft purpose-built data center in Park City, Kansas runs on 100% solar power — 25kW rooftop array with 100kWh battery backup. ADA-accessible. Family-owned. Your data never leaves the building.",
+    "stats": [
+      {
+        "number": "25kW",
+        "label": "Solar Array"
+      },
+      {
+        "number": "100kWh",
+        "label": "Battery Bank"
+      },
+      {
+        "number": "1,500 ft²",
+        "label": "Data Center"
+      },
+      {
+        "number": "100%",
+        "label": "Renewable"
+      }
+    ],
+    "ctaPrimary": "Talk to Our Team →",
+    "ctaSecondary": "View Services →"
+  }
+}

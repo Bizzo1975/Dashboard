@@ -182,9 +182,20 @@ services:
       - FQDN=tickets.kecktech.net
       - ELASTICSEARCH_ENABLED=false
     extra_hosts:
+      - "kecktech.net:host-gateway"
+      - "www.kecktech.net:host-gateway"
+      - "admin.kecktech.net:host-gateway"
+      - "tickets.kecktech.net:host-gateway"
+      - "n8n.kecktech.net:host-gateway"
+      - "wiki.kecktech.net:host-gateway"
+      - "portal.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
+      - "auth.kecktech.net:host-gateway"
+      - "ops.kecktech.net:host-gateway"
     volumes:
       - zammad_storage:/opt/zammad/storage
+      # Kecktech brand CSS — injected into Rails asset pipeline custom directory
+      - ./zammad/custom.css:/opt/zammad/app/assets/stylesheets/custom/kecktech.css:ro
     depends_on:
       - zammad-init
       - zammad-db
@@ -207,11 +218,23 @@ services:
       - REDIS_URL=redis://zammad-redis:6379
       - SECRET_KEY_BASE=${ZAMMAD_SECRET_KEY}
       - NGINX_PORT=8080
+      - NGINX_SERVER_SCHEME=https
       - ZAMMAD_RAILSSERVER_HOST=zammad-railsserver
       - ZAMMAD_RAILSSERVER_PORT=3000
       - ZAMMAD_WEBSOCKET_HOST=zammad-websocket
       - ZAMMAD_WEBSOCKET_PORT=6042
       - ELASTICSEARCH_ENABLED=false
+    extra_hosts:
+      - "kecktech.net:host-gateway"
+      - "www.kecktech.net:host-gateway"
+      - "admin.kecktech.net:host-gateway"
+      - "tickets.kecktech.net:host-gateway"
+      - "n8n.kecktech.net:host-gateway"
+      - "wiki.kecktech.net:host-gateway"
+      - "portal.kecktech.net:host-gateway"
+      - "mail.kecktech.net:host-gateway"
+      - "auth.kecktech.net:host-gateway"
+      - "ops.kecktech.net:host-gateway"
     depends_on:
       - zammad-railsserver
     networks:
@@ -333,7 +356,16 @@ services:
       - N8N_DEFAULT_USER_PASSWORD=${N8N_DEFAULT_PASS}
       # NODE_TLS_REJECT_UNAUTHORIZED: REMOVE in production; use per-credential "Ignore SSL Issues" instead
     extra_hosts:
+      - "kecktech.net:host-gateway"
+      - "www.kecktech.net:host-gateway"
+      - "admin.kecktech.net:host-gateway"
+      - "tickets.kecktech.net:host-gateway"
+      - "n8n.kecktech.net:host-gateway"
+      - "wiki.kecktech.net:host-gateway"
+      - "portal.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
+      - "auth.kecktech.net:host-gateway"
+      - "ops.kecktech.net:host-gateway"
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
@@ -385,7 +417,7 @@ services:
       - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.regex=^https://kecktech\\.net/(.*)"
       - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.replacement=https://www.kecktech.net/$${1}"
       - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.permanent=true"
-      - "traefik.http.routers.wordpress-www.rule=Host(`www.kecktech.net`)"
+      - "traefik.http.routers.wordpress-www.rule=Host(`wp.kecktech.net`)"
       - "traefik.http.routers.wordpress-www.service=wordpress"
       - "traefik.http.routers.wordpress-www.entrypoints=websecure"
       - "traefik.http.routers.wordpress-www.tls=true"
@@ -610,6 +642,150 @@ services:
     networks:
       - kecktech_front
 
+  # ── KECKTECH.NET — Astro static site (replaces WordPress as public site) ──
+  kecktech-web:
+    image: nginx:alpine
+    container_name: kecktech-web
+    restart: always
+    mem_limit: 64m
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ../website/dist:/usr/share/nginx/html:ro
+      - ../website/nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - kecktech_front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kecktech-web.rule=Host(`www.kecktech.net`)"
+      - "traefik.http.routers.kecktech-web.entrypoints=websecure"
+      - "traefik.http.routers.kecktech-web.tls=true"
+      - "traefik.http.services.kecktech-web.loadbalancer.server.port=80"
+
+  # ── KECKTECH CONTACT FORM — PHP mailer ───────────────────────────────────
+  kecktech-mailer:
+    image: php:8.2-apache
+    container_name: kecktech-mailer
+    restart: always
+    mem_limit: 64m
+    extra_hosts:
+      - "kecktech.net:host-gateway"
+      - "www.kecktech.net:host-gateway"
+      - "n8n.kecktech.net:host-gateway"
+      - "tickets.kecktech.net:host-gateway"
+      - "mail.kecktech.net:host-gateway"
+    volumes:
+      - ../website/api:/var/www/html:ro
+    networks:
+      - kecktech_front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kecktech-mailer.rule=Host(`www.kecktech.net`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.kecktech-mailer.entrypoints=websecure"
+      - "traefik.http.routers.kecktech-mailer.tls=true"
+      - "traefik.http.routers.kecktech-mailer.priority=10"
+      - "traefik.http.services.kecktech-mailer.loadbalancer.server.port=80"
+
+  # ── CUSTOMER PORTAL ──────────────────────────────────────────────────────
+  kecktech-portal:
+    image: nginx:alpine
+    container_name: kecktech-portal
+    restart: always
+    mem_limit: 32m
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    volumes:
+      - ./portal/html:/usr/share/nginx/html:ro
+      - ./portal/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - kecktech_front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portal.rule=Host(`portal.kecktech.net`)"
+      - "traefik.http.routers.portal.entrypoints=websecure"
+      - "traefik.http.routers.portal.tls=true"
+      - "traefik.http.services.portal.loadbalancer.server.port=80"
+      - "traefik.http.routers.portal.middlewares=authelia@docker"
+
+  # ── KECKTECH ADMIN — text editor dashboard (auth-gated by Authelia) ───────
+  kecktech-admin:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.admin
+    container_name: kecktech-admin
+    restart: always
+    mem_limit: 512m
+    extra_hosts:
+      - "kecktech.net:host-gateway"
+      - "www.kecktech.net:host-gateway"
+      - "admin.kecktech.net:host-gateway"
+      - "n8n.kecktech.net:host-gateway"
+      - "mail.kecktech.net:host-gateway"
+    volumes:
+      - ../website/src/data:/website/src/data   # JSON data files (read/write)
+      - ../website/dist:/website/dist            # Astro build output (write)
+    networks:
+      - kecktech_front
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kecktech-admin.rule=Host(`admin.kecktech.net`)"
+      - "traefik.http.routers.kecktech-admin.entrypoints=websecure"
+      - "traefik.http.routers.kecktech-admin.tls=true"
+      - "traefik.http.routers.kecktech-admin.middlewares=authelia@docker,admin-ratelimit@file"
+      - "traefik.http.services.kecktech-admin.loadbalancer.server.port=3000"
+
+  # ── BOOKSTACK WIKI ───────────────────────────────────────────────────────────
+  bookstack:
+    image: lscr.io/linuxserver/bookstack:latest
+    container_name: bookstack
+    restart: always
+    mem_limit: 512m
+    depends_on:
+      - bookstack-db
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+      - APP_URL=https://wiki.kecktech.net
+      - DB_HOST=bookstack-db
+      - DB_PORT=3306
+      - DB_DATABASE=bookstack
+      - DB_USER=bookstack
+      - DB_PASS=${BOOKSTACK_DB_PASS}
+    volumes:
+      - bookstack_data:/config
+      - ./bookstack/custom.css:/config/www/themes/kecktech/custom.css:ro
+    networks:
+      - kecktech_front
+      - kecktech_internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bookstack.rule=Host(`wiki.kecktech.net`)"
+      - "traefik.http.routers.bookstack.entrypoints=websecure"
+      - "traefik.http.routers.bookstack.tls=true"
+      - "traefik.http.services.bookstack.loadbalancer.server.port=80"
+
+  bookstack-db:
+    image: mariadb:10
+    container_name: bookstack-db
+    restart: always
+    mem_limit: 256m
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
+      - MYSQL_DATABASE=bookstack
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${BOOKSTACK_DB_PASS}
+    volumes:
+      - bookstack_db_data:/var/lib/mysql
+    networks:
+      - kecktech_internal
+
 networks:
   kecktech_front:
     external: true
@@ -621,6 +797,8 @@ volumes:
   zammad_storage:
   wikijs_data:
   wikijs_db_data:
+  bookstack_data:
+  bookstack_db_data:
   vaultwarden_data:
   portainer_data:
   lldap_data:

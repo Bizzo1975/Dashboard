@@ -1,0 +1,157 @@
+/*
+ * Kecktech IT Solutions — Zammad Custom Brand CSS
+ * Colors: Navy #1E3A5F · Gold #C07810 · Steel #4A6887 · Charcoal #4A4A4A · Off-White #F4F7FB
+ * Applied via: /opt/zammad/app/assets/stylesheets/custom/kecktech.css
+ */
+
+/* ── Login Page ── */
+#login,
+.login-page,
+.user-login {
+  background-color: #F4F7FB !important;
+}
+
+/* Login card */
+.login-card,
+.user-device-auth,
+#login .card,
+.login .card {
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 24px rgba(30,58,95,0.10) !important;
+  background-color: #FFFFFF !important;
+}
+
+/* Login heading */
+.login-logo,
+#login h2,
+#login .logo {
+  color: #1E3A5F !important;
+}
+
+/* ── Top Navigation Bar ── */
+#app-header,
+.app-header,
+nav.navbar,
+.navigation {
+  background-color: #1E3A5F !important;
+  border-bottom: 2px solid #C07810 !important;
+}
+
+.navbar .brand,
+.navbar a.logo,
+#app-header .product-name {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.navbar .nav li a,
+.app-header a {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+.navbar .nav li a:hover,
+.app-header a:hover {
+  color: #C07810 !important;
+}
+
+/* ── Sidebar / Left Navigation ── */
+.sidebar,
+#main-navigation,
+.navigation-sidebar {
+  background-color: #1E3A5F !important;
+}
+
+.sidebar a,
+#main-navigation a,
+.navigation-sidebar a {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+.sidebar a:hover,
+.sidebar a.active,
+#main-navigation a:hover,
+#main-navigation a.active {
+  background-color: rgba(192,120,16,0.2) !important;
+  color: #C07810 !important;
+}
+
+/* ── Buttons ── */
+.btn-primary,
+a.btn-primary,
+button.btn-primary {
+  background-color: #C07810 !important;
+  border-color: #C07810 !important;
+  color: #FFFFFF !important;
+  border-radius: 6px !important;
+  min-height: 40px !important;
+}
+
+.btn-primary:hover {
+  background-color: #a86a0e !important;
+  border-color: #a86a0e !important;
+}
+
+/* ── Links ── */
+a {
+  color: #4A6887 !important;
+}
+
+a:hover {
+  color: #1E3A5F !important;
+}
+
+/* ── Ticket List / Table ── */
+.table thead th,
+table.tickets thead th {
+  background-color: #1E3A5F !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(244,247,251,0.6) !important;
+}
+
+/* ── Priority Indicators ── */
+.ticket-priority-high,
+.priority-3 {
+  color: #C07810 !important;
+}
+
+/* ── Form Focus States ── */
+input:focus,
+textarea:focus,
+select:focus,
+.form-control:focus {
+  border-color: #1E3A5F !important;
+  box-shadow: 0 0 0 2px rgba(30,58,95,0.2) !important;
+}
+
+/* ── Page Background ── */
+body,
+.main-content,
+#content {
+  background-color: #F4F7FB !important;
+}
+
+/* ── Cards / Panels ── */
+.card,
+.panel,
+.widget {
+  border-radius: 8px !important;
+  border: 1px solid #E2E8F0 !important;
+}
+
+.card-header,
+.panel-heading {
+  background-color: #1E3A5F !important;
+  color: #FFFFFF !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+/* ── Status badges ── */
+.badge-success { background-color: #0D6E6E !important; }
+.badge-warning { background-color: #C07810 !important; }
+.badge-danger  { background-color: #DC2626 !important; }
+.badge-info    { background-color: #4A6887 !important; }

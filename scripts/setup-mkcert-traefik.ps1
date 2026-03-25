@@ -47,3 +47,27 @@ Write-Host "Restart Traefik to load certs:" -ForegroundColor Yellow
 Write-Host "  cd $(Join-Path $Root 'docker')"
 Write-Host "  docker compose up -d traefik"
 Write-Host ""
+
+# ── Add hosts file entries so browser resolves *.kecktech.net to localhost ──────
+Write-Host "Adding hosts file entries..." -ForegroundColor Cyan
+$hostsFile = "C:\Windows\System32\drivers\etc\hosts"
+$entries = @(
+  "127.0.0.1  kecktech.net www.kecktech.net",
+  "127.0.0.1  admin.kecktech.net wiki.kecktech.net portal.kecktech.net",
+  "127.0.0.1  dashboard.kecktech.net traefik.kecktech.net auth.kecktech.net",
+  "127.0.0.1  tickets.kecktech.net help.kecktech.net stats.kecktech.net",
+  "127.0.0.1  lldap.kecktech.net vault.kecktech.net n8n.kecktech.net",
+  "127.0.0.1  rmm.kecktech.net ops.kecktech.net mail.kecktech.net"
+)
+foreach ($line in $entries) {
+  $firstDomain = ($line -split '\s+')[1]
+  if (-not (Select-String -Path $hostsFile -Pattern ([regex]::Escape($firstDomain)) -Quiet)) {
+    Add-Content -Path $hostsFile -Value $line
+    Write-Host "  Added: $line" -ForegroundColor Green
+  } else {
+    Write-Host "  Already present: $firstDomain" -ForegroundColor DarkGray
+  }
+}
+ipconfig /flushdns | Out-Null
+Write-Host "DNS cache flushed." -ForegroundColor Green
+Write-Host ""

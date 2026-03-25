@@ -1,0 +1,29 @@
+# Kecktech Admin Dashboard + Astro Build Environment
+FROM node:20-alpine
+
+# ── Install Astro website deps ───────────────────────────────────────────────
+WORKDIR /website
+COPY website/package.json website/package-lock.json ./
+RUN npm ci --prefer-offline
+
+# Copy Astro source (data/ will be bind-mounted, so it's excluded)
+COPY website/astro.config.mjs ./
+COPY website/src/layouts    ./src/layouts
+COPY website/src/components ./src/components
+COPY website/src/styles     ./src/styles
+COPY website/src/pages      ./src/pages
+COPY website/public         ./public
+
+# ── Install admin server deps ────────────────────────────────────────────────
+WORKDIR /admin
+COPY website/admin/package.json ./
+RUN npm install --production
+
+COPY website/admin ./
+
+EXPOSE 3000
+
+ENV DATA_DIR=/website/src/data
+ENV WEBSITE_DIR=/website
+
+CMD ["node", "server.js"]

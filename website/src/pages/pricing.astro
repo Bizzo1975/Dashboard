@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import PricingCard from '../components/PricingCard.astro';
+import data from '../data/pricing.json';
+
+// Colors are structural — kept here, not in JSON
+const cardColors = ['#0D6E6E', '#2E7D32', '#C07810', '#7C3AED', '#4A6887'];
+const cardServiceIds = ['white-glove', 'haas', 'ai-apps', 'senior-tech', 'hosting'];
+
+const cards = data.cards.map((card, i) => ({
+  ...card,
+  color: cardColors[i],
+  ctaHref: `/contact?type=service&service=${cardServiceIds[i]}`,
+}));
+---
+
+<Base
+  title="Pricing"
+  description="Simple, transparent pricing for all five Kecktech IT services. No long-term contracts. No hidden fees. Month-to-month."
+>
+
+  <Hero
+    h1={data.hero.h1}
+    subtitle={data.hero.subtitle}
+    bgImage="/images/pricing-hero.jpg"
+    overlayColor="#1E3A5F"
+    overlayOpacity={0.72}
+    centered={true}
+  />
+
+  <!-- ── Pricing Cards ─────────────────────────────────────────────── -->
+  <section class="pricing-section">
+    <div class="container">
+      <div class="pricing-grid">
+        {cards.map(c => <PricingCard {...c} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ──────────────────────────────────────────────────────── -->
+  <section class="faq-section">
+    <div class="container">
+      <span class="section-label">{data.faq.label}</span>
+      <h2>{data.faq.heading}</h2>
+      <div class="faq-list">
+        {data.faq.items.map(item => (
+          <div class="faq-item">
+            <p class="faq-q">{item.q}</p>
+            <p class="faq-a">{item.a}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ──────────────────────────────────────────────────────── -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>{data.cta.heading}</h2>
+      <p>{data.cta.body}</p>
+      <a href="/contact?type=general" class="btn-primary">{data.cta.button}</a>
+    </div>
+  </section>
+
+</Base>
+
+<style>
+.pricing-section { background: var(--off-white); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+/* Row 2: 2 cards centered */
+.pricing-grid > *:nth-child(4) { grid-column: 1 / span 1; margin-left: calc(50% + 14px); }
+.pricing-grid > *:nth-child(5) { grid-column: 3 / span 1; margin-left: 0; }
+
+.faq-section { background: var(--white); }
+.faq-section h2 { margin: 8px 0 32px; }
+.faq-item { border-bottom: 1px solid #e2e8f0; padding: 24px 0; }
+.faq-q { font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 18px; margin-bottom: 8px; }
+.faq-a { color: var(--charcoal); font-size: 16px; margin: 0; }
+
+.cta-banner { background: var(--navy); text-align: center; }
+.cta-banner h2 { color: #fff; margin-bottom: 14px; }
+.cta-banner p { color: var(--muted); font-size: 18px; margin-bottom: 32px; }
+
+@media (max-width: 900px) {
+  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-grid > *:nth-child(4),
+  .pricing-grid > *:nth-child(5) { grid-column: auto; margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+}
+</style>

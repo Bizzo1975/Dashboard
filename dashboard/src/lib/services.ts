@@ -14,7 +14,7 @@ export type ServiceDef = {
 export const SERVICES: ServiceDef[] = [
   {
     name: "ERPNext",
-    description: "CRM, Billing, HaaS",
+    description: "CRM · Billing · HaaS Fleet",
     url: "https://ops.kecktech.net",
     healthUrl: "http://frappe_docker-frontend-1:8080/api/method/ping",
     // Must match FRAPPE_SITE_NAME_HEADER / nginx server_name
@@ -24,15 +24,15 @@ export const SERVICES: ServiceDef[] = [
   },
   {
     name: "Zammad",
-    description: "Service Desk",
+    description: "White Glove Help Desk",
     url: "https://tickets.kecktech.net",
-    healthUrl: "http://zammad-nginx:8080/",
+    healthUrl: "http://zammad-railsserver:3000/api/v1/signshow",
     icon: "headset",
-    color: "#34d399",
+    color: "#0D6E6E",
   },
   {
     name: "Vaultwarden",
-    description: "Secrets & Profiles",
+    description: "Sovereign Secrets Vault",
     url: "https://vault.kecktech.net",
     healthUrl: "http://vaultwarden:80/alive",
     icon: "lock",
@@ -40,32 +40,47 @@ export const SERVICES: ServiceDef[] = [
   },
   {
     name: "n8n",
-    description: "Workflows & SMS",
+    description: "Workflow Automation",
     url: "https://n8n.kecktech.net",
     healthUrl: "http://n8n:5678/healthz",
     icon: "workflow",
     color: "#ff6d5a",
   },
   {
-    name: "WordPress",
-    description: "Public Website",
+    name: "Kecktech Website",
+    description: "www.kecktech.net — Astro Static Site",
     url: "https://www.kecktech.net",
-    // Static core file avoids redirects / canonical URL issues on internal HTTP checks
-    healthUrl: "http://wordpress:80/wp-includes/images/w-logo-blue.png",
+    healthUrl: "http://kecktech-web:80/",
     icon: "globe",
-    color: "#21759b",
+    color: "#C07810",
+  },
+  {
+    name: "Site Admin",
+    description: "admin.kecktech.net — Content Editor",
+    url: "https://admin.kecktech.net",
+    healthUrl: "http://kecktech-admin:3000/",
+    icon: "edit",
+    color: "#1E3A5F",
   },
   {
     name: "WikiJS",
-    description: "Knowledge Base",
+    description: "Client Knowledge Base (migrating → BookStack)",
     url: "https://help.kecktech.net",
     healthUrl: "http://wikijs:3000/healthz",
     icon: "book",
-    color: "#1976d2",
+    color: "#1E3A5F",
+  },
+  {
+    name: "BookStack",
+    description: "Knowledge Base Wiki",
+    url: "https://wiki.kecktech.net",
+    healthUrl: "http://bookstack:80/",
+    icon: "book",
+    color: "#0D6E6E",
   },
   {
     name: "Umami",
-    description: "Analytics",
+    description: "Privacy-First Analytics",
     url: "https://stats.kecktech.net",
     healthUrl: "http://umami:3000/api/heartbeat",
     icon: "chart",
@@ -73,7 +88,7 @@ export const SERVICES: ServiceDef[] = [
   },
   {
     name: "Tactical RMM",
-    description: "Remote Monitoring",
+    description: "Remote Monitoring & Management",
     url: "https://rmm.kecktech.net",
     // Internal HTTPS uses self-signed cert; Node fetch fails TLS. HTTP :8080 is same nginx.
     healthUrl: "http://trmm-nginx:8080/",
@@ -82,7 +97,7 @@ export const SERVICES: ServiceDef[] = [
   },
   {
     name: "Mailcow",
-    description: "Email Server",
+    description: "Sovereign Email Server",
     url: "https://mail.kecktech.net",
     healthUrl: "http://mailcowdockerized-nginx-mailcow-1:8081/",
     icon: "mail",

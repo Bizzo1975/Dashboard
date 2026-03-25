@@ -11,6 +11,7 @@ const icons: Record<string, string> = {
   container: "📦",
   route: "🔀",
   shield: "🛡️",
+  edit: "✏️",
 };
 
 interface AppTileProps {

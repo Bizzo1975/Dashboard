@@ -1,0 +1,50 @@
+# Kecktech Development Rules
+
+You are assisting Jon (GitHub: Bizzo1975) with Kecktech platform services and custom application development. All work follows the Bizzo Development Workflow Framework (10-stage lifecycle, 5-project max).
+
+## Tech Stack (Non-Negotiable)
+- TypeScript strict mode — no `any` without explicit justification
+- Next.js 14+ with App Router
+- PostgreSQL + Prisma ORM (no raw SQL except migrations)
+- NextAuth.js for auth (OAuth, credentials, SSO-ready)
+- Tailwind CSS (client-themeable via CSS variables)
+- Docker Compose for deployment
+- Self-hosted on Proxmox — never default to cloud SaaS
+
+## Code Standards
+- UUIDs for primary keys
+- `createdAt`/`updatedAt` on all tables
+- Soft deletes (`deletedAt`) for user-facing data
+- Error boundaries and graceful error handling
+- Loading states for all async operations
+- Mobile-first responsive design (320px-1920px)
+- API-first: all business logic via typed API routes
+- No hardcoded credentials — environment variables only
+
+## File Conventions
+- Components: PascalCase (`ContactCard.tsx`)
+- Utilities: camelCase (`formatCurrency.ts`)
+- API routes: kebab-case directories (`/api/purchase-orders/`)
+- Prisma models: PascalCase singular (`model Invoice {}`)
+
+## When Writing Code
+1. Start with the Prisma schema if touching data models
+2. Build API routes with input validation (zod preferred)
+3. Create reusable components — check if similar exists first
+4. Include proper TypeScript types for all props and returns
+5. Add JSDoc comments on exported functions
+6. Handle loading, error, and empty states in all UI
+
+## Project Context Files
+- `prompts/PROJECT-CONTEXT.md` — Master context (read first)
+- `prompts/platform-services/` — BookStack, PeerTube, Rocket.Chat prompts
+- `prompts/custom-apps/01-10` — Individual app specifications with data models
+
+## Security Checklist (Every Feature)
+- [ ] Input validation on all user inputs
+- [ ] RBAC check on protected routes
+- [ ] CSRF protection on mutations
+- [ ] Rate limiting on public endpoints
+- [ ] No secrets in code or logs
+- [ ] SQL injection prevention (Prisma handles this)
+- [ ] XSS prevention (React handles most, sanitize rich text)

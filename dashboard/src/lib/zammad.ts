@@ -168,3 +168,21 @@ async function resolveGroups(ids: number[]): Promise<Record<number, string>> {
   );
   return map;
 }
+
+// ── Live Chat ─────────────────────────────────────────────────────────────────
+
+export type ZammadChat = {
+  id: number;
+  name: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export async function getActiveChats(): Promise<{
+  chats: ZammadChat[];
+  error?: string;
+}> {
+  const { data, error } = await zammadFetch<ZammadChat[]>("/api/v1/chats");
+  if (error) return { chats: [], error };
+  return { chats: data ?? [] };
+}
