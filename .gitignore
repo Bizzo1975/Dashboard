@@ -22,6 +22,7 @@ docker/authelia/notifications.txt
 
 # ── Node / Next.js ───────────────────────────────────────────────────────────
 dashboard/node_modules/
+bookstack/node_modules/
 dashboard/.next/
 
 # ── Claude IDE local settings ────────────────────────────────────────────────
