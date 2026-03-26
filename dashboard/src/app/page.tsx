@@ -1,4 +1,4 @@
-import { AppTile } from "@/components/AppTile";
+import { TileGrid } from "@/components/TileGrid";
 import { SERVICES } from "@/lib/services";
 
 export const dynamic = "force-dynamic";
@@ -144,9 +144,7 @@ export default async function Dashboard() {
           margin: "0 auto",
         }}
       >
-        {results.map((svc) => (
-          <AppTile key={svc.name} {...svc} />
-        ))}
+        <TileGrid tiles={results} />
       </main>
 
       {/* Footer */}

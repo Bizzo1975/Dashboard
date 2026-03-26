@@ -62,6 +62,11 @@ import data from '../data/about.json';
             <h3>{m.name}</h3>
             <p class="team-title">{m.title}</p>
             <p>{m.bio}</p>
+            {m.website && (
+              <a href={m.website} target="_blank" rel="noopener noreferrer" class="team-website">
+                Personal Website ↗
+              </a>
+            )}
           </div>
         ))}
       </div>
@@ -129,6 +134,8 @@ import data from '../data/about.json';
 .team-contact { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid #e2e8f0; }
 .team-contact-item { display: flex; align-items: center; gap: 8px; color: var(--navy); text-decoration: none; font-family: var(--font-heading); font-weight: 600; }
 .team-contact-item:hover { color: var(--gold); }
+.team-website { display: inline-block; margin-top: 10px; color: var(--gold); font-family: var(--font-heading); font-weight: 600; font-size: 15px; text-decoration: underline; }
+.team-website:hover { color: var(--gold-dark); }
 
 .facility-section { background: var(--navy); color: #fff; text-align: center; }
 .facility-section h2 { color: #fff; margin: 8px 0 20px; }

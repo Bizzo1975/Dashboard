@@ -22,6 +22,7 @@ interface AppTileProps {
   color: string;
   status: "up" | "down";
   latency: number;
+  logoUrl?: string;
 }
 
 export function AppTile({
@@ -32,6 +33,7 @@ export function AppTile({
   color,
   status,
   latency,
+  logoUrl,
 }: AppTileProps) {
   return (
     <a
@@ -58,7 +60,7 @@ export function AppTile({
           marginBottom: "16px",
         }}
       >
-        {/* Icon */}
+        {/* Icon / Logo */}
         <div
           style={{
             width: "48px",
@@ -69,9 +71,25 @@ export function AppTile({
             alignItems: "center",
             justifyContent: "center",
             fontSize: "24px",
+            overflow: "hidden",
+            flexShrink: 0,
           }}
         >
-          {icons[icon] || "🔧"}
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={name}
+              width={32}
+              height={32}
+              style={{ width: 32, height: 32, objectFit: "contain", display: "block" }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+                (e.currentTarget.parentElement as HTMLElement).innerText = icons[icon] || "🔧";
+              }}
+            />
+          ) : (
+            icons[icon] || "🔧"
+          )}
         </div>
 
         {/* Status indicator */}

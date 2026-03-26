@@ -8,7 +8,6 @@
     "intro": "Fill out the form and we'll get back to you within 2 business hours. Prefer to talk? Call us at (316) 768-0034.",
     "submitButton": "Send Message →",
     "requestTypes": [
-      { "value": "new-service", "label": "New Service", "urlParam": "service" },
       { "value": "tech-support", "label": "Tech Support", "urlParam": "tech" },
       { "value": "customer-support", "label": "Customer Support", "urlParam": "support" },
       { "value": "sales", "label": "Sales Inquiry", "urlParam": "sales" },

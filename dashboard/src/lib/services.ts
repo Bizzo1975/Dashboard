@@ -9,6 +9,7 @@ export type ServiceDef = {
   healthHost?: string;
   icon: string;
   color: string;
+  logoUrl?: string;
 };
 
 export const SERVICES: ServiceDef[] = [
@@ -21,6 +22,7 @@ export const SERVICES: ServiceDef[] = [
     healthHost: "ops.kecktech.net",
     icon: "briefcase",
     color: "#0089ff",
+    logoUrl: "/logos/erpnext.png",
   },
   {
     name: "Zammad",
@@ -29,6 +31,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://zammad-railsserver:3000/api/v1/signshow",
     icon: "headset",
     color: "#0D6E6E",
+    logoUrl: "/logos/zammad.svg",
   },
   {
     name: "Vaultwarden",
@@ -37,6 +40,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://vaultwarden:80/alive",
     icon: "lock",
     color: "#818cf8",
+    logoUrl: "/logos/vaultwarden.svg",
   },
   {
     name: "n8n",
@@ -45,6 +49,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://n8n:5678/healthz",
     icon: "workflow",
     color: "#ff6d5a",
+    logoUrl: "/logos/n8n.png",
   },
   {
     name: "Kecktech Website",
@@ -53,6 +58,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://kecktech-web:80/",
     icon: "globe",
     color: "#C07810",
+    logoUrl: "/logos/kecktech.svg",
   },
   {
     name: "Site Admin",
@@ -61,6 +67,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://kecktech-admin:3000/",
     icon: "edit",
     color: "#1E3A5F",
+    logoUrl: "/logos/kecktech.svg",
   },
   {
     name: "WikiJS",
@@ -69,6 +76,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://wikijs:3000/healthz",
     icon: "book",
     color: "#1E3A5F",
+    logoUrl: "/logos/wikijs.svg",
   },
   {
     name: "BookStack",
@@ -77,6 +85,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://bookstack:80/",
     icon: "book",
     color: "#0D6E6E",
+    logoUrl: "/logos/bookstack.svg",
   },
   {
     name: "Umami",
@@ -85,6 +94,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://umami:3000/api/heartbeat",
     icon: "chart",
     color: "#f59e0b",
+    logoUrl: "/logos/umami.png",
   },
   {
     name: "Tactical RMM",
@@ -94,6 +104,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://trmm-nginx:8080/",
     icon: "monitor",
     color: "#6366f1",
+    logoUrl: "/logos/trmm.svg",
   },
   {
     name: "Mailcow",
@@ -102,6 +113,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://mailcowdockerized-nginx-mailcow-1:8081/",
     icon: "mail",
     color: "#f43f5e",
+    logoUrl: "/logos/mailcow.svg",
   },
   {
     name: "Portainer",
@@ -110,6 +122,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://portainer:9000/api/system/status",
     icon: "container",
     color: "#13bef9",
+    logoUrl: "/logos/portainer.png",
   },
   {
     name: "Traefik",
@@ -118,6 +131,7 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://traefik:80/ping",
     icon: "route",
     color: "#38a3a5",
+    logoUrl: "/logos/traefik.png",
   },
   {
     name: "Authelia",
@@ -126,5 +140,6 @@ export const SERVICES: ServiceDef[] = [
     healthUrl: "http://authelia:9091/api/health",
     icon: "shield",
     color: "#1a56db",
+    logoUrl: "/logos/authelia.png",
   },
 ];

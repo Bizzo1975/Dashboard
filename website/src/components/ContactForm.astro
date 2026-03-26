@@ -108,7 +108,7 @@ textarea { resize: vertical; min-height: 120px; }
 /* Request type button group */
 .type-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 10px;
 }
 .type-btn {
@@ -119,8 +119,9 @@ textarea { resize: vertical; min-height: 120px; }
   background: #fff;
   border: 2px solid #CBD5E1;
   border-radius: 8px;
-  padding: 10px 18px;
+  padding: 10px 16px;
   cursor: pointer;
+  white-space: nowrap;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
 .type-btn:hover {
@@ -149,9 +150,10 @@ textarea { resize: vertical; min-height: 120px; }
 .form-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 [hidden] { display: none !important; }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .form-row { grid-template-columns: 1fr; }
-  .type-btn { font-size: 13px; padding: 8px 14px; }
+  .type-group { flex-wrap: wrap; }
+  .type-btn { font-size: 13px; padding: 8px 12px; }
 }
 </style>
 
@@ -163,7 +165,6 @@ const serviceSelect = document.getElementById('service') as HTMLSelectElement;
 
 // URL param → request type value map
 const paramMap: Record<string, string> = {
-  service: 'new-service',
   tech: 'tech-support',
   support: 'customer-support',
   sales: 'sales',

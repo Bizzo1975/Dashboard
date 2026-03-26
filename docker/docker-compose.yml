@@ -753,6 +753,7 @@ services:
       - PGID=1000
       - TZ=America/Chicago
       - APP_URL=https://wiki.kecktech.net
+      - APP_KEY=${BOOKSTACK_APP_KEY}
       - DB_HOST=bookstack-db
       - DB_PORT=3306
       - DB_DATABASE=bookstack

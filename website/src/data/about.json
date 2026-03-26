@@ -50,7 +50,8 @@
         "title": "Co-Founder & Lead Engineer",
         "bio": "30+ years of enterprise IT experience. Jon built the infrastructure that powers Kecktech — from the solar array on the roof to the AI pipelines in the code. He believes the best IT support is the kind you barely notice.",
         "photo": "/images/headshot.png",
-        "photoAlt": "Jon Keck, Co-Founder"
+        "photoAlt": "Jon Keck, Co-Founder",
+        "website": "https://www.willworkforlunch.com"
       },
       {
         "name": "Co-Founder",

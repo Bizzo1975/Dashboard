@@ -45,10 +45,10 @@ const cards = data.cards.map((card, i) => ({
       <h2>{data.faq.heading}</h2>
       <div class="faq-list">
         {data.faq.items.map(item => (
-          <div class="faq-item">
-            <p class="faq-q">{item.q}</p>
+          <details class="faq-item">
+            <summary class="faq-q">{item.q}</summary>
             <p class="faq-a">{item.a}</p>
-          </div>
+          </details>
         ))}
       </div>
     </div>
@@ -68,30 +68,47 @@ const cards = data.cards.map((card, i) => ({
 <style>
 .pricing-section { background: var(--off-white); }
 .pricing-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 28px;
 }
-/* Row 2: 2 cards centered */
-.pricing-grid > *:nth-child(4) { grid-column: 1 / span 1; margin-left: calc(50% + 14px); }
-.pricing-grid > *:nth-child(5) { grid-column: 3 / span 1; margin-left: 0; }
+.pricing-grid > * {
+  flex: 0 0 calc(33.333% - 20px);
+  min-width: 260px;
+}
 
 .faq-section { background: var(--white); }
-.faq-section h2 { margin: 8px 0 32px; }
-.faq-item { border-bottom: 1px solid #e2e8f0; padding: 24px 0; }
-.faq-q { font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 18px; margin-bottom: 8px; }
-.faq-a { color: var(--charcoal); font-size: 16px; margin: 0; }
+.faq-section h2 { margin: 8px 0 20px; }
+.faq-item { border-bottom: 1px solid #e2e8f0; }
+.faq-item:first-of-type { border-top: 1px solid #e2e8f0; }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 17px;
+  padding: 13px 0;
+  cursor: pointer;
+  list-style: none;
+  margin: 0;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::after { content: '+'; font-size: 20px; font-weight: 400; color: var(--gold); flex-shrink: 0; }
+.faq-item[open] .faq-q::after { content: '−'; }
+.faq-a { color: var(--charcoal); font-size: 15px; margin: 0 0 12px; padding-left: 2px; }
 
 .cta-banner { background: var(--navy); text-align: center; }
 .cta-banner h2 { color: #fff; margin-bottom: 14px; }
 .cta-banner p { color: var(--muted); font-size: 18px; margin-bottom: 32px; }
 
 @media (max-width: 900px) {
-  .pricing-grid { grid-template-columns: repeat(2, 1fr); }
-  .pricing-grid > *:nth-child(4),
-  .pricing-grid > *:nth-child(5) { grid-column: auto; margin-left: 0; }
+  .pricing-grid > * { flex: 0 0 calc(50% - 14px); }
 }
 @media (max-width: 560px) {
-  .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-grid > * { flex: 0 0 100%; }
 }
 </style>
