@@ -1,0 +1,2541 @@
+{
+  "timestamp": "2026-03-26T17:02:59.350Z",
+  "dryRun": true,
+  "singleId": null,
+  "pilotLimit": null,
+  "totalCandidates": 505,
+  "uploaded": [],
+  "updated": [],
+  "skipped": [
+    {
+      "reason": "no markdown files found in bookstack/articles; using catalog content when available"
+    },
+    {
+      "kbId": "KB-0001",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0002",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0003",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0004",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0005",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0006",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0007",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0008",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0009",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0010",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0011",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0012",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0013",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0014",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0015",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0016",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0017",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0018",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0019",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0020",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0021",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0022",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0023",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0024",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0025",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0026",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0027",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0028",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0029",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0030",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0031",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0032",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0033",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0034",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0035",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0036",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0037",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0038",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0039",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0040",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0041",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0042",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0043",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0044",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0045",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0046",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0047",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0048",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0049",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0050",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0051",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0052",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0053",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0054",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0055",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0056",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0057",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0058",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0059",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0060",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0061",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0062",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0063",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0064",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0065",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0066",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0067",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0068",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0069",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0070",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0071",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0072",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0073",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0074",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0075",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0076",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0077",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0078",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0079",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0080",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0081",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0082",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0083",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0084",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0085",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0086",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0087",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0088",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0089",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0090",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0091",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0092",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0093",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0094",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0095",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0096",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0097",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0098",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0099",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0100",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0101",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0102",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0103",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0104",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0105",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0106",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0107",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0108",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0109",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0110",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0111",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0112",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0113",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0114",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0115",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0116",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0117",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0118",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0119",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0120",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0121",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0122",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0123",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0124",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0125",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0126",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0127",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0128",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0129",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0130",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0131",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0132",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0133",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0134",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0135",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0136",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0137",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0138",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0139",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0140",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0141",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0142",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0143",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0144",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0145",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0146",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0147",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0148",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0149",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0150",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0151",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0152",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0153",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0154",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0155",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0156",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0157",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0158",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0159",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0160",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0161",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0162",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0163",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0164",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0165",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0166",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0167",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0168",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0169",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0170",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0171",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0172",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0173",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0174",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0175",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0176",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0177",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0178",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0179",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0180",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0181",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0182",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0183",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0184",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0185",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0186",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0187",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0188",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0189",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0190",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0191",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0192",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0193",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0194",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0195",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0196",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0197",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0198",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0199",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0200",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0201",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0202",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0203",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0204",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0205",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0206",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0207",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0208",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0209",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0210",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0211",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0212",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0213",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0214",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0215",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0216",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0217",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0218",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0219",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0220",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0221",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0222",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0223",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0224",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0225",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0226",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0227",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0228",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0229",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0230",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0231",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0232",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0233",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0234",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0235",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0236",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0237",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0238",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0239",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0240",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0241",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0242",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0243",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0244",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0245",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0246",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0247",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0248",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0249",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0250",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0251",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0252",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0253",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0254",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0255",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0256",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0257",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0258",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0259",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0260",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0261",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0262",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0263",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0264",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0265",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0266",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0267",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0268",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0269",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0270",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0271",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0272",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0273",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0274",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0275",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0276",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0277",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0278",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0279",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0280",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0281",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0282",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0283",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0284",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0285",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0286",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0287",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0288",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0289",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0290",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0291",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0292",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0293",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0294",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0295",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0296",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0297",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0298",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0299",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0300",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0301",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0302",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0303",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0304",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0305",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0306",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0307",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0308",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0309",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0310",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0311",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0312",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0313",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0314",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0315",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0316",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0317",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0318",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0319",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0320",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0321",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0322",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0323",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0324",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0325",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0326",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0327",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0328",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0329",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0330",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0331",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0332",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0333",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0334",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0335",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0336",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0337",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0338",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0339",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0340",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0341",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0342",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0343",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0344",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0345",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0346",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0347",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0348",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0349",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0350",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0351",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0352",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0353",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0354",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0355",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0356",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0357",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0358",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0359",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0360",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0361",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0362",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0363",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0364",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0365",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0366",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0367",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0368",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0369",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0370",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0371",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0372",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0373",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0374",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0375",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0376",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0377",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0378",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0379",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0380",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0381",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0382",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0383",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0384",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0385",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0386",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0387",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0388",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0389",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0390",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0391",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0392",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0393",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0394",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0395",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0396",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0397",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0398",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0399",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0400",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0401",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0402",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0403",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0404",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0405",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0406",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0407",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0408",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0409",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0410",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0411",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0412",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0413",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0414",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0415",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0416",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0417",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0418",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0419",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0420",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0421",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0422",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0423",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0424",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0425",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0426",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0427",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0428",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0429",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0430",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0431",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0432",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0433",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0434",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0435",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0436",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0437",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0438",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0439",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0440",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0441",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0442",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0443",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0444",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0445",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0446",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0447",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0448",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0449",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0450",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0451",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0452",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0453",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0454",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0455",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0456",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0457",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0458",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0459",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0460",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0461",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0462",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0463",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0464",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0465",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0466",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0467",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0468",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0469",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0470",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0471",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0472",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0473",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0474",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0475",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0476",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0477",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0478",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0479",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0480",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0481",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0482",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0483",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0484",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0485",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0486",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0487",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0488",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0489",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0490",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0491",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0492",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0493",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0494",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0495",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0496",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0497",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0498",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0499",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0500",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0501",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0502",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0503",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0504",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0505",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    }
+  ],
+  "errors": [],
+  "missingMetadata": []
+}

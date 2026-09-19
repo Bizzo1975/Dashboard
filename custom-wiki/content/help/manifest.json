@@ -1,0 +1,625 @@
+[
+  {
+    "app": "erpnext",
+    "subcategory": "getting-started",
+    "slug": "login-and-desk",
+    "title": "Log in to ERPNext Desk",
+    "path": "content/help/erpnext/getting-started/login-and-desk.md"
+  },
+  {
+    "app": "erpnext",
+    "subcategory": "how-to",
+    "slug": "create-customer",
+    "title": "Create a customer in ERPNext",
+    "path": "content/help/erpnext/how-to/create-customer.md"
+  },
+  {
+    "app": "erpnext",
+    "subcategory": "troubleshoot",
+    "slug": "cannot-open-desk",
+    "title": "Cannot open ERPNext Desk",
+    "path": "content/help/erpnext/troubleshoot/cannot-open-desk.md"
+  },
+  {
+    "app": "erpnext",
+    "subcategory": "admin",
+    "slug": "manage-roles",
+    "title": "Manage ERPNext roles and permissions",
+    "path": "content/help/erpnext/admin/manage-roles.md"
+  },
+  {
+    "app": "zammad",
+    "subcategory": "getting-started",
+    "slug": "open-a-ticket",
+    "title": "Open a support ticket in Zammad",
+    "path": "content/help/zammad/getting-started/open-a-ticket.md"
+  },
+  {
+    "app": "zammad",
+    "subcategory": "how-to",
+    "slug": "customer-reply",
+    "title": "Reply to a support ticket",
+    "path": "content/help/zammad/how-to/customer-reply.md"
+  },
+  {
+    "app": "zammad",
+    "subcategory": "troubleshoot",
+    "slug": "ticket-not-visible",
+    "title": "Ticket missing after submit",
+    "path": "content/help/zammad/troubleshoot/ticket-not-visible.md"
+  },
+  {
+    "app": "zammad",
+    "subcategory": "admin",
+    "slug": "agent-queue",
+    "title": "Work the agent ticket queue",
+    "path": "content/help/zammad/admin/agent-queue.md"
+  },
+  {
+    "app": "vaultwarden",
+    "subcategory": "getting-started",
+    "slug": "create-vault",
+    "title": "Create and unlock your vault",
+    "path": "content/help/vaultwarden/getting-started/create-vault.md"
+  },
+  {
+    "app": "vaultwarden",
+    "subcategory": "how-to",
+    "slug": "share-login-item",
+    "title": "Store and share a login item",
+    "path": "content/help/vaultwarden/how-to/share-login-item.md"
+  },
+  {
+    "app": "vaultwarden",
+    "subcategory": "troubleshoot",
+    "slug": "cannot-unlock",
+    "title": "Cannot unlock Vaultwarden",
+    "path": "content/help/vaultwarden/troubleshoot/cannot-unlock.md"
+  },
+  {
+    "app": "vaultwarden",
+    "subcategory": "admin",
+    "slug": "org-collections",
+    "title": "Manage organization collections",
+    "path": "content/help/vaultwarden/admin/org-collections.md"
+  },
+  {
+    "app": "n8n",
+    "subcategory": "getting-started",
+    "slug": "open-editor",
+    "title": "Open the n8n workflow editor",
+    "path": "content/help/n8n/getting-started/open-editor.md"
+  },
+  {
+    "app": "n8n",
+    "subcategory": "how-to",
+    "slug": "test-webhook",
+    "title": "Test a webhook-triggered workflow",
+    "path": "content/help/n8n/how-to/test-webhook.md"
+  },
+  {
+    "app": "n8n",
+    "subcategory": "troubleshoot",
+    "slug": "executions-failing",
+    "title": "Workflow executions failing",
+    "path": "content/help/n8n/troubleshoot/executions-failing.md"
+  },
+  {
+    "app": "n8n",
+    "subcategory": "admin",
+    "slug": "manage-credentials",
+    "title": "Manage n8n credentials",
+    "path": "content/help/n8n/admin/manage-credentials.md"
+  },
+  {
+    "app": "website",
+    "subcategory": "getting-started",
+    "slug": "browse-site",
+    "title": "Browse the public website",
+    "path": "content/help/website/getting-started/browse-site.md"
+  },
+  {
+    "app": "website",
+    "subcategory": "how-to",
+    "slug": "contact-form",
+    "title": "Send a message with the contact form",
+    "path": "content/help/website/how-to/contact-form.md"
+  },
+  {
+    "app": "website",
+    "subcategory": "troubleshoot",
+    "slug": "page-not-loading",
+    "title": "Website page or form not loading",
+    "path": "content/help/website/troubleshoot/page-not-loading.md"
+  },
+  {
+    "app": "site-admin",
+    "subcategory": "getting-started",
+    "slug": "sign-in-cms",
+    "title": "Sign in to Site Admin",
+    "path": "content/help/site-admin/getting-started/sign-in-cms.md"
+  },
+  {
+    "app": "site-admin",
+    "subcategory": "how-to",
+    "slug": "edit-a-page",
+    "title": "Edit a website page",
+    "path": "content/help/site-admin/how-to/edit-a-page.md"
+  },
+  {
+    "app": "site-admin",
+    "subcategory": "troubleshoot",
+    "slug": "cannot-save",
+    "title": "Cannot save or publish in Site Admin",
+    "path": "content/help/site-admin/troubleshoot/cannot-save.md"
+  },
+  {
+    "app": "site-admin",
+    "subcategory": "admin",
+    "slug": "publish-checklist",
+    "title": "Publish and review checklist",
+    "path": "content/help/site-admin/admin/publish-checklist.md"
+  },
+  {
+    "app": "wiki",
+    "subcategory": "getting-started",
+    "slug": "find-an-article",
+    "title": "Find an article in the Help Center",
+    "path": "content/help/wiki/getting-started/find-an-article.md"
+  },
+  {
+    "app": "wiki",
+    "subcategory": "how-to",
+    "slug": "suggest-improvement",
+    "title": "Suggest an article improvement",
+    "path": "content/help/wiki/how-to/suggest-improvement.md"
+  },
+  {
+    "app": "wiki",
+    "subcategory": "troubleshoot",
+    "slug": "search-misses",
+    "title": "Search returns nothing useful",
+    "path": "content/help/wiki/troubleshoot/search-misses.md"
+  },
+  {
+    "app": "wiki",
+    "subcategory": "admin",
+    "slug": "import-content",
+    "title": "Import help content from markdown",
+    "path": "content/help/wiki/admin/import-content.md"
+  },
+  {
+    "app": "umami",
+    "subcategory": "getting-started",
+    "slug": "view-dashboard",
+    "title": "View Umami analytics dashboard",
+    "path": "content/help/umami/getting-started/view-dashboard.md"
+  },
+  {
+    "app": "umami",
+    "subcategory": "how-to",
+    "slug": "filter-reports",
+    "title": "Filter pages and referrers",
+    "path": "content/help/umami/how-to/filter-reports.md"
+  },
+  {
+    "app": "umami",
+    "subcategory": "troubleshoot",
+    "slug": "no-data",
+    "title": "No data in Umami",
+    "path": "content/help/umami/troubleshoot/no-data.md"
+  },
+  {
+    "app": "umami",
+    "subcategory": "admin",
+    "slug": "add-website",
+    "title": "Add a website property in Umami",
+    "path": "content/help/umami/admin/add-website.md"
+  },
+  {
+    "app": "tactical-rmm",
+    "subcategory": "getting-started",
+    "slug": "open-rmm",
+    "title": "Open Tactical RMM and find an agent",
+    "path": "content/help/tactical-rmm/getting-started/open-rmm.md"
+  },
+  {
+    "app": "tactical-rmm",
+    "subcategory": "how-to",
+    "slug": "run-script",
+    "title": "Run a script on a managed agent",
+    "path": "content/help/tactical-rmm/how-to/run-script.md"
+  },
+  {
+    "app": "tactical-rmm",
+    "subcategory": "troubleshoot",
+    "slug": "agent-offline",
+    "title": "Tactical RMM agent offline",
+    "path": "content/help/tactical-rmm/troubleshoot/agent-offline.md"
+  },
+  {
+    "app": "tactical-rmm",
+    "subcategory": "admin",
+    "slug": "deploy-agent",
+    "title": "Deploy a Tactical RMM agent",
+    "path": "content/help/tactical-rmm/admin/deploy-agent.md"
+  },
+  {
+    "app": "portainer",
+    "subcategory": "getting-started",
+    "slug": "access-portainer",
+    "title": "Access Portainer environments",
+    "path": "content/help/portainer/getting-started/access-portainer.md"
+  },
+  {
+    "app": "portainer",
+    "subcategory": "how-to",
+    "slug": "view-logs",
+    "title": "Inspect logs for a container",
+    "path": "content/help/portainer/how-to/view-logs.md"
+  },
+  {
+    "app": "portainer",
+    "subcategory": "troubleshoot",
+    "slug": "endpoint-unreachable",
+    "title": "Portainer login or endpoint unreachable",
+    "path": "content/help/portainer/troubleshoot/endpoint-unreachable.md"
+  },
+  {
+    "app": "portainer",
+    "subcategory": "admin",
+    "slug": "stack-update",
+    "title": "Safe stack update checklist",
+    "path": "content/help/portainer/admin/stack-update.md"
+  },
+  {
+    "app": "traefik",
+    "subcategory": "getting-started",
+    "slug": "read-dashboard",
+    "title": "Read the Traefik dashboard",
+    "path": "content/help/traefik/getting-started/read-dashboard.md"
+  },
+  {
+    "app": "traefik",
+    "subcategory": "how-to",
+    "slug": "trace-502",
+    "title": "Trace a 502 Bad Gateway",
+    "path": "content/help/traefik/how-to/trace-502.md"
+  },
+  {
+    "app": "traefik",
+    "subcategory": "troubleshoot",
+    "slug": "router-missing",
+    "title": "Router missing or TLS errors",
+    "path": "content/help/traefik/troubleshoot/router-missing.md"
+  },
+  {
+    "app": "traefik",
+    "subcategory": "admin",
+    "slug": "router-labels",
+    "title": "Add or update a Traefik router label",
+    "path": "content/help/traefik/admin/router-labels.md"
+  },
+  {
+    "app": "authelia",
+    "subcategory": "getting-started",
+    "slug": "first-login",
+    "title": "Complete your first Authelia SSO login",
+    "path": "content/help/authelia/getting-started/first-login.md"
+  },
+  {
+    "app": "authelia",
+    "subcategory": "how-to",
+    "slug": "enroll-2fa",
+    "title": "Enroll or reset Authelia 2FA",
+    "path": "content/help/authelia/how-to/enroll-2fa.md"
+  },
+  {
+    "app": "authelia",
+    "subcategory": "troubleshoot",
+    "slug": "redirect-loop",
+    "title": "Stuck in Authelia redirect loop",
+    "path": "content/help/authelia/troubleshoot/redirect-loop.md"
+  },
+  {
+    "app": "authelia",
+    "subcategory": "admin",
+    "slug": "access-control",
+    "title": "Adjust Authelia access control rules",
+    "path": "content/help/authelia/admin/access-control.md"
+  },
+  {
+    "app": "lldap",
+    "subcategory": "getting-started",
+    "slug": "admin-console",
+    "title": "Open the LLDAP admin console",
+    "path": "content/help/lldap/getting-started/admin-console.md"
+  },
+  {
+    "app": "lldap",
+    "subcategory": "how-to",
+    "slug": "create-user",
+    "title": "Create a user and assign groups",
+    "path": "content/help/lldap/how-to/create-user.md"
+  },
+  {
+    "app": "lldap",
+    "subcategory": "troubleshoot",
+    "slug": "user-auth-fail",
+    "title": "User cannot sign in via Authelia",
+    "path": "content/help/lldap/troubleshoot/user-auth-fail.md"
+  },
+  {
+    "app": "lldap",
+    "subcategory": "admin",
+    "slug": "group-policy",
+    "title": "Group naming and off-boarding",
+    "path": "content/help/lldap/admin/group-policy.md"
+  },
+  {
+    "app": "rustdesk",
+    "subcategory": "getting-started",
+    "slug": "install-client",
+    "title": "Install the RustDesk client",
+    "path": "content/help/rustdesk/getting-started/install-client.md"
+  },
+  {
+    "app": "rustdesk",
+    "subcategory": "how-to",
+    "slug": "connect-remote",
+    "title": "Connect to a remote RustDesk ID",
+    "path": "content/help/rustdesk/how-to/connect-remote.md"
+  },
+  {
+    "app": "rustdesk",
+    "subcategory": "troubleshoot",
+    "slug": "cannot-connect",
+    "title": "RustDesk connection fails",
+    "path": "content/help/rustdesk/troubleshoot/cannot-connect.md"
+  },
+  {
+    "app": "portal",
+    "subcategory": "getting-started",
+    "slug": "sign-in",
+    "title": "Sign in to the customer portal",
+    "path": "content/help/portal/getting-started/sign-in.md"
+  },
+  {
+    "app": "portal",
+    "subcategory": "how-to",
+    "slug": "view-tickets-invoices",
+    "title": "View tickets and invoices in the portal",
+    "path": "content/help/portal/how-to/view-tickets-invoices.md"
+  },
+  {
+    "app": "portal",
+    "subcategory": "troubleshoot",
+    "slug": "empty-or-403",
+    "title": "Portal empty or forbidden",
+    "path": "content/help/portal/troubleshoot/empty-or-403.md"
+  },
+  {
+    "app": "portal",
+    "subcategory": "admin",
+    "slug": "link-accounts",
+    "title": "Link portal user to Zammad and ERPNext",
+    "path": "content/help/portal/admin/link-accounts.md"
+  },
+  {
+    "app": "marketlist",
+    "subcategory": "getting-started",
+    "slug": "open-demo",
+    "title": "Open the Marketlist demo",
+    "path": "content/help/marketlist/getting-started/open-demo.md"
+  },
+  {
+    "app": "marketlist",
+    "subcategory": "how-to",
+    "slug": "add-items",
+    "title": "Add items to a Marketlist list",
+    "path": "content/help/marketlist/how-to/add-items.md"
+  },
+  {
+    "app": "marketlist",
+    "subcategory": "troubleshoot",
+    "slug": "demo-access",
+    "title": "Marketlist demo login or data issues",
+    "path": "content/help/marketlist/troubleshoot/demo-access.md"
+  },
+  {
+    "app": "flooros",
+    "subcategory": "getting-started",
+    "slug": "open-demo",
+    "title": "Open the FloorOS demo",
+    "path": "content/help/flooros/getting-started/open-demo.md"
+  },
+  {
+    "app": "flooros",
+    "subcategory": "how-to",
+    "slug": "update-space-status",
+    "title": "Update a space status in FloorOS",
+    "path": "content/help/flooros/how-to/update-space-status.md"
+  },
+  {
+    "app": "flooros",
+    "subcategory": "troubleshoot",
+    "slug": "map-not-loading",
+    "title": "Floor plan not rendering",
+    "path": "content/help/flooros/troubleshoot/map-not-loading.md"
+  },
+  {
+    "app": "argo",
+    "subcategory": "getting-started",
+    "slug": "open-demo",
+    "title": "Open the ARGO demo",
+    "path": "content/help/argo/getting-started/open-demo.md"
+  },
+  {
+    "app": "argo",
+    "subcategory": "how-to",
+    "slug": "create-sample-record",
+    "title": "Create a sample record in ARGO",
+    "path": "content/help/argo/how-to/create-sample-record.md"
+  },
+  {
+    "app": "argo",
+    "subcategory": "troubleshoot",
+    "slug": "demo-errors",
+    "title": "ARGO demo errors",
+    "path": "content/help/argo/troubleshoot/demo-errors.md"
+  },
+  {
+    "app": "cleaner",
+    "subcategory": "getting-started",
+    "slug": "open-demo",
+    "title": "Open the Cleaner demo",
+    "path": "content/help/cleaner/getting-started/open-demo.md"
+  },
+  {
+    "app": "cleaner",
+    "subcategory": "how-to",
+    "slug": "complete-checklist",
+    "title": "Complete a cleaning checklist",
+    "path": "content/help/cleaner/how-to/complete-checklist.md"
+  },
+  {
+    "app": "cleaner",
+    "subcategory": "troubleshoot",
+    "slug": "jobs-stuck",
+    "title": "Cleaner jobs not updating",
+    "path": "content/help/cleaner/troubleshoot/jobs-stuck.md"
+  },
+  {
+    "app": "netops",
+    "subcategory": "getting-started",
+    "slug": "open-netops",
+    "title": "Open the NetOps console",
+    "path": "content/help/netops/getting-started/open-netops.md"
+  },
+  {
+    "app": "netops",
+    "subcategory": "how-to",
+    "slug": "document-change",
+    "title": "Document a network change",
+    "path": "content/help/netops/how-to/document-change.md"
+  },
+  {
+    "app": "netops",
+    "subcategory": "troubleshoot",
+    "slug": "unreachable",
+    "title": "NetOps console unreachable",
+    "path": "content/help/netops/troubleshoot/unreachable.md"
+  },
+  {
+    "app": "netops",
+    "subcategory": "admin",
+    "slug": "inventory-hygiene",
+    "title": "Keep NetOps inventory accurate",
+    "path": "content/help/netops/admin/inventory-hygiene.md"
+  },
+  {
+    "app": "chat",
+    "subcategory": "getting-started",
+    "slug": "join-workspace",
+    "title": "Join the Kecktech chat workspace",
+    "path": "content/help/chat/getting-started/join-workspace.md"
+  },
+  {
+    "app": "chat",
+    "subcategory": "how-to",
+    "slug": "channels-and-files",
+    "title": "Create a channel and share files",
+    "path": "content/help/chat/how-to/channels-and-files.md"
+  },
+  {
+    "app": "chat",
+    "subcategory": "troubleshoot",
+    "slug": "cannot-connect",
+    "title": "Cannot connect to chat",
+    "path": "content/help/chat/troubleshoot/cannot-connect.md"
+  },
+  {
+    "app": "chat",
+    "subcategory": "admin",
+    "slug": "moderation",
+    "title": "Chat moderation basics",
+    "path": "content/help/chat/admin/moderation.md"
+  },
+  {
+    "app": "sovereign-hub",
+    "subcategory": "getting-started",
+    "slug": "open-hub",
+    "title": "Open Sovereign Hub",
+    "path": "content/help/sovereign-hub/getting-started/open-hub.md"
+  },
+  {
+    "app": "sovereign-hub",
+    "subcategory": "how-to",
+    "slug": "launch-service",
+    "title": "Launch a linked service from the hub",
+    "path": "content/help/sovereign-hub/how-to/launch-service.md"
+  },
+  {
+    "app": "sovereign-hub",
+    "subcategory": "troubleshoot",
+    "slug": "tile-failures",
+    "title": "Sovereign Hub tile failures",
+    "path": "content/help/sovereign-hub/troubleshoot/tile-failures.md"
+  },
+  {
+    "app": "sovereign-hub",
+    "subcategory": "admin",
+    "slug": "manage-catalog",
+    "title": "Manage Sovereign Hub catalog entries",
+    "path": "content/help/sovereign-hub/admin/manage-catalog.md"
+  },
+  {
+    "app": "farmbot",
+    "subcategory": "getting-started",
+    "slug": "open-demo",
+    "title": "Open the FarmBot demo",
+    "path": "content/help/farmbot/getting-started/open-demo.md"
+  },
+  {
+    "app": "farmbot",
+    "subcategory": "how-to",
+    "slug": "run-sequence",
+    "title": "Run a demo FarmBot sequence",
+    "path": "content/help/farmbot/how-to/run-sequence.md"
+  },
+  {
+    "app": "farmbot",
+    "subcategory": "troubleshoot",
+    "slug": "unresponsive",
+    "title": "FarmBot controls unresponsive",
+    "path": "content/help/farmbot/troubleshoot/unresponsive.md"
+  },
+  {
+    "app": "dashboard",
+    "subcategory": "getting-started",
+    "slug": "use-app-tiles",
+    "title": "Use Apps Dashboard tiles",
+    "path": "content/help/dashboard/getting-started/use-app-tiles.md"
+  },
+  {
+    "app": "dashboard",
+    "subcategory": "how-to",
+    "slug": "find-ops-tools",
+    "title": "Find ops tools on the dashboard",
+    "path": "content/help/dashboard/how-to/find-ops-tools.md"
+  },
+  {
+    "app": "dashboard",
+    "subcategory": "troubleshoot",
+    "slug": "tile-403",
+    "title": "Dashboard tile opens wrong app or 403",
+    "path": "content/help/dashboard/troubleshoot/tile-403.md"
+  },
+  {
+    "app": "dashboard",
+    "subcategory": "admin",
+    "slug": "configure-tiles",
+    "title": "Configure dashboard tiles",
+    "path": "content/help/dashboard/admin/configure-tiles.md"
+  }
+]

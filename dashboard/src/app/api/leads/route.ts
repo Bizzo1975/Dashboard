@@ -4,7 +4,9 @@ import { createLead } from "@/lib/erpnext";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { lead_name, company_name, phone, email_id, source, notes } = body;
+    const { lead_name, company_name, phone, email_id, notes } = body;
+    // Support both `source` and `utm_source` field names from the form
+    const source: string | undefined = body.source || body.utm_source;
     if (!lead_name) {
       return NextResponse.json({ error: "lead_name is required" }, { status: 400 });
     }

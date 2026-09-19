@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-03-26T18:18:28.634Z",
+  "dryRun": true,
+  "singleId": null,
+  "pilotLimit": 25,
+  "totalCandidates": 25,
+  "uploaded": [],
+  "updated": [],
+  "skipped": [
+    {
+      "reason": "no markdown files found in bookstack/articles; using catalog content when available"
+    },
+    {
+      "kbId": "KB-0001",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0002",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0003",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0004",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0005",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0006",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0007",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0008",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0009",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0010",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0011",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0012",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0013",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0014",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0015",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0016",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0017",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0018",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0019",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0020",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0021",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0022",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0023",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0024",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    },
+    {
+      "kbId": "KB-0025",
+      "file": null,
+      "reason": "no markdown file and no catalog content field"
+    }
+  ],
+  "errors": [],
+  "missingMetadata": []
+}

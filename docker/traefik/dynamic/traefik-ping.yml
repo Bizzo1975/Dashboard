@@ -1,0 +1,12 @@
+# Traefik self-health: expose ping@internal on traefik.kecktech.net without Authelia.
+# Dashboard health checks GET https://10.20.0.100/ping with SNI Host traefik.kecktech.net.
+# Priority above the Authelia-protected api@internal dashboard router.
+http:
+  routers:
+    traefik-ping:
+      rule: "Host(`traefik.kecktech.net`) && PathPrefix(`/ping`)"
+      entrypoints:
+        - websecure
+      service: ping@internal
+      priority: 1000
+      tls: {}

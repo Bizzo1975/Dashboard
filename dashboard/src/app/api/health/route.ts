@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { SERVICES } from "@/lib/services";
+import { checkHealth } from "@/lib/checkHealth";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -26,35 +27,20 @@ export async function GET(request: Request) {
   });
 }
 
-async function checkOne(def: { name: string; healthUrl: string; healthHost?: string }) {
-  const start = Date.now();
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const headers = new Headers();
-    if (def.healthHost) {
-      headers.set("Host", def.healthHost);
-    }
-    const res = await fetch(def.healthUrl, {
-      signal: controller.signal,
-      cache: "no-store",
-      redirect: "manual",
-      headers,
-    });
-    clearTimeout(timeout);
-    const up = res.status < 400;
-    return {
-      name: def.name,
-      status: up ? ("up" as const) : ("down" as const),
-      latency: Date.now() - start,
-      statusCode: res.status,
-    };
-  } catch {
-    return {
-      name: def.name,
-      status: "down" as const,
-      latency: Date.now() - start,
-      statusCode: 0,
-    };
+async function checkOne(def: {
+  name: string;
+  healthUrl: string;
+  healthHost?: string;
+  noHealthCheck?: boolean;
+}) {
+  if (def.noHealthCheck) {
+    return { name: def.name, status: "up" as const, latency: 0, statusCode: 0 };
   }
+  const h = await checkHealth(def.healthUrl, def.healthHost);
+  return {
+    name: def.name,
+    status: h.status,
+    latency: h.latency,
+    statusCode: h.statusCode,
+  };
 }

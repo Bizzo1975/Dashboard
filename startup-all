@@ -7,23 +7,28 @@
 set -e
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
-echo "=== [1/4] Mailcow (before main stack — Authelia needs SMTP on mail.kecktech.net:587) ==="
+echo "=== [1/5] Website dist build (website/dist) ==="
+cd "$ROOT/website"
+npm run build
+
+echo ""
+echo "=== [2/5] Mailcow (before main stack — Authelia needs SMTP on mail.kecktech.net:587) ==="
 cd "$ROOT/mailcow"
 docker compose up -d
 
 echo ""
-echo "=== [2/4] Main stack (Traefik, Authelia, LLDAP, FreeScout, Vaultwarden,"
+echo "=== [3/5] Main stack (Traefik, Authelia, LLDAP, FreeScout, Vaultwarden,"
 echo "         n8n, WordPress, WikiJS, Umami, RustDesk, Heimdall, Portainer) ==="
 cd "$ROOT/docker"
 docker compose up -d
 
 echo ""
-echo "=== [3/4] Tactical RMM ==="
+echo "=== [4/5] Tactical RMM ==="
 cd "$ROOT/tactical"
 docker compose up -d
 
 echo ""
-echo "=== [4/4] ERPNext ==="
+echo "=== [5/5] ERPNext ==="
 cd "$ROOT"
 bash "$ROOT/startup-erpnext.sh" || echo "[WARN] ERPNext start failed — check ops.kecktech.net"
 

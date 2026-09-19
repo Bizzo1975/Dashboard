@@ -13,11 +13,11 @@ services:
       - default
       - kecktech_front
     environment:
-      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-ops.kecktech.net}
+      FRAPPE_SITE_NAME_HEADER: ${FRAPPE_SITE_NAME_HEADER:-erp.kecktech.net}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=kecktech_front"
-      - "traefik.http.routers.erpnext.rule=Host(`ops.kecktech.net`)"
+      - "traefik.http.routers.erpnext.rule=Host(`erp.kecktech.net`) || Host(`ops.kecktech.net`)"
       - "traefik.http.routers.erpnext.entrypoints=websecure"
       - "traefik.http.routers.erpnext.tls=true"
       - "traefik.http.services.erpnext.loadbalancer.server.port=8080"

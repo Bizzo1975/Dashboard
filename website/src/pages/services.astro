@@ -4,14 +4,14 @@ import Hero from '../components/Hero.astro';
 import data from '../data/services.json';
 
 // Colors are structural — kept in source, not JSON
-const serviceColors = ['#0D6E6E', '#2E7D32', '#C07810', '#7C3AED', '#4A6887'];
+const serviceColors = ['#0D6E6E', '#2E7D32', '#C07810', '#7C3AED'];
 
 const services = data.services.map((svc, i) => ({ ...svc, color: serviceColors[i] }));
 ---
 
 <Base
   title="Services"
-  description="Five IT service lines from Kecktech — White Glove Managed IT, HaaS, AI Custom App Development, Senior Technology Concierge, and Sovereign Private Hosting."
+  description="Four IT service lines from Kecktech — White Glove Managed IT, HaaS, AI Custom App Development, and Senior Technology Concierge. Kansas-based, disability-led, human-centered."
 >
 
   <Hero

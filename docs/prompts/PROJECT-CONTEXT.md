@@ -2,7 +2,7 @@
 
 ## Business Context
 
-Kecktech is a family IT services business in Park City, Kansas, operating a solar-powered private data center. The business provides White Glove remote support, Hardware-as-a-Service (HaaS) using refurbished enterprise gear, and custom application development for SMB clients. All services follow Green IT and Circular Economy principles.
+Kecktech is a family IT services business in Park City, Kansas, currently operating from residential home infrastructure while fundraising toward a purpose-built solar-powered data center (target: ~$250K, 1–2 year goal). The business provides White Glove remote support, Hardware-as-a-Service (HaaS) using refurbished enterprise gear, and custom application development for SMB clients. All services follow Green IT and Circular Economy principles. NOTE: The solar facility is a future goal, not a current operational reality — all website/marketing copy must reflect this.
 
 ## Developer Context
 

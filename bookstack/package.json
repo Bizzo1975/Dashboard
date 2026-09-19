@@ -6,7 +6,13 @@
   "scripts": {
     "migrate": "node migrate-wikijs.js",
     "hierarchy": "node create-hierarchy.js",
-    "upload": "node upload-articles.js"
+    "upload": "node upload-articles.js",
+    "pilot": "node run-import.js pilot",
+    "full-import": "node run-import.js full",
+    "xlsx-customwiki-dry": "node import-xlsx-to-custom-wiki.js --dry-run",
+    "xlsx-customwiki-live": "node import-xlsx-to-custom-wiki.js",
+    "review-queue": "node generate-review-queue.js",
+    "category-corrections": "node apply-category-corrections.js"
   },
   "dependencies": {
     "dotenv": "^16.4.5",

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # Kecktech Stack — Backup Script
+# Updated: April 2026 — removed WordPress/WikiJS (no longer in stack)
 # Runs DB dumps and volume snapshots for all containers.
 # Stores backups in Dashboard/backups/YYYY-MM-DD/
 # Schedule with cron: 0 2 * * * /home/vboxuser/Dashboard/scripts/backup.sh
@@ -62,10 +63,17 @@ set -a; source "${MAIN_COMPOSE}/.env"; set +a
 
 echo ""
 echo "--- Main stack DBs ---"
-dump_mariadb "wp-db"         "wpuser"    "${WP_DB_PASS}"         "wpdb"       "wordpress-db.sql.gz"
-dump_postgres "wikijs-db"    "wikijs"    "wikijs"                             "wikijs-db.sql.gz"
-dump_postgres "umami-db"     "umami"     "umami"                              "umami-db.sql.gz"
-dump_postgres "zammad-db"    "zammad"    "zammad"                             "zammad-db.sql.gz"
+# Zammad (PostgreSQL) — primary help desk
+dump_postgres "zammad-db"    "zammad"    "zammad"    "zammad-db.sql.gz"
+# Umami (PostgreSQL) — analytics
+dump_postgres "umami-db"     "umami"     "umami"     "umami-db.sql.gz"
+# BookStack (MariaDB) — internal wiki
+dump_mariadb  "bookstack-db" "bookstack" "${BOOKSTACK_DB_PASS}" "bookstack" "bookstack-db.sql.gz"
+# Custom Wiki (PostgreSQL) — public help center
+dump_postgres "custom-wiki-db" "customwiki" "customwiki" "custom-wiki-db.sql.gz"
+
+# REMOVED: wordpress-db (replaced by Astro static site)
+# REMOVED: wikijs-db    (replaced by BookStack + Custom Wiki)
 
 # ── ERPNEXT DATABASE ──────────────────────────────────────────────────────────
 echo ""
@@ -92,11 +100,17 @@ backup_volume "vboxuser_vaultwarden_data"  "vaultwarden-data.tar.gz"
 backup_volume "vboxuser_n8n_data"          "n8n-data.tar.gz"
 backup_volume "vboxuser_lldap_data"        "lldap-data.tar.gz"
 backup_volume "vboxuser_zammad_storage"    "zammad-storage.tar.gz"
+backup_volume "vboxuser_bookstack_data"    "bookstack-data.tar.gz"
+
+# REMOVED: vboxuser_freescout_data (replaced by Zammad)
+# REMOVED: wikijs_data (replaced by BookStack)
 
 # ── AUTHELIA CONFIG ───────────────────────────────────────────────────────────
 echo ""
 echo "--- Config files ---"
-cp -r "${MAIN_COMPOSE}/authelia" "${DEST}/authelia-config" 2>/dev/null || rsync -a --ignore-errors "${MAIN_COMPOSE}/authelia/" "${DEST}/authelia-config/" 2>/dev/null || echo "  [WARN] Some authelia files skipped (permission denied)"
+cp -r "${MAIN_COMPOSE}/authelia" "${DEST}/authelia-config" 2>/dev/null \
+  || rsync -a --ignore-errors "${MAIN_COMPOSE}/authelia/" "${DEST}/authelia-config/" 2>/dev/null \
+  || echo "  [WARN] Some authelia files skipped (permission denied)"
 cp "${MAIN_COMPOSE}/docker-compose.yml" "${DEST}/docker-compose.yml.bak"
 cp "${ERPNEXT_COMPOSE}/.env" "${DEST}/erpnext-env.bak"
 echo "  → Config files copied"

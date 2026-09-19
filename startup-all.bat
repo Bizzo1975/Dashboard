@@ -29,6 +29,8 @@ if errorlevel 1 (
 
 call :require_dir "%ROOT%\docker" "Missing required directory: docker"
 if errorlevel 1 exit /b 1
+call :require_dir "%ROOT%\website" "Missing required directory: website"
+if errorlevel 1 exit /b 1
 call :require_dir "%ROOT%\mailcow" "Missing required directory: mailcow"
 if errorlevel 1 exit /b 1
 call :require_dir "%ROOT%\tactical" "Missing required directory: tactical"
@@ -37,6 +39,8 @@ call :require_dir "%ROOT%\erpnext\frappe_docker" "Missing required directory: er
 if errorlevel 1 exit /b 1
 
 call :require_file "%ROOT%\docker\docker-compose.yml" "Missing docker compose file for main stack."
+if errorlevel 1 exit /b 1
+call :require_file "%ROOT%\website\package.json" "Missing website\package.json (required to build website dist)."
 if errorlevel 1 exit /b 1
 call :require_file "%ROOT%\mailcow\docker-compose.yml" "Missing mailcow compose file."
 if errorlevel 1 exit /b 1
@@ -72,7 +76,18 @@ call :ensure_network "kecktech_internal"
 if errorlevel 1 exit /b 1
 
 echo.
-echo === [1/4] Mailcow ^(before main stack — Authelia SMTP checks mail.kecktech.net:587^) ===
+echo === [1/5] Website dist build (website\dist) ===
+pushd "%ROOT%\website"
+call npm run build
+if errorlevel 1 (
+  popd
+  call :phase_fail "Website dist build" "cd website, then run npm run build"
+  exit /b 1
+)
+popd
+
+echo.
+echo === [2/5] Mailcow ^(before main stack - Authelia SMTP checks mail.kecktech.net:587^) ===
 pushd "%ROOT%\mailcow"
 docker compose up -d
 if errorlevel 1 (
@@ -83,7 +98,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo === [2/4] Main stack (docker) ===
+echo === [3/5] Main stack (docker) ===
 pushd "%ROOT%\docker"
 docker compose up -d --build
 if errorlevel 1 (
@@ -94,7 +109,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo === [3/4] Tactical RMM ===
+echo === [4/5] Tactical RMM ===
 pushd "%ROOT%\tactical"
 call :remove_stale_container "trmm-init"
 docker compose up -d
@@ -106,7 +121,7 @@ if errorlevel 1 (
 popd
 
 echo.
-echo === [4/4] ERPNext ===
+echo === [5/5] ERPNext ===
 pushd "%ROOT%\erpnext\frappe_docker"
 set "PULL_POLICY=missing"
 docker compose -f compose.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml -f overrides/compose.configurator-deps.yaml -f overrides/compose.site-localhost.yaml -f overrides/compose.kecktech-traefik.yaml up -d

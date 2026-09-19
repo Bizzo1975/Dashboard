@@ -1,0 +1,252 @@
+{
+  "KB-0001": {
+    "title": "Computer Won't Turn On — Step-by-Step Checklist",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0002": {
+    "title": "What to Do When You See a Black Screen on Startup",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0003": {
+    "title": "Blue Screen of Death (BSOD) — What It Means and What to Do",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0004": {
+    "title": "How to Boot Into Safe Mode on Windows 10 and 11",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0005": {
+    "title": "Fixing 'Preparing Automatic Repair' Loop",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0006": {
+    "title": "BIOS/UEFI Settings Explained — When and How to Access Them",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0007": {
+    "title": "How to Create a Windows Recovery USB Drive",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0008": {
+    "title": "Understanding Startup Programs and How to Manage Them",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0009": {
+    "title": "Computer Beeping on Startup — What the Beep Codes Mean",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0010": {
+    "title": "Fix: 'Boot Device Not Found' Error",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1001,
+    "bookName": "Startup & Boot Issues",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0011": {
+    "title": "Why Is My Computer So Slow? Top 10 Causes and Fixes",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0012": {
+    "title": "How to Use Task Manager to Find What's Slowing You Down",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0013": {
+    "title": "Clearing Temporary Files to Speed Up Your PC",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0014": {
+    "title": "How Much RAM Do You Actually Need?",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0015": {
+    "title": "Is Your Hard Drive Full? How to Free Up Space",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0016": {
+    "title": "SSD vs HDD: Why Upgrading Your Drive Makes Everything Faster",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0017": {
+    "title": "How to Disable Visual Effects for Better Performance",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0018": {
+    "title": "Managing Browser Extensions That Slow Down Your Computer",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0019": {
+    "title": "How to Check if Your Computer Needs More RAM",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0020": {
+    "title": "Defragmenting Your Hard Drive — Do You Still Need To?",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0021": {
+    "title": "Understanding CPU Usage and What's Normal",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0022": {
+    "title": "How to Stop Background Apps From Using Resources",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1002,
+    "bookName": "Performance & Speed",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0023": {
+    "title": "How to Check for and Install Windows Updates",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1003,
+    "bookName": "Windows Updates",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0024": {
+    "title": "Windows Update Stuck — How to Fix It",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1003,
+    "bookName": "Windows Updates",
+    "chapterId": null,
+    "chapterName": null
+  },
+  "KB-0025": {
+    "title": "What to Do When an Update Breaks Something",
+    "slug": "",
+    "shelfId": 1,
+    "shelfName": "Windows PC",
+    "bookId": 1003,
+    "bookName": "Windows Updates",
+    "chapterId": null,
+    "chapterName": null
+  }
+}

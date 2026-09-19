@@ -1,6 +1,9 @@
 # Kecktech stack — run from Dashboard/docker
 # Project name preserves existing named volumes (vboxuser_freescout_data, etc.)
 # Start everything from Dashboard root with ./startup-all
+#
+# REMOVED 2026-04: wordpress + wp-db (replaced by Astro kecktech-web)
+#                  wikijs + wikijs-db (replaced by BookStack + Custom Wiki)
 name: vboxuser
 
 services:
@@ -23,7 +26,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./traefik/dynamic:/etc/traefik/dynamic:ro
-      # mkcert / manual PEMs — see docs/HTTPS-TEST-ENV.md and scripts/setup-mkcert-traefik.ps1
       - ./traefik/certs-local:/certs-local:ro
       - traefik_certs:/certs
     networks:
@@ -62,8 +64,6 @@ services:
       - "traefik.http.routers.lldap.middlewares=authelia@docker"
 
   # ── SSO — AUTHELIA (forward-auth gateway) ────────────────────────────────────
-  # Phase 5: SSO enforcement active. Middleware applied to: dashboard, lldap, traefik, umami.
-  # freescout/n8n/vaultwarden excluded intentionally (own auth / webhooks would break).
   authelia:
     image: authelia/authelia:4.39.15
     container_name: authelia
@@ -96,18 +96,11 @@ services:
       - "traefik.http.routers.authelia.entrypoints=websecure"
       - "traefik.http.routers.authelia.tls=true"
       - "traefik.http.services.authelia.loadbalancer.server.port=9091"
-      # Forward-auth middleware — add to other routers in Phase 5:
-      # traefik.http.routers.<name>.middlewares=authelia@docker
       - "traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/authz/forward-auth"
       - "traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true"
       - "traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email"
 
   # ── SERVICE DESK — ZAMMAD ─────────────────────────────────────────────────────
-  # Replaces FreeScout. Full ITSM: SLA, time tracking, email channels, REST API.
-  # First boot runs DB migrations automatically via zammad-init (exits after setup).
-  # Manual setup required after first start: browse to tickets.kecktech.net to create
-  # admin account, configure email channel, groups, and SLA policies.
-  # Generate ZAMMAD_SECRET_KEY with: openssl rand -hex 64
   zammad-db:
     image: postgres:15-alpine
     container_name: zammad-db
@@ -187,14 +180,12 @@ services:
       - "admin.kecktech.net:host-gateway"
       - "tickets.kecktech.net:host-gateway"
       - "n8n.kecktech.net:host-gateway"
-      - "wiki.kecktech.net:host-gateway"
       - "portal.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
       - "auth.kecktech.net:host-gateway"
       - "ops.kecktech.net:host-gateway"
     volumes:
       - zammad_storage:/opt/zammad/storage
-      # Kecktech brand CSS — injected into Rails asset pipeline custom directory
       - ./zammad/custom.css:/opt/zammad/app/assets/stylesheets/custom/kecktech.css:ro
     depends_on:
       - zammad-init
@@ -206,7 +197,7 @@ services:
   zammad-nginx:
     image: ghcr.io/zammad/zammad:latest
     container_name: zammad-nginx
-    mem_limit: 512m    # startup readiness check loads full Rails (~400MB); drops to ~10MB after
+    mem_limit: 512m
     command: ["zammad-nginx"]
     restart: always
     environment:
@@ -230,7 +221,6 @@ services:
       - "admin.kecktech.net:host-gateway"
       - "tickets.kecktech.net:host-gateway"
       - "n8n.kecktech.net:host-gateway"
-      - "wiki.kecktech.net:host-gateway"
       - "portal.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
       - "auth.kecktech.net:host-gateway"
@@ -242,11 +232,10 @@ services:
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.zammad.rule=Host(`tickets.kecktech.net`)"
+      - "traefik.http.routers.zammad.rule=Host(`support.kecktech.net`) || Host(`tickets.kecktech.net`)"
       - "traefik.http.routers.zammad.entrypoints=websecure"
       - "traefik.http.routers.zammad.tls=true"
       - "traefik.http.services.zammad.loadbalancer.server.port=8080"
-      # No Authelia — clients need unauthenticated access to the ticket portal
 
   zammad-scheduler:
     image: ghcr.io/zammad/zammad:latest
@@ -354,14 +343,12 @@ services:
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
       - N8N_DEFAULT_USER_EMAIL=admin@kecktech.net
       - N8N_DEFAULT_USER_PASSWORD=${N8N_DEFAULT_PASS}
-      # NODE_TLS_REJECT_UNAUTHORIZED: REMOVE in production; use per-credential "Ignore SSL Issues" instead
     extra_hosts:
       - "kecktech.net:host-gateway"
       - "www.kecktech.net:host-gateway"
       - "admin.kecktech.net:host-gateway"
       - "tickets.kecktech.net:host-gateway"
       - "n8n.kecktech.net:host-gateway"
-      - "wiki.kecktech.net:host-gateway"
       - "portal.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
       - "auth.kecktech.net:host-gateway"
@@ -377,131 +364,6 @@ services:
       - "traefik.http.routers.n8n.entrypoints=websecure"
       - "traefik.http.routers.n8n.tls=true"
       - "traefik.http.services.n8n.loadbalancer.server.port=5678"
-
-  # ── PUBLIC WEBSITE ────────────────────────────────────────────────────────────
-  wordpress:
-    image: wordpress:6.9.1
-    container_name: wordpress
-    mem_limit: 512m
-    # Static asset: a request to / can hang (bootstrap/redirect) and leave the container
-    # "unhealthy"; Traefik then omits the router → 404 for kecktech.net (see Traefik Docker provider).
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/wp-includes/images/w-logo-blue.png"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
-    environment:
-      - WORDPRESS_DB_HOST=wp-db
-      - WORDPRESS_DB_USER=wpuser
-      - WORDPRESS_DB_PASSWORD=${WP_DB_PASS}
-      - WORDPRESS_DB_NAME=wpdb
-      # Public URL for permalinks and media src (DB siteurl/home often wrong in Docker; breaks logo <img> behind Traefik).
-      - WORDPRESS_CONFIG_EXTRA=if(!defined('WP_HOME')){define('WP_HOME','https://www.kecktech.net');}if(!defined('WP_SITEURL')){define('WP_SITEURL','https://www.kecktech.net');}
-    extra_hosts:
-      - "mail.kecktech.net:host-gateway"
-    restart: always
-    volumes:
-      - ./data/wp_data:/var/www/html
-      # Bundled logo + MU plugin (see docker/wordpress/README.md)
-      - ./wordpress/branding:/var/www/html/wp-content/uploads/kecktech-branding:ro
-      - ./wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
-    depends_on:
-      - wp-db
-    networks:
-      - kecktech_front
-      - kecktech_internal
-    labels:
-      - "traefik.enable=true"
-      # www → WordPress; apex → 301 to www (middleware via Docker provider — see Traefik redirectRegex label escaping)
-      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.regex=^https://kecktech\\.net/(.*)"
-      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.replacement=https://www.kecktech.net/$${1}"
-      - "traefik.http.middlewares.kecktech-apex-to-www.redirectregex.permanent=true"
-      - "traefik.http.routers.wordpress-www.rule=Host(`wp.kecktech.net`)"
-      - "traefik.http.routers.wordpress-www.service=wordpress"
-      - "traefik.http.routers.wordpress-www.entrypoints=websecure"
-      - "traefik.http.routers.wordpress-www.tls=true"
-      - "traefik.http.routers.wordpress-apex.rule=Host(`kecktech.net`)"
-      - "traefik.http.routers.wordpress-apex.entrypoints=websecure"
-      - "traefik.http.routers.wordpress-apex.tls=true"
-      - "traefik.http.routers.wordpress-apex.middlewares=kecktech-apex-to-www@docker"
-      - "traefik.http.routers.wordpress-apex.service=noop@internal"
-      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
-
-  wp-db:
-    image: mariadb:10.6
-    container_name: wp-db
-    mem_limit: 256m
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-      start_period: 30s
-    environment:
-      - MYSQL_ROOT_PASSWORD=${WP_DB_ROOT_PASS}
-      - MYSQL_DATABASE=wpdb
-      - MYSQL_USER=wpuser
-      - MYSQL_PASSWORD=${WP_DB_PASS}
-    restart: always
-    volumes:
-      - ./data/db_data:/var/lib/mysql
-    networks:
-      - kecktech_internal
-
-  # ── KNOWLEDGE BASE ────────────────────────────────────────────────────────────
-  wikijs:
-    image: ghcr.io/requarks/wiki:2
-    container_name: wikijs
-    mem_limit: 512m
-    healthcheck:
-      test: ["CMD", "curl", "-sf", "http://localhost:3000/healthz"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-    depends_on:
-      - wikijs-db
-    volumes:
-      - wikijs_data:/wiki/data
-    environment:
-      - DB_TYPE=postgres
-      - DB_HOST=wikijs-db
-      - DB_PORT=5432
-      - DB_USER=wikijs
-      - DB_PASS=${WIKIJS_DB_PASS}
-      - DB_NAME=wikijs
-    extra_hosts:
-      - "mail.kecktech.net:host-gateway"
-    restart: always
-    networks:
-      - kecktech_front
-      - kecktech_internal
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wikijs.rule=Host(`help.kecktech.net`)"
-      - "traefik.http.routers.wikijs.entrypoints=websecure"
-      - "traefik.http.routers.wikijs.tls=true"
-      - "traefik.http.services.wikijs.loadbalancer.server.port=3000"
-
-  wikijs-db:
-    image: postgres:15-alpine
-    container_name: wikijs-db
-    mem_limit: 128m
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U wikijs"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-    volumes:
-      - wikijs_db_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=wikijs
-      - POSTGRES_USER=wikijs
-      - POSTGRES_PASSWORD=${WIKIJS_DB_PASS}
-    restart: always
-    networks:
-      - kecktech_internal
 
   # ── ANALYTICS ─────────────────────────────────────────────────────────────────
   umami:
@@ -525,7 +387,7 @@ services:
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.umami.rule=Host(`stats.kecktech.net`)"
+      - "traefik.http.routers.umami.rule=Host(`umami.kecktech.net`) || Host(`stats.kecktech.net`)"
       - "traefik.http.routers.umami.entrypoints=websecure"
       - "traefik.http.routers.umami.tls=true"
       - "traefik.http.services.umami.loadbalancer.server.port=3000"
@@ -550,7 +412,7 @@ services:
     networks:
       - kecktech_internal
 
-  # ── REMOTE ACCESS ─────────────────────────────────────────────────────────────
+  # ── REMOTE ACCESS — RUSTDESK ──────────────────────────────────────────────────
   # RustDesk requires direct TCP/UDP — ports kept open via UFW rules
   rustdesk-relay:
     image: rustdesk/rustdesk-server:1.1.15
@@ -582,7 +444,7 @@ services:
     networks:
       - kecktech_front
 
-  # ── DASHBOARD (Next.js — health checks + app tiles) ──────────────────────────
+  # ── INTERNAL DASHBOARD (Next.js) ──────────────────────────────────────────────
   dashboard:
     build:
       context: ../dashboard
@@ -592,21 +454,22 @@ services:
     restart: always
     mem_limit: 256m
     environment:
-      # Zammad — REST API (replaces FreeScout)
-      - ZAMMAD_URL=http://zammad-railsserver:3000
+      - ZAMMAD_URL=https://tickets.kecktech.net
       - ZAMMAD_API_TOKEN=${ZAMMAD_API_TOKEN}
-      # TRMM — REST API key
-      - TRMM_URL=https://trmm-nginx:4443
+      - TRMM_URL=https://api.kecktech.net
       - TRMM_API_KEY=${TRMM_API_KEY}
-      # ERPNext — API token (key:secret)
-      - ERPNEXT_URL=http://frappe_docker-frontend-1:8080
+      - ERPNEXT_URL=https://ops.kecktech.net
       - ERPNEXT_API_KEY=${ERPNEXT_API_KEY}
       - ERPNEXT_API_SECRET=${ERPNEXT_API_SECRET}
-      # Umami — credentials for internal token auth
-      - UMAMI_URL=http://umami:3000
+      - UMAMI_URL=https://stats.kecktech.net
       - UMAMI_USER=admin
       - UMAMI_PASS=${UMAMI_PASS}
       - UMAMI_SITE_ID=d2427fe3-ce4b-4b9a-8e41-a8a3e9f2cd6d
+      - LLDAP_URL=https://lldap.kecktech.net
+      - LLDAP_ADMIN_USER=${LLDAP_ADMIN_USER:-admin}
+      - LLDAP_ADMIN_PASS=${LLDAP_ADMIN_PASS}
+      - RUSTDESK_SERVER_HOST=${RUSTDESK_SERVER_HOST}
+      - RUSTDESK_PUBLIC_KEY=${RUSTDESK_PUBLIC_KEY}
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://0.0.0.0:3000/ || exit 1"]
       interval: 30s
@@ -618,16 +481,15 @@ services:
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.kecktech.net`)"
+      - "traefik.http.routers.dashboard.rule=Host(`dash.kecktech.net`) || Host(`dashboard.kecktech.net`)"
       - "traefik.http.routers.dashboard.entrypoints=websecure"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.services.dashboard.loadbalancer.server.port=3000"
       - "traefik.http.routers.dashboard.middlewares=authelia@docker"
 
   # ── CONTAINER MANAGEMENT ──────────────────────────────────────────────────────
-  # Portainer accessed directly via Tailscale IP:9443 — not behind Traefik
   portainer:
-    image: portainer/portainer-ce:latest  # pinning breaks DB schema migration; keep latest
+    image: portainer/portainer-ce:latest
     container_name: portainer
     restart: always
     mem_limit: 128m
@@ -642,7 +504,7 @@ services:
     networks:
       - kecktech_front
 
-  # ── KECKTECH.NET — Astro static site (replaces WordPress as public site) ──
+  # ── PUBLIC WEBSITE — Astro static site ───────────────────────────────────────
   kecktech-web:
     image: nginx:alpine
     container_name: kecktech-web
@@ -665,7 +527,7 @@ services:
       - "traefik.http.routers.kecktech-web.tls=true"
       - "traefik.http.services.kecktech-web.loadbalancer.server.port=80"
 
-  # ── KECKTECH CONTACT FORM — PHP mailer ───────────────────────────────────
+  # ── CONTACT FORM — PHP mailer ─────────────────────────────────────────────────
   kecktech-mailer:
     image: php:8.2-apache
     container_name: kecktech-mailer
@@ -689,20 +551,29 @@ services:
       - "traefik.http.routers.kecktech-mailer.priority=10"
       - "traefik.http.services.kecktech-mailer.loadbalancer.server.port=80"
 
-  # ── CUSTOMER PORTAL ──────────────────────────────────────────────────────
+  # ── CUSTOMER PORTAL — Next.js (Authelia-gated) ───────────────────────────────
   kecktech-portal:
-    image: nginx:alpine
+    build:
+      context: ../customer-portal
+      dockerfile: Dockerfile
     container_name: kecktech-portal
     restart: always
-    mem_limit: 32m
+    mem_limit: 512m
+    environment:
+      - NODE_ENV=production
+      - PORTAL_BASE_URL=http://kecktech-portal:3012
+      - ZAMMAD_URL=${ZAMMAD_URL:-https://tickets.kecktech.net}
+      - ZAMMAD_API_TOKEN=${ZAMMAD_API_TOKEN}
+      - ERPNEXT_URL=${ERPNEXT_URL:-https://ops.kecktech.net}
+      - ERPNEXT_API_KEY=${ERPNEXT_API_KEY}
+      - ERPNEXT_API_SECRET=${ERPNEXT_API_SECRET}
+      - RUSTDESK_SERVER_HOST=${RUSTDESK_SERVER_HOST}
+      - RUSTDESK_PUBLIC_KEY=${RUSTDESK_PUBLIC_KEY}
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3012/api/health"]
       interval: 30s
-      timeout: 5s
+      timeout: 8s
       retries: 3
-    volumes:
-      - ./portal/html:/usr/share/nginx/html:ro
-      - ./portal/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - kecktech_front
     labels:
@@ -710,10 +581,10 @@ services:
       - "traefik.http.routers.portal.rule=Host(`portal.kecktech.net`)"
       - "traefik.http.routers.portal.entrypoints=websecure"
       - "traefik.http.routers.portal.tls=true"
-      - "traefik.http.services.portal.loadbalancer.server.port=80"
+      - "traefik.http.services.portal.loadbalancer.server.port=3012"
       - "traefik.http.routers.portal.middlewares=authelia@docker"
 
-  # ── KECKTECH ADMIN — text editor dashboard (auth-gated by Authelia) ───────
+  # ── SITE ADMIN — Content editor (Authelia-gated) ─────────────────────────────
   kecktech-admin:
     build:
       context: ..
@@ -728,8 +599,9 @@ services:
       - "n8n.kecktech.net:host-gateway"
       - "mail.kecktech.net:host-gateway"
     volumes:
-      - ../website/src/data:/website/src/data   # JSON data files (read/write)
-      - ../website/dist:/website/dist            # Astro build output (write)
+      - ../website/src/data:/website/src/data
+      - ../website/dist:/website/dist
+      - ../website/public/images:/website/public/images
     networks:
       - kecktech_front
     labels:
@@ -740,7 +612,7 @@ services:
       - "traefik.http.routers.kecktech-admin.middlewares=authelia@docker,admin-ratelimit@file"
       - "traefik.http.services.kecktech-admin.loadbalancer.server.port=3000"
 
-  # ── BOOKSTACK WIKI ───────────────────────────────────────────────────────────
+  # ── BOOKSTACK — Internal staff wiki ──────────────────────────────────────────
   bookstack:
     image: lscr.io/linuxserver/bookstack:latest
     container_name: bookstack
@@ -752,7 +624,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Chicago
-      - APP_URL=https://wiki.kecktech.net
+      - APP_URL=https://bookstack.kecktech.net
+      - APP_THEME=kecktech
       - APP_KEY=${BOOKSTACK_APP_KEY}
       - DB_HOST=bookstack-db
       - DB_PORT=3306
@@ -762,12 +635,17 @@ services:
     volumes:
       - bookstack_data:/config
       - ./bookstack/custom.css:/config/www/themes/kecktech/custom.css:ro
+      - ./bookstack/theme/views/layouts/parts/header.blade.php:/config/www/themes/kecktech/layouts/parts/header.blade.php:ro
+      - ./bookstack/theme/views/layouts/parts/header-links.blade.php:/config/www/themes/kecktech/layouts/parts/header-links.blade.php:ro
+      - ./bookstack/theme/views/layouts/parts/header-logo.blade.php:/config/www/themes/kecktech/layouts/parts/header-logo.blade.php:ro
+      - ./bookstack/theme/views/home/default.blade.php:/config/www/themes/kecktech/home/default.blade.php:ro
+      - ./bookstack/theme/views/entities/list-item-basic.blade.php:/config/www/themes/kecktech/entities/list-item-basic.blade.php:ro
     networks:
       - kecktech_front
       - kecktech_internal
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.bookstack.rule=Host(`wiki.kecktech.net`)"
+      - "traefik.http.routers.bookstack.rule=Host(`kb.kecktech.net`) || Host(`bookstack.kecktech.net`) || Host(`docs.kecktech.net`)"
       - "traefik.http.routers.bookstack.entrypoints=websecure"
       - "traefik.http.routers.bookstack.tls=true"
       - "traefik.http.services.bookstack.loadbalancer.server.port=80"
@@ -787,6 +665,48 @@ services:
     networks:
       - kecktech_internal
 
+  # ── CUSTOM WIKI — Public help center (help.kecktech.net) ─────────────────────
+  custom-wiki:
+    build:
+      context: ../custom-wiki
+      dockerfile: Dockerfile
+    container_name: custom-wiki
+    restart: always
+    mem_limit: 512m
+    depends_on:
+      - custom-wiki-db
+    environment:
+      - DATABASE_URL=postgresql://customwiki:${CUSTOM_WIKI_DB_PASS}@custom-wiki-db:5432/customwiki?schema=public
+      - CUSTOM_WIKI_API_TOKEN=${CUSTOM_WIKI_API_TOKEN}
+    networks:
+      - kecktech_front
+      - kecktech_internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.custom-wiki.rule=Host(`help.kecktech.net`)"
+      - "traefik.http.routers.custom-wiki.entrypoints=websecure"
+      - "traefik.http.routers.custom-wiki.tls=true"
+      - "traefik.http.services.custom-wiki.loadbalancer.server.port=3011"
+
+  custom-wiki-db:
+    image: postgres:15-alpine
+    container_name: custom-wiki-db
+    restart: always
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U customwiki"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    environment:
+      - POSTGRES_DB=customwiki
+      - POSTGRES_USER=customwiki
+      - POSTGRES_PASSWORD=${CUSTOM_WIKI_DB_PASS}
+    volumes:
+      - custom_wiki_db_data:/var/lib/postgresql/data
+    networks:
+      - kecktech_internal
+
 networks:
   kecktech_front:
     external: true
@@ -796,8 +716,6 @@ networks:
 volumes:
   zammad_db_data:
   zammad_storage:
-  wikijs_data:
-  wikijs_db_data:
   bookstack_data:
   bookstack_db_data:
   vaultwarden_data:
@@ -806,3 +724,7 @@ volumes:
   n8n_data:
   umami_db_data:
   traefik_certs:
+  custom_wiki_db_data:
+  # NOTE: wikijs_data, wikijs_db_data removed — WikiJS replaced by BookStack + Custom Wiki
+  # NOTE: wp_data / db_data are bind-mounted under ./data/ — stop wordpress container then
+  #       delete ./data/wp_data and ./data/db_data directories to reclaim disk space

@@ -12,6 +12,8 @@ const icons: Record<string, string> = {
   route: "🔀",
   shield: "🛡️",
   edit: "✏️",
+  users: "👥",
+  remote: "🖥️",
 };
 
 interface AppTileProps {
@@ -23,6 +25,9 @@ interface AppTileProps {
   status: "up" | "down";
   latency: number;
   logoUrl?: string;
+  disableLink?: boolean;
+  /** When true, skip health ping display and show a static "Running" badge */
+  noHealthCheck?: boolean;
 }
 
 export function AppTile({
@@ -34,12 +39,11 @@ export function AppTile({
   status,
   latency,
   logoUrl,
+  disableLink = false,
+  noHealthCheck = false,
 }: AppTileProps) {
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
+  const tileBody = (
+    <div
       style={{
         display: "block",
         background: "#1e293b",
@@ -47,9 +51,9 @@ export function AppTile({
         borderRadius: "12px",
         padding: "24px",
         transition: "transform 0.15s, border-color 0.15s",
-        cursor: "pointer",
         textDecoration: "none",
         color: "inherit",
+        height: "100%",
       }}
     >
       <div
@@ -93,30 +97,54 @@ export function AppTile({
         </div>
 
         {/* Status indicator */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            fontSize: "13px",
-            fontWeight: 500,
-            color: status === "up" ? "#34d399" : "#f87171",
-          }}
-        >
+        {noHealthCheck ? (
           <div
             style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              background: status === "up" ? "#34d399" : "#f87171",
-              boxShadow:
-                status === "up"
-                  ? "0 0 8px rgba(52,211,153,0.5)"
-                  : "0 0 8px rgba(248,113,113,0.5)",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#34d399",
             }}
-          />
-          {status === "up" ? "Online" : "Offline"}
-        </div>
+          >
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: "#34d399",
+                boxShadow: "0 0 8px rgba(52,211,153,0.5)",
+              }}
+            />
+            Running
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: status === "up" ? "#34d399" : "#f87171",
+            }}
+          >
+            <div
+              style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: status === "up" ? "#34d399" : "#f87171",
+                boxShadow:
+                  status === "up"
+                    ? "0 0 8px rgba(52,211,153,0.5)"
+                    : "0 0 8px rgba(248,113,113,0.5)",
+              }}
+            />
+            {status === "up" ? "Online" : "Offline"}
+          </div>
+        )}
       </div>
 
       {/* Name and description */}
@@ -136,8 +164,29 @@ export function AppTile({
 
       {/* Latency */}
       <div style={{ fontSize: "12px", color: "#64748b" }}>
-        {status === "up" ? `${latency}ms response` : "Unreachable"}
+        {noHealthCheck ? "Direct TCP/UDP" : status === "up" ? `${latency}ms response` : "Unreachable"}
       </div>
+    </div>
+  );
+
+  if (disableLink) {
+    return tileBody;
+  }
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "block",
+        cursor: "inherit",
+        textDecoration: "none",
+        color: "inherit",
+        height: "100%",
+      }}
+    >
+      {tileBody}
     </a>
   );
 }

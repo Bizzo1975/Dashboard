@@ -39,7 +39,7 @@
         "Custom-built to your workflow",
         "You own 100% of the code",
         "AI-powered automation",
-        "Hosted on Kecktech solar servers",
+        "Kansas-hosted on Kecktech infrastructure",
         "No recurring license fees",
         "ROI payback < 18 months"
       ]
@@ -55,19 +55,6 @@
         "Plain-English support",
         "Remote access for quick fixes",
         "Emergency tech card"
-      ]
-    },
-    {
-      "service": "Sovereign Private Hosting",
-      "price": "$49/mo",
-      "tagline": "Kansas-based. Solar-powered. Your data, your terms.",
-      "features": [
-        "Kansas-based servers (we own them)",
-        "100% solar-powered",
-        "HIPAA-ready configuration",
-        "Daily backups + uptime monitoring",
-        "No Big Tech involvement",
-        "Static IP available"
       ]
     }
   ],
@@ -85,15 +72,15 @@
       },
       {
         "q": "Do you serve clients outside Kansas?",
-        "a": "Yes — all remote services (White Glove IT, AI App Development, Senior Technology Concierge, and Sovereign Hosting) are available nationwide. HaaS hardware deployment is currently Kansas and surrounding region."
-      },
-      {
-        "q": "Is the hosting really HIPAA-ready?",
-        "a": "Our infrastructure is configured for HIPAA compliance. A Business Associate Agreement (BAA) is available on request for healthcare clients at no additional cost."
+        "a": "Yes — all remote services (White Glove IT, AI App Development, and Senior Technology Concierge) are available nationwide. HaaS hardware deployment is currently Kansas and surrounding region."
       },
       {
         "q": "Can I bundle services?",
         "a": "Yes — and we offer discounts for clients on two or more services. Contact us to discuss a custom package for your situation."
+      },
+      {
+        "q": "What about private hosting?",
+        "a": "Sovereign Private Hosting is coming soon — launching with our solar-powered Kansas facility. Join our mailing list or donate to the build to get early access."
       }
     ]
   },

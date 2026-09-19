@@ -27,11 +27,12 @@ interface TileData {
   status: "up" | "down";
   latency: number;
   logoUrl?: string;
+  noHealthCheck?: boolean;
 }
 
 const STORAGE_KEY = "kecktech-tile-order";
 
-function SortableTile(props: TileData) {
+function SortableTile(props: TileData & { isDraggingAny: boolean; justDropped: boolean }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: props.name });
 
@@ -39,26 +40,29 @@ function SortableTile(props: TileData) {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    cursor: isDragging ? "grabbing" : "grab",
+    cursor: props.isDraggingAny ? "grabbing" : "grab",
   };
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <AppTile {...props} />
+      <AppTile
+        {...props}
+        disableLink={isDragging || props.isDraggingAny || props.justDropped}
+      />
     </div>
   );
 }
 
 export function TileGrid({ tiles }: { tiles: TileData[] }) {
   const [order, setOrder] = useState<string[]>(() => tiles.map((t) => t.name));
+  const [isDragging, setIsDragging] = useState(false);
+  const [justDropped, setJustDropped] = useState(false);
 
-  // Load saved order from localStorage after mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed: string[] = JSON.parse(saved);
-        // Only use saved order if it contains all current services
         const allPresent = tiles.every((t) => parsed.includes(t.name));
         if (allPresent) {
           setOrder(parsed);
@@ -69,9 +73,17 @@ export function TileGrid({ tiles }: { tiles: TileData[] }) {
     }
   }, [tiles]);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 8 },
+    })
+  );
 
   function handleDragEnd(event: DragEndEvent) {
+    setIsDragging(false);
+    setJustDropped(true);
+    setTimeout(() => setJustDropped(false), 200);
+
     const { active, over } = event;
     if (!over || active.id === over.id) return;
     setOrder((prev) => {
@@ -88,12 +100,28 @@ export function TileGrid({ tiles }: { tiles: TileData[] }) {
     .filter(Boolean) as TileData[];
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={() => setIsDragging(true)}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => { setIsDragging(false); setJustDropped(false); }}
+    >
       <SortableContext items={sorted.map((t) => t.name)} strategy={rectSortingStrategy}>
         {sorted.map((tile) => (
-          <SortableTile key={tile.name} {...tile} />
+          <SortableTile
+            key={tile.name}
+            {...tile}
+            isDraggingAny={isDragging}
+            justDropped={justDropped}
+          />
         ))}
       </SortableContext>
+      {isDragging ? (
+        <div style={{ position: "fixed", bottom: 12, right: 12, zIndex: 9999, fontSize: 12, color: "#94a3b8" }}>
+          Drop to reorder tiles
+        </div>
+      ) : null}
     </DndContext>
   );
 }

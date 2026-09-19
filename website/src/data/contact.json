@@ -29,8 +29,7 @@
       { "label": "White Glove Managed IT — $199/mo", "href": "/services#white-glove" },
       { "label": "Hardware-as-a-Service — $149/mo/device", "href": "/services#haas" },
       { "label": "AI Custom App Development — from $3K", "href": "/services#ai-apps" },
-      { "label": "Senior Technology Concierge — $79/mo", "href": "/services#senior-tech" },
-      { "label": "Sovereign Private Hosting — $49/mo", "href": "/services#hosting" }
+      { "label": "Senior Technology Concierge — $79/mo", "href": "/services#senior-tech" }
     ]
   }
 }

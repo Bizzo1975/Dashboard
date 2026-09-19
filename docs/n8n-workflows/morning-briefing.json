@@ -1,0 +1,156 @@
+{
+  "name": "Kecktech Morning Briefing",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 12 * * 1-5"
+            }
+          ]
+        }
+      },
+      "id": "cron-trigger",
+      "name": "Schedule — 7:30am CT Weekdays",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://zammad-railsserver:3000/api/v1/tickets/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {"name": "query", "value": "state_id:1,2"},
+            {"name": "sort_by", "value": "created_at"},
+            {"name": "order_by", "value": "asc"},
+            {"name": "limit", "value": "50"}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Authorization", "value": "Token token={{$env.ZAMMAD_API_TOKEN}}"}
+          ]
+        },
+        "options": {"timeout": 10000}
+      },
+      "id": "fetch-zammad",
+      "name": "Fetch Open Tickets (Zammad)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 180]
+    },
+    {
+      "parameters": {
+        "url": "http://frappe_docker-frontend-1:8080/api/resource/Sales%20Invoice",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {"name": "fields", "value": "[\"name\",\"customer\",\"outstanding_amount\",\"due_date\",\"status\"]"},
+            {"name": "filters", "value": "[[\"docstatus\",\"=\",1],[\"outstanding_amount\",\">\",0]]"},
+            {"name": "order_by", "value": "due_date asc"},
+            {"name": "limit", "value": "20"}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "Authorization", "value": "token {{$env.ERPNEXT_API_KEY}}:{{$env.ERPNEXT_API_SECRET}}"},
+            {"name": "X-Frappe-Site-Name", "value": "ops.kecktech.net"}
+          ]
+        },
+        "options": {"timeout": 10000}
+      },
+      "id": "fetch-erpnext",
+      "name": "Fetch Overdue Invoices (ERPNext)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://trmm-nginx:8080/api/v3/agents/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {"name": "overdue", "value": "true"}
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {"name": "X-API-KEY", "value": "{{$env.TRMM_API_KEY}}"}
+          ]
+        },
+        "options": {"timeout": 10000}
+      },
+      "id": "fetch-trmm",
+      "name": "Fetch Offline Agents (TRMM)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 420]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Gather results from all three branches\nconst zammadData = $('Fetch Open Tickets (Zammad)').first().json;\nconst erpData = $('Fetch Overdue Invoices (ERPNext)').first().json;\nconst trmmData = $('Fetch Offline Agents (TRMM)').first().json;\n\n// Parse tickets\nconst tickets = Array.isArray(zammadData) ? zammadData : (zammadData.tickets || []);\nconst p1 = tickets.filter(t => t.priority_id >= 3);\nconst p2 = tickets.filter(t => t.priority_id === 2);\nconst p3 = tickets.filter(t => t.priority_id === 1);\n\n// Find tickets open > 2 hours (P1 SLA breach risk)\nconst now = new Date();\nconst slaAtRisk = p1.filter(t => {\n  const created = new Date(t.created_at);\n  const hrs = (now - created) / 3600000;\n  return hrs > 1.5; // warn at 1.5hr for 2hr SLA\n});\n\n// Parse invoices\nconst invoices = erpData.data || [];\nconst today = new Date().toISOString().split('T')[0];\nconst overdue = invoices.filter(i => i.due_date < today);\nconst dueToday = invoices.filter(i => i.due_date === today);\nconst totalOwed = invoices.reduce((s, i) => s + (i.outstanding_amount || 0), 0);\n\n// Parse TRMM agents\nconst agents = Array.isArray(trmmData) ? trmmData : [];\nconst offline = agents.filter(a => !a.status || a.status === 'offline' || a.overdue);\n\n// Build email body\nconst lines = [];\nconst date = new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', timeZone:'America/Chicago'});\n\nlines.push(`<h2 style=\"color:#1A3D6B;border-bottom:2px solid #1A3D6B;padding-bottom:8px\">☀️ Kecktech Morning Briefing — ${date}</h2>`);\n\n// TICKETS\nlines.push(`<h3 style=\"color:#2E7D8C\">🎧 Support Tickets</h3>`);\nif (tickets.length === 0) {\n  lines.push(`<p style=\"color:green\">✅ No open tickets — clear slate!</p>`);\n} else {\n  lines.push(`<p><strong>Open:</strong> ${tickets.length} total &nbsp;|&nbsp; P1: ${p1.length} &nbsp;|&nbsp; P2: ${p2.length} &nbsp;|&nbsp; P3: ${p3.length}</p>`);\n  if (slaAtRisk.length > 0) {\n    lines.push(`<p style=\"color:#C0392B\"><strong>⚠️ SLA AT RISK (P1 &gt;1.5hr):</strong></p><ul>`);\n    slaAtRisk.forEach(t => lines.push(`<li>#${t.number} — ${t.title} (${t.customer_id || 'unknown'})</li>`));\n    lines.push(`</ul>`);\n  }\n  if (p1.length > 0) {\n    lines.push(`<p><strong>P1 Critical:</strong></p><ul>`);\n    p1.slice(0,5).forEach(t => lines.push(`<li><a href=\"https://tickets.kecktech.net/#ticket/zoom/${t.id}\">#${t.number}</a> — ${t.title}</li>`));\n    lines.push(`</ul>`);\n  }\n}\n\n// INVOICES\nlines.push(`<h3 style=\"color:#2E7D8C\">💰 Accounts Receivable</h3>`);\nif (invoices.length === 0) {\n  lines.push(`<p style=\"color:green\">✅ No outstanding invoices</p>`);\n} else {\n  lines.push(`<p><strong>Total Outstanding:</strong> $${totalOwed.toLocaleString('en-US', {minimumFractionDigits:2})}</p>`);\n  if (overdue.length > 0) {\n    lines.push(`<p style=\"color:#C0392B\"><strong>⚠️ Overdue (${overdue.length}):</strong></p><ul>`);\n    overdue.slice(0,5).forEach(i => lines.push(`<li>${i.customer} — ${i.name} — $${i.outstanding_amount} (due ${i.due_date})</li>`));\n    lines.push(`</ul>`);\n  }\n  if (dueToday.length > 0) {\n    lines.push(`<p><strong>Due Today (${dueToday.length}):</strong></p><ul>`);\n    dueToday.forEach(i => lines.push(`<li>${i.customer} — ${i.name} — $${i.outstanding_amount}</li>`));\n    lines.push(`</ul>`);\n  }\n}\n\n// TRMM\nlines.push(`<h3 style=\"color:#2E7D8C\">🖥️ Device Health (TRMM)</h3>`);\nif (offline.length === 0) {\n  lines.push(`<p style=\"color:green\">✅ All monitored agents online</p>`);\n} else {\n  lines.push(`<p style=\"color:#C0392B\"><strong>⚠️ ${offline.length} agent(s) offline:</strong></p><ul>`);\n  offline.slice(0,10).forEach(a => lines.push(`<li>${a.hostname || a.agent_id} — ${a.client_name || 'unknown client'}</li>`));\n  lines.push(`</ul>`);\n}\n\n// QUICK LINKS\nlines.push(`<hr style=\"margin:20px 0\">`);\nlines.push(`<p style=\"font-size:12px;color:#64748b\">`);\nlines.push(`<a href=\"https://dashboard.kecktech.net\">Dashboard</a> &nbsp;|&nbsp; `);\nlines.push(`<a href=\"https://tickets.kecktech.net\">Tickets</a> &nbsp;|&nbsp; `);\nlines.push(`<a href=\"https://ops.kecktech.net/app/sales-invoice\">Invoices</a> &nbsp;|&nbsp; `);\nlines.push(`<a href=\"https://rmm.kecktech.net\">TRMM</a>`);\nlines.push(`</p>`);\n\nreturn [{ json: { html: lines.join('\\n'), ticketCount: tickets.length, overdueCount: overdue.length, offlineCount: offline.length } }];\n"
+      },
+      "id": "compose-email",
+      "name": "Compose Briefing Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@kecktech.net",
+        "toEmail": "jon@kecktech.net",
+        "subject": "=☀️ Morning Briefing — {{new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'America/Chicago'})}} | Tickets: {{$json.ticketCount}} | Overdue: {{$json.overdueCount}} | Offline: {{$json.offlineCount}}",
+        "emailType": "html",
+        "html": "={{$json.html}}",
+        "options": {
+          "allowUnauthorizedCerts": true
+        }
+      },
+      "id": "send-email",
+      "name": "Send Briefing Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [920, 300],
+      "credentials": {
+        "smtp": {
+          "id": "kecktech-smtp",
+          "name": "Kecktech Mailcow SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule — 7:30am CT Weekdays": {
+      "main": [[
+        {"node": "Fetch Open Tickets (Zammad)", "type": "main", "index": 0},
+        {"node": "Fetch Overdue Invoices (ERPNext)", "type": "main", "index": 0},
+        {"node": "Fetch Offline Agents (TRMM)", "type": "main", "index": 0}
+      ]]
+    },
+    "Fetch Open Tickets (Zammad)": {
+      "main": [[{"node": "Compose Briefing Email", "type": "main", "index": 0}]]
+    },
+    "Fetch Overdue Invoices (ERPNext)": {
+      "main": [[{"node": "Compose Briefing Email", "type": "main", "index": 0}]]
+    },
+    "Fetch Offline Agents (TRMM)": {
+      "main": [[{"node": "Compose Briefing Email", "type": "main", "index": 0}]]
+    },
+    "Compose Briefing Email": {
+      "main": [[{"node": "Send Briefing Email", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": ["kecktech", "briefing", "daily"]
+}

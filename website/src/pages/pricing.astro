@@ -5,8 +5,8 @@ import PricingCard from '../components/PricingCard.astro';
 import data from '../data/pricing.json';
 
 // Colors are structural — kept here, not in JSON
-const cardColors = ['#0D6E6E', '#2E7D32', '#C07810', '#7C3AED', '#4A6887'];
-const cardServiceIds = ['white-glove', 'haas', 'ai-apps', 'senior-tech', 'hosting'];
+const cardColors = ['#0D6E6E', '#2E7D32', '#C07810', '#7C3AED'];
+const cardServiceIds = ['white-glove', 'haas', 'ai-apps', 'senior-tech'];
 
 const cards = data.cards.map((card, i) => ({
   ...card,
@@ -33,7 +33,11 @@ const cards = data.cards.map((card, i) => ({
   <section class="pricing-section">
     <div class="container">
       <div class="pricing-grid">
-        {cards.map(c => <PricingCard {...c} />)}
+        {cards.map(c => (
+          <div class="pricing-grid-item">
+            <PricingCard {...c} />
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -68,14 +72,14 @@ const cards = data.cards.map((card, i) => ({
 <style>
 .pricing-section { background: var(--off-white); }
 .pricing-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
+  max-width: 840px;
+  margin: 0 auto;
 }
-.pricing-grid > * {
-  flex: 0 0 calc(33.333% - 20px);
-  min-width: 260px;
+.pricing-grid-item {
+  width: 100%;
 }
 
 .faq-section { background: var(--white); }
@@ -90,8 +94,8 @@ const cards = data.cards.map((card, i) => ({
   font-family: var(--font-heading);
   font-weight: 600;
   color: var(--navy);
-  font-size: 17px;
-  padding: 13px 0;
+  font-size: 16px;
+  padding: 9px 0;
   cursor: pointer;
   list-style: none;
   margin: 0;
@@ -99,16 +103,15 @@ const cards = data.cards.map((card, i) => ({
 .faq-q::-webkit-details-marker { display: none; }
 .faq-q::after { content: '+'; font-size: 20px; font-weight: 400; color: var(--gold); flex-shrink: 0; }
 .faq-item[open] .faq-q::after { content: '−'; }
-.faq-a { color: var(--charcoal); font-size: 15px; margin: 0 0 12px; padding-left: 2px; }
+.faq-a { color: var(--charcoal); font-size: 14px; margin: 0 0 8px; padding-left: 2px; }
 
 .cta-banner { background: var(--navy); text-align: center; }
 .cta-banner h2 { color: #fff; margin-bottom: 14px; }
 .cta-banner p { color: var(--muted); font-size: 18px; margin-bottom: 32px; }
 
-@media (max-width: 900px) {
-  .pricing-grid > * { flex: 0 0 calc(50% - 14px); }
-}
 @media (max-width: 560px) {
-  .pricing-grid > * { flex: 0 0 100%; }
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

@@ -23,6 +23,20 @@ session:
       authelia_url: https://auth.kecktech.net
       expiration: 12h
       inactivity: 1h
+    # Multi-domain SSO so dash-launched brand apps share LLDAP identity.
+    # Each registrable domain needs its own cookie + auth.<domain> portal.
+    - domain: willworkforlunch.com
+      authelia_url: https://auth.willworkforlunch.com
+      expiration: 12h
+      inactivity: 1h
+    - domain: jacob-roman.com
+      authelia_url: https://auth.jacob-roman.com
+      expiration: 12h
+      inactivity: 1h
+    - domain: unclejonsitgarage.com
+      authelia_url: https://auth.unclejonsitgarage.com
+      expiration: 12h
+      inactivity: 1h
 
 storage:
   local:
@@ -40,17 +54,52 @@ access_control:
         - "www.kecktech.net"
         - "help.kecktech.net"
         - "wiki.kecktech.net"
+        # Demo showcase apps (kecktech.net/demos) — anonymous viewable
+        - "cleaner.kecktech.net"
+        - "argo.kecktech.net"
+        - "net-ops.kecktech.net"
+        - "chat.kecktech.net"
+        - "sovereign-hub.kecktech.net"
+        - "aerocad.kecktech.net"
+        - "ratemyrack.kecktech.net"
+        - "farmbot.kecktech.net"
+        - "marketlist.kecktech.net"
+        - "flooros.kecktech.net"
+        # Brand public marketing (Authelia portals are separate hosts)
+        - "willworkforlunch.com"
+        - "www.willworkforlunch.com"
+        - "jacob-roman.com"
+        - "www.jacob-roman.com"
+        - "unclejonsitgarage.com"
+        - "www.unclejonsitgarage.com"
+        # Authelia portal hosts must be reachable to complete login
+        - "auth.kecktech.net"
+        - "auth.willworkforlunch.com"
+        - "auth.jacob-roman.com"
+        - "auth.unclejonsitgarage.com"
       policy: bypass
+    # ME Manager — admins (2FA) / staff (1FA) after dash SSO cookie on willworkforlunch.com
+    - domain: "me.willworkforlunch.com"
+      subject: "group:kecktech_admins"
+      policy: two_factor
+    - domain: "me.willworkforlunch.com"
+      subject: "group:kecktech_staff"
+      policy: one_factor
+    - domain: "me.willworkforlunch.com"
+      policy: deny
     # admin.kecktech.net — admins only (2FA); everyone else explicitly denied
     - domain: "admin.kecktech.net"
       subject: "group:kecktech_admins"
       policy: two_factor
     - domain: "admin.kecktech.net"
       policy: deny
-    # portal.kecktech.net — customers only (1FA); everyone else explicitly denied
+    # portal.kecktech.net — customers (1FA) and admins (2FA); everyone else denied
     - domain: "portal.kecktech.net"
       subject: "group:kecktech_customers"
       policy: one_factor
+    - domain: "portal.kecktech.net"
+      subject: "group:kecktech_admins"
+      policy: two_factor
     - domain: "portal.kecktech.net"
       policy: deny
     # Admin group — requires TOTP (two-factor)

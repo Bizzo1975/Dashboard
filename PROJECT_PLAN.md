@@ -15,7 +15,7 @@ Single linear plan to build and operate the senior citizen IT support stack: web
 | SSO gatekeeper | Authelia (added to main stack) |
 | Custom dashboard | Next.js (API routes for health checks; Docker-deployed) |
 | Tactical RMM | Self-hosted now, same VM (proxied through Traefik) |
-| Umami DB | Dedicated Postgres container (isolated from WikiJS) |
+| Umami DB | Dedicated Postgres container (isolated from BookStack) |
 | WordPress theme | Astra + Spectra/Gutenberg blocks (free tier) |
 | Service prices | Placeholder — confirm before go-live |
 | Remote network access | **Tailscale** — VM joined to workspace; provides secure mesh access for staff and admin without opening inbound ports |
@@ -28,7 +28,7 @@ Single linear plan to build and operate the senior citizen IT support stack: web
 |-------------|-------------|
 | **Backend** | ERPNext (CRM, HaaS, accounting, HR, billing), Zammad (ITSM tickets), Tactical RMM |
 | **Website** | WordPress: services, pricing, "About the Founder," lead capture |
-| **Knowledge base** | WikiJS: senior-friendly articles, video support, high-contrast theme |
+| **Knowledge base** | BookStack: senior-friendly articles, API import pipeline, high-contrast theme |
 | **Integrations** | n8n (SMS dispatch), Stripe via ERPNext (payments), Vaultwarden (client secrets), Umami (analytics) |
 | **Remote** | RustDesk for remote support |
 | **Unified access** | Custom Next.js dashboard with tiles + health checks; SSO (Authelia + LLDAP) for all internal apps |
@@ -481,7 +481,7 @@ In the Tailscale ACL, add `"ssh"` rules to specify who can SSH to the VM. See [t
 | ~~2.4~~ ✅ | Vaultwarden | Encrypted client profiles | Running (healthy) → `vault.kecktech.net` |
 | ~~2.5~~ ✅ | n8n | Workflow automation | Added and running → `n8n.kecktech.net` |
 | ~~2.6~~ ✅ | WordPress | Main marketing site | Running → `kecktech.net` (5-min install still needed — Phase 3) |
-| ~~2.7~~ ✅ | WikiJS | Knowledge base | Running → `help.kecktech.net` |
+| ~~2.7~~ ✅ | BookStack | Knowledge base | Running → `help.kecktech.net` |
 | ~~2.8~~ ✅ | Umami | Privacy-first analytics | Fixed — own Postgres (`umami-db`) → `stats.kecktech.net` |
 | ~~2.9~~ ✅ | **Tactical RMM** | RMM (patching, alerts, remote) | Running → `rmm.kecktech.net`, `api.kecktech.net`, `mesh.kecktech.net` |
 | ~~2.10~~ ✅ | RustDesk | Remote support | Running (ID + relay; direct ports) |
@@ -761,7 +761,7 @@ Set `AUTHELIA_JWT_SECRET`, `AUTHELIA_SESSION_SECRET`, and `AUTHELIA_STORAGE_KEY`
 cd /home/vboxuser/Dashboard/docker && docker compose up -d authelia vaultwarden
 ```
 
-**Code-based tasks completed:** WP-CLI installed, WPForms contact form created (ID: 3750), Contact page CF7→WPForms shortcode updated, WP Mail SMTP verified, WikiJS CSS + content + navigation applied via DB, INTEGRATIONS.md updated with all endpoints.
+**Code-based tasks completed:** WP-CLI installed, WPForms contact form created (ID: 3750), Contact page CF7→WPForms shortcode updated, WP Mail SMTP verified, BookStack theme + navigation overrides prepared, XLSX import automation added, INTEGRATIONS.md updated with all endpoints.
 
 **Browser tasks remaining (in order):** LLDAP user creation → n8n owner account → Umami site creation + tracking codes → Vaultwarden org/collections → FreeScout mailbox IMAP setup → WikiJS iframe rendering enable → WordPress Umami embed → Tactical RMM client setup → ERPNext setup wizard
 
@@ -954,12 +954,12 @@ WordPress runs at `https://kecktech.net`.
 
 ---
 
-### 3.6 — WikiJS
+### 3.6 — BookStack
 
-WikiJS runs at `https://help.kecktech.net`.
+BookStack runs at `https://help.kecktech.net`.
 
-**Step 1 — Complete WikiJS setup:**
-~~Browse to `https://help.kecktech.net` → finish setup~~ ✅ Done — Admin: `admin@kecktech.net`, Site URL: `https://help.kecktech.net`.
+**Step 1 — Complete BookStack setup:**
+Browse to `https://help.kecktech.net` → finish setup and ensure API token is created for migration scripts.
 
 **Step 2 — High-contrast theme:** ✅ Applied via DB
 Senior-friendly CSS injected (18px body font, 1.8 line-height, underlined links, 2.2rem h1, 1.8rem h2, 48px min button height, 16px sidebar text).
@@ -1015,7 +1015,7 @@ Settings → Websites → Add Website:
 
 **Step 3 — Copy embed scripts:**
 For each website, click "Get tracking code" → copy the `<script>` tag.
-Add to WordPress (Step 3.5 Step 6) and WikiJS (Administration → Analytics → Custom Script paste).
+Add to WordPress (Step 3.5 Step 6) and BookStack (Admin → Settings → Customization → Custom HTML Head).
 
 **Step 4 — Privacy settings:**
 Settings → Websites → each site → Disable IP tracking: On → Disable data collection for bots: On.
@@ -1102,7 +1102,7 @@ For each senior client, record their RustDesk ID in Vaultwarden under the `Clien
 | Payments | Client | Stripe | ERPNext Stripe integration | ACH/CC for invoices |
 | RMM alerts → tickets | Tactical RMM | n8n → Zammad API | Tactical RMM webhook → n8n → `POST /api/v1/tickets` | Auto-create ticket on critical alert |
 | Client context | Vaultwarden | Staff | Human process (browser) | Techs open vault for client secrets |
-| Analytics | WordPress, WikiJS | Umami | Embed script | Traffic, no PII |
+| Analytics | WordPress, BookStack | Umami | Embed script | Traffic, no PII |
 
 **Implementation steps:**
 
@@ -1266,7 +1266,7 @@ ingress:
 | n8n | Twilio | SMS body + Florida number | n8n Twilio node |
 | ERPNext | Stripe | Invoice payment | ERPNext Payment Gateway |
 | Tactical RMM | n8n → Zammad | Critical alert | Tactical RMM webhook → n8n → Zammad API |
-| Umami | — | Page views (no PII) | Embed on WordPress + WikiJS |
+| Umami | — | Page views (no PII) | Embed on WordPress + BookStack |
 | Authelia | LLDAP | User auth queries | LDAP bind |
 | Traefik | Authelia | Forward-auth middleware | ForwardAuth |
 
@@ -1298,7 +1298,7 @@ Dashboard/   (project root; run ./startup-all on Linux or startup-all.bat on Win
 ├── startup-erpnext.sh       (ERPNext-specific startup)
 │
 ├── docker/                  (main app stack)
-│   ├── docker-compose.yml   (Traefik, FreeScout, WordPress, WikiJS, Vaultwarden,
+│   ├── docker-compose.yml   (Traefik, FreeScout, WordPress, BookStack, Vaultwarden,
 │   │                         Umami, Portainer, RustDesk, n8n, LLDAP, Authelia,
 │   │                         custom dashboard)
 │   ├── .env                 (secrets — gitignored)
@@ -1352,7 +1352,7 @@ Dashboard/   (project root; run ./startup-all on Linux or startup-all.bat on Win
 - [ ] ERPNext: CRM, HaaS templates, Stripe, Kansas/Florida and 1099 configured.
 - [ ] Zammad: `tickets@kecktech.net` email channel configured; ticket flow; high-priority tickets trigger SMS via n8n.
 - [ ] WordPress: Services, About, lead capture form; Umami tracking embedded.
-- [ ] Knowledge base (WikiJS): Senior-friendly, high-contrast, video-capable; public read.
+- [ ] Knowledge base (BookStack): Senior-friendly, high-contrast, API-imported content, public read.
 - [ ] SSO: Single login (Authelia + LLDAP) for all internal apps; TOTP enrolled.
 - [ ] Integrated dashboard: Next.js at `dashboard.kecktech.net` with tiles and health checks.
 - [ ] App-to-app flows documented and working (ticket→SMS, payments, RMM→ticket).

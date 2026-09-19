@@ -1,0 +1,379 @@
+/* ─── Kecktech Brand Guide — Customer Portal ────────────────────────────────
+ * Primary: Navy #1E3A5F | Teal #0D6E6E | Steel #4A6887 | Charcoal #2D3748
+ * Accent:  Gold #C07810 | Gold-Dark #9A5E0A
+ * Body: Open Sans | Headings: Poppins
+ * Min font: 18px for senior-facing interfaces
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap');
+
+:root {
+  --navy: #1E3A5F;
+  --teal: #0D6E6E;
+  --steel: #4A6887;
+  --charcoal: #2D3748;
+  --gold: #C07810;
+  --gold-dark: #9A5E0A;
+  --off-white: #F8F9FA;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--charcoal);
+  background: var(--off-white);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--gold-dark);
+  text-decoration: underline;
+}
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+
+.portal-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+
+.portal-header {
+  background: var(--navy);
+  border-bottom: 3px solid var(--teal);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.portal-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.portal-logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.3px;
+}
+
+.portal-logo span {
+  color: var(--gold);
+}
+
+.portal-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.portal-user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* ─── Hero / Welcome Banner ──────────────────────────────────────────────── */
+
+.portal-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 60%, var(--steel) 100%);
+  padding: 48px 0;
+  color: #fff;
+}
+
+.portal-hero h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.portal-hero p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.88);
+  max-width: 560px;
+}
+
+/* ─── Dashboard Grid ─────────────────────────────────────────────────────── */
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  padding: 40px 0;
+}
+
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+
+.portal-card {
+  background: #fff;
+  border-radius: 12px;
+  border-top: 4px solid var(--teal);
+  box-shadow: 0 2px 16px rgba(30, 58, 95, 0.07);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.portal-card-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.portal-card-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.portal-card-empty {
+  color: #94a3b8;
+  font-size: 15px;
+  text-align: center;
+  padding: 16px 0;
+}
+
+.portal-card-error {
+  color: #dc2626;
+  font-size: 14px;
+  background: #fef2f2;
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+/* ─── Ticket Table ───────────────────────────────────────────────────────── */
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-row {
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.ticket-row:hover {
+  border-color: var(--steel);
+  box-shadow: 0 2px 8px rgba(30, 58, 95, 0.06);
+  color: inherit;
+  text-decoration: none;
+}
+
+.ticket-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--steel);
+  margin-bottom: 2px;
+}
+
+.ticket-title {
+  font-size: 15px;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.ticket-meta {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-open { background: #dbeafe; color: #1d4ed8; }
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-closed { background: #dcfce7; color: #166534; }
+
+/* ─── Invoice Table ──────────────────────────────────────────────────────── */
+
+.invoice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.invoice-id {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.invoice-date {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.invoice-amount {
+  font-family: 'Poppins', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--teal);
+}
+
+.invoice-overdue {
+  border-left: 3px solid #dc2626;
+}
+
+/* ─── Support CTA ────────────────────────────────────────────────────────── */
+
+.portal-support-cta {
+  background: linear-gradient(135deg, var(--navy), var(--teal));
+  border-radius: 12px;
+  padding: 28px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.portal-support-cta p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.88);
+  margin-top: 4px;
+}
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.portal-btn:hover {
+  background: var(--gold-dark);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ─── Footer ─────────────────────────────────────────────────────────────── */
+
+.portal-footer {
+  background: var(--navy);
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 13px;
+  padding: 20px 24px;
+  text-align: center;
+  margin-top: auto;
+}
+
+.portal-footer a {
+  color: #94a3b8;
+}
+
+/* ─── Error / Loading States ─────────────────────────────────────────────── */
+
+.portal-error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 40px;
+}
+
+.portal-error-page h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .portal-hero h1 { font-size: 26px; }
+  .portal-grid { grid-template-columns: 1fr; }
+  .portal-support-cta { flex-direction: column; text-align: center; }
+}

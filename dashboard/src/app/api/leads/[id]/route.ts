@@ -1,12 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateLead } from "@/lib/erpnext";
+import { getLeadDetail, updateLeadStatus } from "@/lib/erpnext";
 
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+type Params = { params: Promise<{ id: string }> };
+
+export async function GET(_req: NextRequest, { params }: Params) {
+  const { id } = await params;
+  const { lead, error } = await getLeadDetail(id);
+  if (error && !lead) return NextResponse.json({ error }, { status: 502 });
+  return NextResponse.json({ lead });
+}
+
+export async function PATCH(req: NextRequest, { params }: Params) {
   try {
     const { id } = await params;
-    const body = await req.json();
-    const result = await updateLead(id, body);
-    if (result.error) return NextResponse.json({ error: result.error }, { status: 500 });
+    const { status } = await req.json();
+    if (!status) return NextResponse.json({ error: "status is required" }, { status: 400 });
+    const { error } = await updateLeadStatus(id, status);
+    if (error) return NextResponse.json({ error }, { status: 502 });
     return NextResponse.json({ ok: true });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500 });

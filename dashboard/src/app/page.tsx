@@ -1,47 +1,24 @@
 import { TileGrid } from "@/components/TileGrid";
 import { SERVICES } from "@/lib/services";
+import { checkHealth } from "@/lib/checkHealth";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-async function checkHealth(
-  healthUrl: string,
-  healthHost?: string
-): Promise<{ status: "up" | "down"; latency: number }> {
-  const start = Date.now();
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 5000);
-    const headers = new Headers();
-    if (healthHost) {
-      headers.set("Host", healthHost);
-    }
-    const res = await fetch(healthUrl, {
-      signal: controller.signal,
-      cache: "no-store",
-      redirect: "manual",
-      headers,
-    });
-    clearTimeout(timeout);
-    // 2xx = up, 3xx redirect = also up (app is responding)
-    const up = res.status < 400;
-    return { status: up ? "up" : "down", latency: Date.now() - start };
-  } catch {
-    return { status: "down", latency: Date.now() - start };
-  }
-}
-
 export default async function Dashboard() {
   const results = await Promise.all(
     SERVICES.map(async (svc) => {
-      const health = await checkHealth(svc.healthUrl, svc.healthHost);
+      const health = svc.noHealthCheck
+        ? { status: "up" as const, latency: 0 }
+        : await checkHealth(svc.healthUrl, svc.healthHost);
       const { healthHost: _h, ...tile } = svc;
       return { ...tile, ...health };
     })
   );
 
-  const upCount = results.filter((r) => r.status === "up").length;
-  const totalCount = results.length;
+  const healthChecked = results.filter((r) => !r.noHealthCheck);
+  const upCount = healthChecked.filter((r) => r.status === "up").length;
+  const totalCount = healthChecked.length;
   const now = new Date().toLocaleString("en-US", {
     timeZone: "America/Chicago",
     dateStyle: "medium",

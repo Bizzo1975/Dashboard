@@ -1,14 +1,8 @@
 import https from "https";
 import http from "http";
 
-const RAW_URL = process.env.TRMM_URL || "https://trmm-nginx:4443";
+const RAW_URL = process.env.TRMM_URL || "https://api.kecktech.net";
 const KEY = process.env.TRMM_API_KEY || "";
-
-// trmm-nginx port 4443 server_name is api.kecktech.net (the Django backend block).
-// undici-based fetch blocks Host header override, so we use Node.js https module directly.
-const TRMM_HOST_HEADER = "api.kecktech.net";
-
-const tlsAgent = new https.Agent({ rejectUnauthorized: false });
 
 function trmmRequest<T>(
   path: string,
@@ -31,11 +25,9 @@ function trmmRequest<T>(
       port,
       path: url.pathname + url.search,
       method,
-      agent: isHttps ? tlsAgent : undefined,
       headers: {
         "X-API-KEY": KEY,
         "Content-Type": "application/json",
-        Host: TRMM_HOST_HEADER,
         ...(bodyStr ? { "Content-Length": String(Buffer.byteLength(bodyStr)) } : {}),
       },
     };
@@ -119,6 +111,21 @@ export async function acknowledgeAlert(id: number): Promise<{ error?: string }> 
 export async function getAgents(): Promise<{ agents: TRMMAgent[]; error?: string }> {
   const { data, error } = await trmmRequest<TRMMAgent[]>("/agents/");
   return { agents: Array.isArray(data) ? data : [], error };
+}
+
+export type TRMMAgentDetail = TRMMAgent & {
+  total_ram_mb?: number;
+  used_ram_mb?: number;
+  boot_time?: string;
+  logged_in_username?: string;
+  cpu_model?: string;
+  patches_pending?: number;
+  disks?: Array<{ free: number; total: number; device: string }>;
+};
+
+export async function getAgentDetail(id: number): Promise<{ agent: TRMMAgentDetail | null; error?: string }> {
+  const { data, error } = await trmmRequest<TRMMAgentDetail>(`/agents/${id}/`);
+  return { agent: data, error };
 }
 
 export async function getClientGroups(): Promise<{ groups: ClientGroup[]; error?: string }> {

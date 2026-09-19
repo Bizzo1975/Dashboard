@@ -1,156 +1,166 @@
 ---
-description: Kecktech IT Solutions LLC — 5-service commercial IT stack rules, stack choices, and best practices
+description: Kecktech IT Solutions LLC — stack rules, business context, and development best practices
 alwaysApply: true
 ---
 
 # Kecktech.net Project Rules
+**Last updated: April 2026** | Source of truth: `docs/BUSINESS-CONTEXT.md`
+
+---
 
 ## Project Purpose
 
-**Kecktech IT Solutions LLC** — Park City, Kansas. Disability-led family IT business (husband + wife + lifelong friend, 30+ combined years enterprise IT). Five commercial service lines served by this self-hosted stack:
+**Kecktech IT Solutions LLC** — Park City, Kansas. Family-operated IT business (Jon Keck, owner/developer; wife assists as needed). Disability-operated. Four currently-active service lines:
 
 | # | Service | Price | Target |
 |---|---------|-------|--------|
-| 1 | White Glove Managed IT (MSP) | $199/mo/client | SMBs |
+| 1 | White Glove Managed IT (MSP) | $199/mo/client | SMBs 1–15 users, Wichita metro |
 | 2 | Hardware-as-a-Service (HaaS) | $149/mo/device | SMBs + Seniors |
-| 3 | AI Custom App Development | $3K–$8K/build | SMBs |
-| 4 | Senior Technology Concierge | $79/mo/client | Senior citizens |
-| 5 | Sovereign Private Hosting | $49/mo/client | Privacy-conscious SMBs |
+| 3 | AI Custom App Development | $3K–$8K/build | SMBs replacing SaaS |
+| 4 | Senior Technology Concierge | $79/mo/client | Seniors 65+, household electronics |
 
-Tagline: *Solar-Powered. Sovereign Data. AI-Built Apps. Human-Centered.*
+**Future-state (do NOT sell yet):**
+- Sovereign Private Hosting ($49/mo) — blocked on data center build
 
-All apps are self-hosted on this stack. Build and configure everything in the test environment first; do not configure Cloudflare until all applications are configured and ready to deploy (see Phase 8).
+**Billable rates:**
+- SMB Remote: $79/hr (SVC-REMOTE)
+- SMB On-Site: $125/hr (SVC-ONSITE)
+- Senior On-Site: $100/hr (SVC-SENIOR-ONSITE)
+
+---
 
 ## Three Client Personas
 
 | Persona | Tech Level | Key UI Rule |
 |---------|-----------|-------------|
-| **SMB Owner** | Moderate | Professional, mobile-friendly, clear status summaries |
-| **Senior Client** | Low | 18px+ font, WCAG AAA contrast, max 3 actions/screen, no jargon |
-| **Kecktech Operator** | Expert | Dense info OK, dark mode preferred, full visibility across all 5 services |
+| **SMB Owner** | Moderate | Professional, mobile-friendly, clear status |
+| **Senior Client** | Low | 18px+ font, WCAG AA contrast, max 3 actions/screen, no jargon |
+| **Kecktech Operator (Jon)** | Expert | Dense info OK, dark mode, full visibility |
 
-⚠️ Accessibility rules (18px font, high contrast) apply **only** to senior-facing interfaces: WikiJS (`help.kecktech.net`), WordPress public pages. Internal/operator tools are not affected.
+⚠️ Accessibility rules (18px font, high contrast) apply ONLY to senior-facing interfaces: Custom Wiki (`help.kecktech.net`), portal senior views. Internal operator tools are exempt.
 
-## Stack (Do Not Substitute Without Explicit Approval)
+---
 
-| Function | Tool | Notes |
-|----------|------|--------|
-| ERP/Admin | ERPNext | CRM, HaaS inventory, accounting, project billing, client records |
-| Help Desk / ITSM | Zammad | Full service desk: SLA, time tracking, client portal, REST API; tickets.kecktech.net |
-| Billing/Invoicing | ERPNext | All invoicing, recurring billing, HaaS device subscriptions, Stripe integration |
-| Remote Access | RustDesk | Senior screen-sharing + MSP remote access bridge |
-| Secrets/Client Profiles | Vaultwarden | WiFi passwords, device creds, RustDesk IDs, client profiles |
-| Workflow/SMS | n8n | High-priority ticket → SMS (Twilio); RMM alert → ticket pipeline |
-| Public Website | WordPress | Marketing all 5 services; lead capture; Astra theme + Spectra/Gutenberg (not Elementor) |
-| Knowledge Base | WikiJS | Senior-friendly how-tos + SMB explainers; high-contrast; help.kecktech.net |
-| SSO | Authelia + LLDAP | Single login for all internal apps; keckadmin / Kecktech2026 (no !) — LLDAP OPAQUE bug |
-| RMM | Tactical RMM | MSP device monitoring, patching, alerts, remote shells |
-| Analytics | Umami | Privacy-first, no PII; tracks WordPress + WikiJS |
-| Payments | Stripe | Via ERPNext; ACH/CC for subscriptions and project billing |
-| Network access | Tailscale | Staff/admin access to internal apps; SSH locked to Tailscale interface |
-| Mail | Mailcow | Self-hosted; support@kecktech.net and admin@kecktech.net; own compose stack at Dashboard/mailcow/ |
+## Current Stack (Do Not Substitute Without Explicit Approval)
 
-## ERPNext Service Items
+| Function | Tool | URL |
+|----------|------|-----|
+| Reverse proxy | Traefik v3 | traefik.kecktech.net |
+| SSO | Authelia + LLDAP | auth.kecktech.net / lldap.kecktech.net |
+| Email | Mailcow | mail.kecktech.net |
+| Help Desk / ITSM | Zammad | tickets.kecktech.net |
+| ERP / CRM / Billing | ERPNext v16 | ops.kecktech.net |
+| RMM | Tactical RMM | rmm.kecktech.net |
+| Remote Access | RustDesk | ports 21115–21119 |
+| Secrets | Vaultwarden | vault.kecktech.net |
+| Automation | n8n | n8n.kecktech.net |
+| Analytics | Umami | stats.kecktech.net |
+| Internal wiki | BookStack | bookstack.kecktech.net |
+| Public help center | Custom Wiki (Next.js) | help.kecktech.net |
+| Public site | Astro + nginx | www.kecktech.net |
+| Site admin | Custom Next.js | admin.kecktech.net |
+| Internal dashboard | Custom Next.js | dashboard.kecktech.net |
+| Customer portal | Custom Next.js | portal.kecktech.net |
+| Containers | Portainer | Tailscale:9443 |
 
-| Item Name | Code | Type | Rate |
-|-----------|------|------|------|
-| White Glove Managed IT | SVC-MSP | Service | $199/mo |
-| HaaS Device Subscription | SVC-HAAS | Service | $149/mo/device |
-| AI Custom App Build | SVC-AIAPP | Service | $3,000–$8,000 |
-| Senior Technology Concierge | SVC-SENIOR | Service | $79/mo |
-| Sovereign Private Hosting | SVC-HOSTING | Service | $49/mo |
-| Remote Support (hourly) | SVC-REMOTE | Service | $45/hr |
-| In-Home Support (hourly) | SVC-HOME | Service | $85/hr |
+**Dead / removed — never reference or restore:**
+- ~~FreeScout~~ → replaced by Zammad
+- ~~WikiJS~~ → replaced by BookStack + Custom Wiki
+- ~~WordPress~~ → replaced by Astro (still in compose — REMOVE it)
 
-HaaS item templates: HAAS-L1, HAAS-L2, HAAS-L3 (attributes: RAM, Storage; Asset Category: Leased Hardware).
+---
+
+## ERPNext Service Items (Current)
+
+| Code | Description | Rate | Status |
+|------|-------------|------|--------|
+| SVC-MSP | White Glove Managed IT | $199/mo | Active |
+| SVC-MSP-SEC | Managed Security Add-On | $49/mo | Active |
+| SVC-HAAS | HaaS Device Subscription | $149/mo | Active |
+| SVC-AIAPP | AI Custom App Build | $3,000–$8,000 | Active |
+| SVC-SENIOR | Senior Technology Concierge | $79/mo | Active |
+| SVC-REMOTE | Billable Remote Support (SMB) | $79/hr | Active |
+| SVC-ONSITE | Billable On-Site Support (SMB) | $125/hr | Active |
+| SVC-SENIOR-ONSITE | Senior On-Site Support | $100/hr | Active |
+| SVC-HOSTING | Sovereign Private Hosting | $49/mo | INACTIVE — future |
+| ~~SVC-HOME~~ | ~~In-Home Support~~ | ~~$85/hr~~ | DEPRECATED |
+
+---
+
+## ERPNext Full Ownership
+
+ERPNext is the system of record for ALL of:
+- CRM (leads → opportunities → customers)
+- Quoting (sales orders / quotations)
+- Invoicing (sales invoices, AR)
+- Recurring subscriptions (MSP, HaaS, Senior)
+- Asset management (HaaS device fleet)
+- Project tracking + time billing (AI app builds)
+- Accounts payable (purchase invoices, expenses)
+
+The internal dashboard is a WINDOW into ERPNext — it reads ERPNext data, never duplicates it.
+
+---
 
 ## Zammad Groups
 
-`MSP Support`, `HaaS`, `Senior Care`, `Internal`
+`MSP Support` | `HaaS` | `Senior Care` | `Internal`
 
-## Revenue Priority (drives feature decisions)
+SLA policies: P1=2hr, P2=4hr, P3=24hr (business hours 8am–6pm CT)
 
-1. MSP — $477,600/yr → Zammad, TRMM, ERPNext (highest priority)
-2. HaaS — $268,200/yr → ERPNext Assets, TRMM, Vaultwarden
-3. AI App Dev — $240,000/yr → ERPNext project billing, Zammad
-4. Senior — $94,800/yr → WikiJS, WordPress, RustDesk
-5. Hosting — $17,640/yr → Portainer, Traefik (Phase 8+)
+---
+
+## SSO Credentials (CRITICAL)
+
+- **All apps:** `admin@kecktech.net` / `Kecktech2026!`
+- **SSO / Authelia login:** `keckadmin` / `Kecktech2026` **(NO `!`)**
+  - LLDAP 0.6.x OPAQUE bug: `!` in passwords fails LDAP bind
+  - DO NOT change until upstream fixes the bug
+
+---
+
+## Prospect Pipeline
+
+50-prospect starter list in `Kecktech_50_Prospect_Starter_List.csv`.
+Priority tiers: A (highest) → B → C. All tracked in ERPNext CRM Lead module.
+Custom fields: priority_tier, territory, vertical, kecktech_angle, outreach_status.
+
+---
+
+## Infrastructure Notes
+
+- Main stack: `docker/docker-compose.yml` (run `startup-all.bat` from Dashboard root)
+- ERPNext: `erpnext/frappe_docker/` (run `startup-erpnext.sh`)
+- Mailcow: `mailcow/` (separate compose)
+- Tactical RMM: `tactical/` (separate compose)
+- ERPNext site name: `ops.kecktech.net` (was `localhost` — see `ERPNEXT-SETUP-GUIDE.md` Step 1)
+- Public routes (Cloudflare tunnel, Phase 8): www.kecktech.net, help.kecktech.net, tickets.kecktech.net ONLY
+- Internal routes (Tailscale only): dashboard, lldap, traefik, n8n, vault, stats, rmm, ops
+- Domain: `kecktech.net` — do NOT migrate to `kecktech.io` without explicit confirmation
+
+---
 
 ## Best Practices
 
-- **Containers**: All services run in Docker. Main stack: `docker/docker-compose.yml`. ERPNext: `erpnext/frappe_docker/`. Mailcow: `mailcow/`. Tactical RMM: `tactical/`. Run `startup-all.bat` from Dashboard root.
-- **Domain**: Stack runs on `kecktech.net` throughout all configs. Do NOT migrate to `kecktech.io` without explicit confirmation — every service config would need updating.
-- **Test environment**: Traefik with same hostnames as production. Add `127.0.0.1` entries in `hosts` for all `*.kecktech.net` names. Do not configure Cloudflare until Phase 8.
-- **Production (when ready)**: Cloudflare Tunnel for **public-facing apps only** (`kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net`). All internal/staff apps remain Tailscale-only. Zero open inbound ports.
-- **App-to-app communication**: Prefer webhooks and REST APIs. Document every integration in INTEGRATIONS.md.
-- **Secrets**: Store in `docker/.env` (gitignored). Reference in compose as env vars.
-- **SSO exception**: LLDAP 0.6.x OPAQUE bug — `!` in passwords fails LDAP bind. SSO credential is `keckadmin` / `Kecktech2026` (no `!`). All other app logins use `Kecktech2026!`. Do not change until upstream fixes the bug.
-- **Accessibility**: WikiJS and WordPress public pages must support high-contrast (WCAG AAA) and 18px+ font for senior visitors. Internal operator tools are exempt.
-
-## Integration Points
-
-1. **Lead → Ticket**: WordPress contact form → Zammad ticket (email to tickets@kecktech.net)
-2. **Ticket → Dispatch**: High-priority Zammad ticket → n8n → Twilio SMS to on-call tech
-3. **RMM → Ticket**: Tactical RMM critical alert → n8n → Zammad API `POST /api/v1/tickets`
-4. **Billing**: All invoicing in ERPNext; Stripe for collection (ACH/CC)
-5. **Analytics**: Umami tracking on WordPress + WikiJS
-6. **Single dashboard**: Next.js at dashboard.kecktech.net — health tiles for all 12 services
-
-## Conventions
-
-- **Config as code**: Compose files and app configs live in version control.
-- **Document in PROJECT_PLAN.md + REMAINING-TASKS.md**: Any new phase or step gets a clear entry.
-- **No mock data** in production paths unless explicitly requested.
-- **Windows dev**: Development on Windows 11; target production is Linux VM. Use cross-platform commands or document OS-specific steps.
-
-# Kecktech Development Rules
-
-You are assisting Jon (GitHub: Bizzo1975) with Kecktech platform services and custom application development. All work follows the Bizzo Development Workflow Framework (10-stage lifecycle, 5-project max).
-
-## Tech Stack (Non-Negotiable)
-- TypeScript strict mode — no `any` without explicit justification
-- Next.js 14+ with App Router
-- PostgreSQL + Prisma ORM (no raw SQL except migrations)
-- NextAuth.js for auth (OAuth, credentials, SSO-ready)
-- Tailwind CSS (client-themeable via CSS variables)
-- Docker Compose for deployment
-- Self-hosted on Proxmox — never default to cloud SaaS
-
-## Code Standards
-- UUIDs for primary keys
-- `createdAt`/`updatedAt` on all tables
-- Soft deletes (`deletedAt`) for user-facing data
-- Error boundaries and graceful error handling
-- Loading states for all async operations
-- Mobile-first responsive design (320px-1920px)
-- API-first: all business logic via typed API routes
+- Config as code — compose files + app configs in version control
+- No mock data in production paths
+- Windows dev → Linux production: use cross-platform commands
 - No hardcoded credentials — environment variables only
+- Document every integration in `docs/INTEGRATIONS.md`
+- Update `docs/REMAINING-TASKS.md` when tasks complete
+- All business decisions defer to `docs/BUSINESS-CONTEXT.md`
 
-## File Conventions
-- Components: PascalCase (`ContactCard.tsx`)
-- Utilities: camelCase (`formatCurrency.ts`)
-- API routes: kebab-case directories (`/api/purchase-orders/`)
-- Prisma models: PascalCase singular (`model Invoice {}`)
+---
 
-## When Writing Code
-1. Start with the Prisma schema if touching data models
-2. Build API routes with input validation (zod preferred)
-3. Create reusable components — check if similar exists first
-4. Include proper TypeScript types for all props and returns
-5. Add JSDoc comments on exported functions
-6. Handle loading, error, and empty states in all UI
+## Development Standards
 
-## Project Context Files
-- `prompts/PROJECT-CONTEXT.md` — Master context (read first)
-- `prompts/platform-services/` — BookStack, PeerTube, Rocket.Chat prompts
-- `prompts/custom-apps/01-10` — Individual app specifications with data models
-
-## Security Checklist (Every Feature)
-- [ ] Input validation on all user inputs
-- [ ] RBAC check on protected routes
-- [ ] CSRF protection on mutations
-- [ ] Rate limiting on public endpoints
-- [ ] No secrets in code or logs
-- [ ] SQL injection prevention (Prisma handles this)
-- [ ] XSS prevention (React handles most, sanitize rich text)
-
+- TypeScript strict mode — no `any` without justification
+- Next.js 14+ with App Router
+- PostgreSQL + Prisma ORM
+- NextAuth.js for auth
+- Tailwind CSS
+- Docker Compose for deployment
+- UUIDs for primary keys; `createdAt`/`updatedAt` on all tables; soft deletes (`deletedAt`)
+- Mobile-first responsive (320px–1920px)
+- API-first: all business logic via typed API routes
+- Zod for input validation

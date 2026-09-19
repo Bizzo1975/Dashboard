@@ -1,4 +1,4 @@
-const BASE = process.env.UMAMI_URL || "http://umami:3000";
+const BASE = process.env.UMAMI_URL || "https://stats.kecktech.net";
 const USER = process.env.UMAMI_USER || "admin";
 const PASS = process.env.UMAMI_PASS || "";
 const SITE_ID = process.env.UMAMI_SITE_ID || "d2427fe3-ce4b-4b9a-8e41-a8a3e9f2cd6d";

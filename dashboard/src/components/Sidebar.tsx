@@ -33,8 +33,13 @@ export async function Sidebar() {
   if (canAccess(groups, "kecktech_billing", "kecktech_sales"))
     nav.push({ href: "/sales", label: "Sales & CRM", icon: "📈" });
 
-  if (canAccess(groups, "kecktech_support"))
+  if (canAccess(groups, "kecktech_support")) {
     nav.push({ href: "/ops", label: "Operations", icon: "⚙️" });
+    nav.push({ href: "/ops/email-onboard", label: "Email domains", icon: "✉" });
+  }
+
+  if (canAccess(groups, "kecktech_support", "kecktech_billing"))
+    nav.push({ href: "/reports/sla", label: "SLA Reports", icon: "📋" });
 
   // If no special groups, show all (dev mode / pre-auth)
   if (groups.length === 0) {
@@ -42,7 +47,9 @@ export async function Sidebar() {
       { href: "/support", label: "Support Desk", icon: "🎧" },
       { href: "/billing", label: "Billing", icon: "💰" },
       { href: "/sales", label: "Sales & CRM", icon: "📈" },
-      { href: "/ops", label: "Operations", icon: "⚙️" }
+      { href: "/ops", label: "Operations", icon: "⚙️" },
+      { href: "/ops/email-onboard", label: "Email domains", icon: "✉" },
+      { href: "/reports/sla", label: "SLA Reports", icon: "📋" }
     );
   }
 
@@ -79,15 +86,10 @@ export async function Sidebar() {
           <NavLink key={item.href} href={item.href} icon={item.icon} label={item.label} />
         ))}
 
-        {/* Documentation — always visible */}
+        {/* Documentation & external links — always visible */}
         <div style={{ marginTop: "12px", paddingTop: "12px", borderTop: "1px solid #334155" }}>
-          <NavLink
-            href="https://help.kecktech.net/en/staff-guide/support-desk"
-            icon="📖"
-            label="Staff Guide"
-            external
-            style={{ color: "#64748b" }}
-          />
+          <NavLink href="https://help.kecktech.net/books/support-processes" icon="📖" label="Support Processes" external style={{ color: "#94a3b8" }} />
+          <NavLink href="https://portal.kecktech.net" icon="👤" label="Customer Portal" external style={{ color: "#94a3b8" }} />
         </div>
       </nav>
 

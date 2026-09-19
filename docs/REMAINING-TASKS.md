@@ -1,229 +1,177 @@
-# Kecktech — Remaining Tasks (Ordered by Revenue Priority)
+# Kecktech — Remaining Tasks
+**Updated: April 2026** | See `BUSINESS-CONTEXT.md` for business truth.
 
-Updated: 2026-03-22 — Gap analysis complete. All code gaps addressed. Dashboard polish, security hardening, and n8n Zammad workflow updated.
+**Legend:** `[CLI]` = terminal/code | `[BROWSER]` = manual browser | `[DONE]` = complete | `[DEFERRED]` = blocked on external
 
-**Legend:** `[CLI]` = can be done via code/terminal | `[BROWSER]` = requires manual browser interaction | `[DONE]` = completed
-
-**Standard admin credential (all apps):** `admin@kecktech.net` / `Kecktech2026!`
-
-> **⚠️ LLDAP/SSO credential exception:** LLDAP 0.6.x OPAQUE-LDAP bug — `!` in passwords fails LDAP bind. SSO username/password for Authelia login: `keckadmin` / `Kecktech2026` (no `!`). All other app-specific logins still use `Kecktech2026!`. Do NOT change until upstream fixes the bug.
+**Credentials:**
+- All apps: `admin@kecktech.net` / `Kecktech2026!`
+- SSO (Authelia): `keckadmin` / `Kecktech2026` (no `!` — LLDAP OPAQUE bug, do NOT change)
 
 ---
 
-## Five Service Lines (Revenue Priority Order)
+## Revenue Priority Order
 
-| # | Service | Price | ARR Target |
-|---|---------|-------|-----------|
-| 1 | White Glove Managed IT (MSP) | $199/mo/client | $477,600 |
-| 2 | Hardware-as-a-Service (HaaS) | $149/mo/device | $268,200 |
-| 3 | AI Custom App Development | $3K–$8K/build | $240,000 |
-| 4 | Senior Technology Concierge | $79/mo/client | $94,800 |
-| 5 | Sovereign Private Hosting | $49/mo/client | $17,640 |
+| # | Service | Price | Status |
+|---|---------|-------|--------|
+| 1 | White Glove MSP | $199/mo | Stack ready, pre-client |
+| 2 | HaaS | $149/mo/device | ERPNext configured |
+| 3 | AI Custom App Dev | $3K–$8K | Pipeline building |
+| 4 | Senior Concierge | $79/mo | Stack ready, pre-client |
+| 5 | Sovereign Hosting | $49/mo | FUTURE — do not sell yet |
 
 ---
 
 ## ✅ Completed
 
-| Task | Method |
-|------|--------|
-| Stack started (all services healthy) | `startup-all.bat` |
-| Dashboard healthcheck fixed | Config |
-| Authelia LDAP auth fixed — `keckadmin` can log in via SSO | `lldap_set_password` (OPAQUE format, no `!`) |
-| TOTP enrolled for `keckadmin` — QR saved at `keckadmin-totp.png` | Authelia CLI |
-| Mailcow — `kecktech.net` domain created, DKIM generated | API |
-| Mailcow — `admin@kecktech.net` + `support@kecktech.net` mailboxes created | API |
-| Authelia SMTP notifier enabled (admin@kecktech.net via Mailcow) | Config + .env |
-| Authelia SSO enforcement active (deny default, bypass public, 2FA admins, 1FA staff) | Config |
-| LLDAP — `kecktech_admins` + `kecktech_staff` groups + `keckadmin` user created | API |
-| n8n — owner account set, 2 workflows imported | SQLite + CLI |
-| Umami — password changed, 2 websites created (kecktech.net + help.kecktech.net) | API |
-| ERPNext — site `localhost` initialized with `Kecktech2026!` | bench new-site |
-| Vaultwarden — signups enabled then locked (account created) | Config |
-| WikiJS — 7 pages, high-contrast CSS, iframe rendering, logo, home page | API + DB |
-| WordPress — 6 pages live, password reset to `Kecktech2026!` | WP-CLI |
-| `scripts/backup.ps1` created | New file |
-| `.cursor/rules/kecktech-stack.mdc` updated to 5-service model | CLI |
-| **Ops Portal Phase 1** — Tailwind + shadcn/ui, 4-view dashboard (support/billing/sales/ops), sidebar | CLI |
-| **LLDAP groups** — `kecktech_billing`, `kecktech_support`, `kecktech_sales` created | API |
-| **Authelia** — per-route group policies for new roles | Config |
-| **API keys** — TRMM (APIKey model), ERPNext (token), Umami (credentials) | CLI |
-| **FreeScout replaced by Zammad** — full ITSM (SLA, time tracking, client portal, REST API) | Docker + CLI |
-| **Zammad** — deployed (6 containers), admin account configured, API token set in dashboard | CLI |
-| **Dashboard** — Zammad live ticket feed on Support Desk page, health tile on home + ops pages | CLI |
-| **Gap analysis** — Full stack + business plan review; all code gaps addressed | CLI |
-| **`lib/services.ts`** — Single canonical 12-service list; home/ops/health API all DRY | CLI |
-| **MRR/ARR** — `getSubscriptions()` now fetches plans child table + calculates real MRR/ARR | CLI |
-| **Timesheet fix** — `from_time`/`to_time` calculated correctly from hours input | CLI |
-| **Sales kanban refresh** — `RefreshOnLeadCreate` wrapper calls `router.refresh()` on lead save | CLI |
-| **Sidebar active state** — `NavLink` client component uses `usePathname()` for active highlight | CLI |
-| **AcknowledgeButton** — Full error state machine (idle/loading/done/error), retry button | CLI |
-| **Loading skeletons** — `loading.tsx` for all 4 dashboard pages (support/billing/sales/ops) | CLI |
-| **n8n SMS workflow** — Rewritten for Zammad (priority_id, ticket URL, webhook path) | CLI |
-| **INTEGRATIONS.md** — Full rewrite: FreeScout/Heimdall removed, Zammad/Dashboard added | CLI |
-| **backup.sh** — FreeScout DB removed, Zammad DB added | CLI |
-| **docker-compose.yml security** — Hardcoded passwords → env vars, Vaultwarden health check | CLI |
-| **`.env.example`** — Added N8N_DEFAULT_PASS, UMAMI_PASS, STRIPE_API_KEY, TWILIO_* vars | CLI |
-| **WikiJS pages script** — `scripts/create-wikijs-pages.ps1` with 3 page content blocks | CLI |
+| Task | Notes |
+|------|-------|
+| Authelia SSO live, TOTP enrolled | `keckadmin` account, 2FA active |
+| Mailcow — kecktech.net domain, DKIM, mailboxes | admin@ + support@ + tickets@ created |
+| Zammad deployed (6 containers) | Replaced FreeScout; SLA groups configured |
+| Zammad email channel configured | tickets@kecktech.net IMAP + SMTP |
+| Zammad SLA policies created | P1=2hr, P2=4hr, P3=24hr |
+| ERPNext initialized | Site: localhost (needs rename — see Priority 2) |
+| ERPNext service items created | 7 items + SVC-MSP-SEC |
+| ERPNext HaaS templates | HAAS-L1/L2/L3, Leased Hardware asset category |
+| ERPNext tax template | Kansas IT Services 0% |
+| ERPNext CRM lead sources | WordPress Form, Referral, RMM Alert, Cold Call, Manual |
+| LLDAP groups created | kecktech_admins, kecktech_staff, kecktech_billing, kecktech_support, kecktech_sales |
+| Authelia per-route policies | Group-based access enforced |
+| Tactical RMM initialized | Critical Alerts template + n8n webhook wired |
+| Vaultwarden org + collections | Kecktech Field Tech org created |
+| n8n owner account + 2 workflows | RMM alert + Zammad ticket flows |
+| Umami — 2 sites created | kecktech.net + help.kecktech.net |
+| Dashboard — all 4 views live | Support, Billing, Sales, Ops |
+| BookStack theming + import scripts | help.kecktech.net, high-contrast CSS |
+| Astro site live | www.kecktech.net (replaced WordPress) |
+| Custom Wiki deployed | help.kecktech.net on port 3011 |
+| Customer portal deployed | portal.kecktech.net — Zammad + ERPNext + RustDesk |
+| Backup script registered | Daily 02:00 CT via Windows Task Scheduler |
 
 ---
 
-## Bugs / Fixes
+## 🔴 Priority 1 — Infrastructure Migration (New Proxmox Server)
 
-- [x] **`[DONE]` Fix duplicate log lines in backup.sh** — TTY check (`[ -t 1 ]`) routes interactive runs through `tee` and cron runs directly to log file. No duplication.
-- [x] **`[DONE]` n8n RMM Alert → Email workflow** — Webhook at `https://n8n.kecktech.net/webhook/rmm-alert` fires and sends email to `support@kecktech.net`. Fixed: DNS resolved to 127.0.0.1 (added `NODE_TLS_REJECT_UNAUTHORIZED=0` env, IP `192.168.65.254` in credential).
-
----
-
-## Priority 1 — MSP Enablement (Highest Revenue)
-
-### Zammad (tickets.kecktech.net)
-
-- [x] **`[DONE]` Create `tickets@kecktech.net` mailbox in Mailcow** ✅
-
-- [x] **`[DONE]` Configure Zammad email channel** ✅
-
-- [x] **`[DONE]` Create Zammad groups** — `MSP Support`, `HaaS`, `Senior Care`, `Internal` ✅
-
-- [x] **`[DONE]` Create Zammad SLA policies** ✅
-
-- [ ] **`[BROWSER]` Re-import n8n workflow: TRMM alert → Zammad ticket**
-  - JSON already updated: `docs/n8n-workflows/rmm-alert-ticket.json`
-  - n8n UI → Workflows → Import → select file → create "Zammad API" HTTP Header credential → activate
-
-### Tactical RMM (rmm.kecktech.net)
-
-- [x] **`[DONE]` TRMM initial wizard** — Completed ✅
-- [x] **`[DONE]` TRMM alert template** — `Critical Alerts` created, webhook `https://n8n.kecktech.net/webhook/rmm-alert` wired, set as global default ✅
+- [ ] `[CLI]` Remove WikiJS + wp-db from docker-compose.yml (dead services, ~1.2GB RAM wasted)
+- [ ] `[CLI]` Remove WordPress from docker-compose.yml (Astro replaced it)
+- [ ] `[CLI]` Update scripts/backup.sh — remove wikijs-db and wordpress dump targets
+- [ ] `[CLI]` Create new Proxmox server (hardware arriving Apr 13)
+  - ZFS mirror on 2×2TB NVMe; 1TB SSD as separate datastore
+  - VM 100: kecktech-apps (Ubuntu 24.04, 8 vCPU, 32GB)
+  - VM 101: willworkforlunch (Ubuntu 24.04, 4 vCPU, 8GB)
+  - VM 102: mailcow-prod (Ubuntu 22.04, 4 vCPU, 16GB)
+  - See `Proxmox_Day1-3_Setup_Guide.docx` for full steps
+- [ ] `[CLI]` Migrate Kecktech stack to VM 100 (restore from backup)
+- [ ] `[CLI]` Migrate Mailcow to VM 102 (own VM, isolated)
+- [ ] `[CLI]` Update all compose extra_hosts for mail.kecktech.net → VM 102 Tailscale IP
+- [ ] `[CLI]` Re-generate RustDesk keys, update RUSTDESK_SERVER_HOST + RUSTDESK_PUBLIC_KEY in .env
+- [ ] `[CLI]` Migrate willworkforlunch.com to VM 101
+- [ ] `[BROWSER]` Phase 8: Deploy Cloudflare Tunnel for public routes only:
+  - www.kecktech.net, help.kecktech.net, tickets.kecktech.net
+  - NOT: dashboard, lldap, traefik, n8n, vault, stats, rmm, ops (Tailscale only)
+- [ ] `[BROWSER]` Add MX, SPF, DKIM, DMARC records for kecktech.net
+- [ ] `[BROWSER]` Add willworkforlunch.com domain to Mailcow (noreply@ + support@)
 
 ---
 
-## Priority 2 — HaaS Enablement
+## 🔴 Priority 2 — ERPNext Full Configuration
 
-### Vaultwarden (vault.kecktech.net)
+Full step-by-step in `ERPNEXT-SETUP-GUIDE.md`. Key items:
 
-- [x] **`[DONE]` Create Organization `Kecktech Field Tech` + 3 Collections** ✅
-
-### ERPNext (ops.kecktech.net)
-
-- [x] **`[DONE]` Business setup wizard** — Kecktech IT Solutions LLC, USD, Jan–Dec ✅
-
-- [x] **`[DONE]` Create 7 service items** *(via bench CLI)*:
-
-  | Item Name | Code | Rate |
-  |-----------|------|------|
-  | White Glove Managed IT | SVC-MSP | $199/mo |
-  | HaaS Device Subscription | SVC-HAAS | $149/mo/device |
-  | AI Custom App Build | SVC-AIAPP | $3,000–$8,000 |
-  | Senior Technology Concierge | SVC-SENIOR | $79/mo |
-  | Sovereign Private Hosting | SVC-HOSTING | $49/mo |
-  | Remote Support (hourly) | SVC-REMOTE | $45/hr |
-  | In-Home Support (hourly) | SVC-HOME | $85/hr |
-
-- [x] **`[DONE]` Additional ERPNext setup** *(CLI)*:
-  - HaaS Item Templates: HAAS-L1, HAAS-L2, HAAS-L3 (attributes: RAM, Storage) ✅
-  - Asset Category: `Leased Hardware` → Straight Line, 36mo ✅
-  - Tax Template: `Kansas IT Services 0%` (set as default) ✅
-  - Timezone: `America/Chicago` ✅
-  - CRM Lead Sources added via CLI: `WordPress Form`, `Referral`, `RMM Alert`, `Cold Call`, `Manual` ✅
-  - SVC-MSP-SEC item created: Managed Security Add-On, $49/mo ✅
-  - HaaS Lease Agreement print format created (Sales Order) ✅
+- [ ] `[CLI]` Rename ERPNext site from `localhost` to `ops.kecktech.net`
+  - `bench rename-site localhost ops.kecktech.net`
+  - Update FRAPPE_SITE_NAME_HEADER in erpnext/frappe_docker/.env
+- [ ] `[BROWSER]` Update service items with correct rates (see BUSINESS-CONTEXT.md §5)
+  - Add SVC-ONSITE ($125/hr), SVC-SENIOR-ONSITE ($100/hr)
+  - Update SVC-REMOTE to $79/hr
+  - Mark SVC-HOME and SVC-HOSTING as inactive
+- [ ] `[BROWSER]` Configure ERPNext CRM custom fields (priority_tier, territory, vertical, kecktech_angle)
+- [ ] `[BROWSER]` Import 50 prospect leads from Kecktech_50_Prospect_Starter_List.csv
+- [ ] `[BROWSER]` Create Employee record for Jon Keck (required for timesheets)
+- [ ] `[BROWSER]` Configure Subscription module — MSP and Senior recurring billing
+- [ ] `[BROWSER]` Configure ERPNext Payment Terms — Net-0 for MSP (charge same day)
+- [ ] `[DEFERRED]` Connect Stripe payment gateway (create Stripe account first)
+- [ ] `[BROWSER]` Configure ERPNext email — outbound via Mailcow SMTP
+- [ ] `[BROWSER]` Set default letter head + company logo on invoice print format
 
 ---
 
-## Priority 3 — AI App Dev Enablement
+## 🔴 Priority 3 — Go-Live Blockers
 
-*(ERPNext project billing is the main enabler — covered above in Priority 2)*
-
----
-
-## Priority 4 — Senior Concierge Enablement
-
-### WikiJS (help.kecktech.net)
-
-- [x] **`[DONE]` Core setup** — 7 pages, high-contrast CSS, iframe rendering, home page ✅
-- [x] **`[DONE]` Add 3 new pages** — Created via GraphQL API ✅
-  - `/what-is-managed-it` (id=8), `/ai-custom-apps` (id=9), `/your-private-hosting` (id=10)
-
-### RustDesk — Configure client devices
-
-- [ ] **`[BROWSER]` Configure each client device**:
-  - Install RustDesk on each senior/client device
-  - ID Server = Windows host Tailscale IP, Relay = same, Key = from `docker/data/rustdesk_data/`
-  - Record each senior client's RustDesk ID in Vaultwarden `Client Profiles`
+- [ ] `[BROWSER]` Create Stripe account + connect to ERPNext
+  - Products: MSP $199/mo recurring, Billable Hours one-time, AI App Deposit $2,250
+- [ ] `[BROWSER]` Draft and finalize MSP Service Agreement (MSA)
+  - Key clauses: scope, SLA, $199/mo net-0, 30-day cancel, Kansas jurisdiction
+- [ ] `[BROWSER]` Test full contact form → Zammad ticket flow (kecktech.net/contact → tickets@)
+- [ ] `[BROWSER]` Test Astro site on www.kecktech.net via Cloudflare tunnel (post Phase 8)
+- [ ] `[BROWSER]` Enroll Twilio account, add creds to n8n for SMS alerts
+- [ ] `[BROWSER]` Configure Google Business Profile for Kecktech (Wichita/Park City)
+- [ ] `[BROWSER]` Publish MSP one-pager to kecktech.net/services/msp
+- [ ] `[BROWSER]` Publish AI App one-pager to kecktech.net/services/ai-apps
 
 ---
 
-## Phase 4 — Integrations
+## 🟡 Priority 4 — Customer Portal Full Build
 
-- [ ] **`[BROWSER]` Test WordPress → Zammad email flow**
-  - Submit contact form on `kecktech.net/contact/` → verify email arrives at `tickets@kecktech.net` → verify Zammad auto-creates ticket
+Full gap analysis in `CUSTOMER-PORTAL-GAP-ANALYSIS.md`. Key missing features:
 
-- [ ] **`[BROWSER]` Wire Tactical RMM → n8n webhook** *(verify still active after Zammad migration)*
-  - TRMM: Alerts → Alert Templates → confirm Webhook URL: `https://n8n.kecktech.net/webhook/rmm-alert`
-
-- [x] **`[DONE]` Embed Umami tracking in WordPress** — mu-plugin `kecktech-umami.php` injects script on all pages
-
-- [x] **`[DONE]` Embed Umami tracking in WikiJS** — Umami v2, Site ID `23abf02f-dbf6-4586-aa05-475ff23ae539`
-
-- [ ] **`[DEFERRED]` Twilio SMS** — Add Account SID + Auth Token to n8n credentials when ready.
-- [ ] **`[DEFERRED]` Stripe** — Configure ERPNext payment gateway with Stripe keys when account is ready.
+- [ ] `[CLI]` Add /api/rustdesk/route.ts (missing — RustDesk info endpoint 404s)
+- [ ] `[CLI]` Add active contracts section (ERPNext Subscription API)
+- [ ] `[CLI]` Add TRMM device health panel (agent status per client)
+- [ ] `[CLI]` Add BookStack paywall content access (token-gated articles)
+- [ ] `[CLI]` Add payment link integration (Stripe checkout for outstanding invoices)
+- [ ] `[CLI]` Add invoice history (all invoices, not just outstanding)
+- [ ] `[CLI]` Add service plan summary card (what's included in their MSP plan)
 
 ---
 
-## WordPress Content Update (5-Service Model)
+## 🟡 Priority 5 — Knowledge Base Content
 
-- [x] **`[DONE]` Update WordPress content** *(CLI via WP-CLI)*
-  - **Home**: Hero → "IT That Works. Priced for Business." + 5-service overview
-  - **Services**: 5-card grid (MSP, HaaS, AI App Dev, Senior Concierge, Private Hosting)
-  - **Pricing**: 5 pricing cards + hourly add-ons bar + updated FAQ
-  - **About**: Disability-led family IT, Park City KS, 30+ yrs enterprise IT
-
----
-
-## Windows Backup Setup
-
-- [x] **`[DONE]` Register backup with Windows Task Scheduler** — Task `KecktechBackup` registered, runs daily at 02:00 ✅
-- [x] **`[DONE]` Backup tested manually** — Confirmed working ✅
+- [ ] `[CLI]` Execute BookStack pilot import (25 articles): `cd bookstack && npm run pilot -- --pilot-limit=25`
+- [ ] `[CLI]` Execute full BookStack import: `npm run full-import` (after pilot sign-off)
+- [ ] `[BROWSER]` Configure each client device for RustDesk:
+  - ID Server = new Proxmox server host (VM 100 Tailscale IP)
+  - Record RustDesk ID in Vaultwarden Client Profiles
 
 ---
 
-## Phase 8 — Production Deploy (Last — Do Not Start Until All Above Done)
+## 🟢 Deferred (Blocked on External)
 
-- [ ] Install `cloudflared` on Windows host (or dedicated device)
-- [ ] Create Cloudflare Tunnel (`kecktech-tunnel`)
-- [ ] Configure tunnel ingress for **public apps only**: `kecktech.net`, `help.kecktech.net`, `tickets.kecktech.net`
-- [ ] Configure as Windows service (or Task Scheduler)
-- [ ] Add CNAME records in Cloudflare DNS for public subdomains
-- [ ] Add MX, SPF, DKIM, DMARC records for `kecktech.net` email
-- [ ] Update SITE_URL env vars to production URLs
-- [ ] Verify Florida contractor Tailscale access to internal apps
-- [ ] Final go-live verification: public sites + internal apps + email deliverability
+- `[DEFERRED]` Twilio SMS — needs Twilio account + creds
+- `[DEFERRED]` Stripe — needs Stripe account (create this week)
+- `[DEFERRED]` Data center / solar — capital required; show as future goal on website only
+- `[DEFERRED]` Sovereign Hosting service line — blocked on data center
 
 ---
 
-## Umami Tracking Script IDs
+## Stale / Archived Tasks (removed)
 
-| Site | Domain | Umami ID |
-|------|--------|----------|
-| Kecktech WordPress | kecktech.net | `d2427fe3-ce4b-4b9a-8e41-a8a3e9f2cd6d` |
-| Kecktech Knowledge Base | help.kecktech.net | `23abf02f-dbf6-4586-aa05-475ff23ae539` |
+The following are no longer relevant and have been removed:
+- Florida contractor setup in ERPNext
+- FreeScout configuration (replaced by Zammad)
+- WikiJS setup (replaced by BookStack + Custom Wiki)
+- WordPress content (replaced by Astro)
+- Phase 8 "Florida contractor Tailscale access" item
 
-Embed script (replace `SITE_ID`):
-```html
-<script defer src="https://stats.kecktech.net/script.js" data-website-id="SITE_ID"></script>
-```
+## ✅ Completed in This Session (April 2026)
 
----
+| Task | Notes |
+|------|-------|
+| BUSINESS-CONTEXT.md created | Single source of truth, replaces business_launch.md |
+| INTEGRATIONS.md rewritten | Stale services removed, all current services documented |
+| REMAINING-TASKS.md rewritten | This file — accurate, stale items removed |
+| ERPNEXT-SETUP-GUIDE.md created | 18-step guide covering all modules |
+| CUSTOMER-PORTAL-GAP-ANALYSIS.md created | Full gap + prioritized build list + ready-to-deploy code |
+| PROCESS-MAP.md created | All 8 business processes mapped end-to-end |
+| DAILY-TASKS.md created | Solo operator daily/weekly/monthly checklists |
+| .cursor/rules/kecktech-stack.mdc updated | Corrected service items, ERPNext ownership, removed stale refs |
+| business_launch.md marked stale | Superseded by BUSINESS-CONTEXT.md |
+| WORDPRESS-RESTORE-WINDOWS.md marked stale | WordPress removed from stack |
+| STACK-ISSUES-REMEDIATION-PLAN.md marked stale | Issues resolved |
+| customer-portal/app/api/rustdesk/route.ts created | Fixed broken 404 — RustDesk info endpoint now works |
+| customer-portal/app/api/rustdesk/info/route.ts created | /api/rustdesk/info path also fixed |
+| docker/docker-compose.yml cleaned | WordPress + wp-db + WikiJS + wikijs-db REMOVED (~1.2GB RAM freed) |
+| scripts/backup.sh updated | Removed WordPress/WikiJS dumps; added BookStack + Custom Wiki |
+| docs/n8n-workflows/morning-briefing.json created | Import to n8n — sends 7:30am CT daily briefing email |
+| CUSTOMER-PORTAL-GAP-ANALYSIS.md — code appended | contracts/route.ts + devices/route.ts ready to deploy |
 
-## Summary
-
-| Category | Remaining | CLI | Browser | Deferred |
-|----------|-----------|-----|---------|----------|
-| Bugs/Fixes | 0 | — | — | — |
-| Priority 1 (MSP/Zammad) | 1 | — | 1 | — |
-| Priority 2 (HaaS/ERPNext) | 0 | — | — | — |
-| Priority 4 (Senior/WikiJS) | 0 | — | — | — |
-| Phase 4 (Integrations) | 4 | — | 2 | 2 |
-| Backup setup | 0 | — | — | — |
-| Phase 8 (Production) | 9 | — | 9 | — |
-| **Total** | **14** | **0** | **12** | **2** |

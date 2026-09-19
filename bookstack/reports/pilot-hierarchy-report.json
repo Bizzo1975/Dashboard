@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-03-26T18:18:28.093Z",
+  "dryRun": true,
+  "catalogPath": "F:\\Github\\Dashboard\\docs\\kecktech-wiki-article-catalog.xlsx",
+  "totalRows": 25,
+  "processedRows": 25,
+  "created": {
+    "shelves": [
+      "Windows PC"
+    ],
+    "books": [
+      "Startup & Boot Issues",
+      "Performance & Speed",
+      "Windows Updates"
+    ],
+    "chapters": []
+  },
+  "reused": {
+    "shelves": [],
+    "books": [],
+    "chapters": []
+  },
+  "skipped": [],
+  "errors": []
+}

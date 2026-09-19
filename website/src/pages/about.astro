@@ -6,7 +6,7 @@ import data from '../data/about.json';
 
 <Base
   title="About"
-  description="Kecktech IT Solutions — Family-owned, disability-led, solar-powered IT company in Park City, Kansas. Meet the founders and learn our story."
+  description="Kecktech IT Solutions — Family-owned, disability-led IT company in Park City, Kansas. Meet the founders, learn our story, and help us build our solar-powered future."
 >
 
   <Hero
@@ -83,12 +83,14 @@ import data from '../data/about.json';
     </div>
   </section>
 
-  <!-- ── Facility ─────────────────────────────────────────────────────── -->
-  <section class="facility-section">
+  <!-- ── Facility / Fundraising Goal ────────────────────────────────── -->
+  <section class="facility-section" id="goal">
     <div class="container">
       <span class="section-label" style="color: var(--gold)">{data.facility.label}</span>
       <h2>{data.facility.heading}</h2>
       <p class="facility-intro">{data.facility.body}</p>
+
+      <!-- Goal stats — labeled as targets -->
       <div class="stat-bar">
         {data.facility.stats.map(s => (
           <div class="stat-item">
@@ -97,6 +99,16 @@ import data from '../data/about.json';
           </div>
         ))}
       </div>
+
+      <!-- Donate block -->
+      <div class="donate-block">
+        <h3 class="donate-heading">{data.facility.donateHeading}</h3>
+        <p class="donate-body">{data.facility.donateBody}</p>
+        <a href={data.facility.donateUrl} target="_blank" rel="noopener noreferrer" class="btn-donate">
+          {data.facility.donateLabel}
+        </a>
+      </div>
+
       <div class="facility-cta">
         <a href="/contact" class="btn-primary">{data.facility.ctaPrimary}</a>
         <a href="/services" class="btn-white">{data.facility.ctaSecondary}</a>
@@ -140,7 +152,31 @@ import data from '../data/about.json';
 .facility-section { background: var(--navy); color: #fff; text-align: center; }
 .facility-section h2 { color: #fff; margin: 8px 0 20px; }
 .facility-intro { color: rgba(255,255,255,0.8); max-width: 700px; margin: 0 auto 8px; font-size: 17px; }
-.facility-cta { display: flex; gap: 16px; justify-content: center; margin-top: 40px; flex-wrap: wrap; }
+.facility-cta { display: flex; gap: 16px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+
+.donate-block {
+  margin: 36px auto 0;
+  max-width: 560px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,120,16,0.5);
+  border-radius: 12px;
+  padding: 28px 32px;
+}
+.donate-heading { color: var(--gold); font-family: var(--font-heading); font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.donate-body { color: rgba(255,255,255,0.78); font-size: 15px; line-height: 1.7; margin-bottom: 20px; }
+.btn-donate {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  padding: 13px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-donate:hover { background: #a06510; }
 
 @media (max-width: 768px) {
   .mission-inner { grid-template-columns: 1fr; }

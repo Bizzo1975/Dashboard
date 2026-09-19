@@ -24,6 +24,10 @@ docker/authelia/notifications.txt
 dashboard/node_modules/
 bookstack/node_modules/
 dashboard/.next/
+custom-wiki/node_modules/
+custom-wiki/.next/
+customer-portal/node_modules/
+customer-portal/.next/
 
 # ── Claude IDE local settings ────────────────────────────────────────────────
 .claude/
