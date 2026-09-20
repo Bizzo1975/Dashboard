@@ -621,5 +621,40 @@
     "slug": "configure-tiles",
     "title": "Configure dashboard tiles",
     "path": "content/help/dashboard/admin/configure-tiles.md"
+  },
+  {
+    "app": "me-manager",
+    "subcategory": "getting-started",
+    "slug": "find-your-way-around",
+    "title": "Find your way around Me Manager",
+    "path": "content/help/me-manager/getting-started/find-your-way-around.md"
+  },
+  {
+    "app": "me-manager",
+    "subcategory": "how-to",
+    "slug": "record-a-story",
+    "title": "Record a story in Story Studio",
+    "path": "content/help/me-manager/how-to/record-a-story.md"
+  },
+  {
+    "app": "me-manager",
+    "subcategory": "how-to",
+    "slug": "train-and-test-voice-clone",
+    "title": "Train and test your cloned voice in Voice Clone",
+    "path": "content/help/me-manager/how-to/train-and-test-voice-clone.md"
+  },
+  {
+    "app": "me-manager",
+    "subcategory": "troubleshoot",
+    "slug": "publish-not-updating",
+    "title": "A published post isn't showing on the site",
+    "path": "content/help/me-manager/troubleshoot/publish-not-updating.md"
+  },
+  {
+    "app": "me-manager",
+    "subcategory": "admin",
+    "slug": "manage-properties-and-sync",
+    "title": "Manage properties, tracks, and site sync",
+    "path": "content/help/me-manager/admin/manage-properties-and-sync.md"
   }
 ]
